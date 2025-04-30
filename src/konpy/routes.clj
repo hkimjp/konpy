@@ -7,11 +7,6 @@
             [konpy.example :as example]
             [konpy.login :refer [login-page login-post]]))
 
-(defn not-found-handler
-  [_]
-  {:status 404
-   :body "not found"})
-
 ; /assets/css ?
 (defn routes
   []
@@ -31,12 +26,17 @@
    ["/example" {:get {:handler example/example-page}
                 :post {:handler example/example-post}}]])
 
+(defn not-found-handler
+  [_]
+  {:status 404
+   :body "not found"})
+
 (defn root-handler
   [request]
   (t/log! :info (str (:request-method request) " - " (:uri request)))
   (let [handler (reitit-ring/ring-handler
                  (reitit-ring/router (routes))
                  #'not-found-handler
-                 {:middeware [[wrap-defaults site-defaults]]})]
+                 {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))
 
