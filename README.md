@@ -2,6 +2,8 @@
 
 This week's assignment for 2025 programming python class.
 
+Under construction.
+
 ## Installation
 
 Download from https://github.com/hkimjp/konpy
@@ -52,15 +54,9 @@ Run that uberjar:
 
 ## Options
 
-FIXME: listing of options this app accepts.
-
 ## Examples
 
-...
-
 ### Bugs
-
-...
 
 ### Any Other Sections
 ### That You Think
