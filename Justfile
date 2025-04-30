@@ -12,6 +12,10 @@ container-repl: dev-container
 dev-container:
   clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
 
+CSS := "resources/public/css"
+tailwind:
+  tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --watch
+
 run:
   clojure -M:run-m
 
