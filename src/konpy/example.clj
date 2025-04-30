@@ -1,5 +1,7 @@
 (ns konpy.example
-  (:require [konpy.views :refer [page]]))
+  (:require [konpy.views :refer [page]]
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
+            [hiccup2.core :as h]))
 
 (defn example-page [_request]
   (page
@@ -10,6 +12,7 @@
      "example page. need reload? or?"]
     [:p "Please login. are you there?"]
     [:form {:method "post"}
+     (h/raw (ring.util.anti-forgery/anti-forgery-field))
      [:input {:placeholder "your account" :name "login"}]
      [:input {:type "password" :name "password"}]
      [:button
@@ -19,4 +22,6 @@
 (defn example-post [request]
   (page
    [:div
-    [:p "body: " (slurp (:body request))]]))
+    [:p "body: " (slurp (:body request))]
+    [:p ":params" (str (:params request))]]))
+
