@@ -9,18 +9,18 @@
 
 ## 0.3.0-SNAPSHOT (2025-05-01)
 
-- create (dummy) /assignments, /answers page.
-
+- added (dummy) /assignments, /answers page.
+- added konpy/db.clj
 
 ## [0.2.0] (2025-05-01)
 
-- created `systemd/{konpy.service,start.sh,stop.sh}`.
+- added `systemd/{konpy.service,start.sh,stop.sh}`.
 - test success `just deploy-to ubuntu@eq.local konpy`.
 
 ## 0.1.1 (2025-04-30)
 
 - gitignored resources/public/css/output.css.
-- created src/konpy/middleware.clj, which is empty.
+- added src/konpy/middleware.clj, which is empty.
 - anti-forgery-field
 
 ## 0.1.0 - 2025-04-30
