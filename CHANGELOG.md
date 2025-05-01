@@ -7,6 +7,10 @@
 - assignments
 - answers
 
+## 0.3.2-SNAPSHOT
+
+- hkimjp/datascript.clj
+
 ## [0.3.1] (2025-05-01)
 
 - missed tag?

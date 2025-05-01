@@ -2,9 +2,11 @@
   (:require [konpy.system :as system]
             [taoensso.telemere :as t]
             [konpy.db :as db]
+            konpy.core-test
             #_[clj-reload.core :as reload]))
 
 (comment
+  ()
   (def conn (db/start "storage/db.sqlite"))
 
   (db/conn?)
