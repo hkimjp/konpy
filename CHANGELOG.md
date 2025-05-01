@@ -1,13 +1,13 @@
 ## Unreleased
 
-## 0.3.0-SNAPSHOT (2025-05-01)
+## 0.3.0 (2025-05-01)
   `CHANGELOG.md`. This behavior should be changed.
 - login
 - not found page, more precisely.
 - assignments
 - answers
 
-## 0.3.0-SNAPSHOT (2025-05-01)
+## 0.3.0 (2025-05-01)
 
 - added (dummy) /assignments, /answers page.
 - added konpy/db.clj
