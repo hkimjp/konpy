@@ -4,7 +4,7 @@ set dotenv-load
 help:
   just --list
 
-nrepl: dev
+repl: dev
 dev:
   clojure -M:dev -m nrepl.cmdline
 
