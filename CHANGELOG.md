@@ -9,6 +9,9 @@
 
 ## 0.3.0-SNAPSHOT (2025-05-01)
 
+- create (dummy) /assignments, /answers page.
+
+
 ## [0.2.0] (2025-05-01)
 
 - created `systemd/{konpy.service,start.sh,stop.sh}`.
@@ -24,4 +27,5 @@
 
 - initialized repository.
 
+[0.3.0]: https://github.com/hkimjp/konpy/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/hkimjp/konpy/compare/0.1.0...0.2.0

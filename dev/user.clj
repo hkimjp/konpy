@@ -28,4 +28,5 @@
 
 (comment
   (restart-system!)
+  (server)
   :rcf)
