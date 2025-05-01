@@ -4,7 +4,7 @@
 ## [0.2.0] (2025-05-01)
 
 - bump version up to 0.2.0.
-  My `bump-version-up` script changes all of `*-SNAPSHOT` appeared in `CHANGELOG.md`.
+## 0.2.0 (2025-05-01)
   This behavior should be changed.
 - created systemd/{konpy.service,start.sh,stop.sh}
 
