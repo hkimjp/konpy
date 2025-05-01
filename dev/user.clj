@@ -2,7 +2,7 @@
   (:require [konpy.server :as s]
             [clj-reload.core :as reload]))
 
-(def server (atom nil))
+(defonce server (atom nil))
 
 (defn restart!
   []
