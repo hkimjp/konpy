@@ -5,7 +5,8 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
             [konpy.example :as example]
-            [konpy.login :refer [login-page login-post]]))
+            [konpy.login :refer [login-page login-post]]
+            [konpy.views :refer [under-construction]]))
 
 ; /assets/css ?
 (defn routes
@@ -16,15 +17,14 @@
              {:path "/" :root "public"})]
    ["/images/*" (reitit-ring/create-resource-handler
                  {:path "/" :root "public"})]
-   ["/" {:get {:handler (fn [_]
-                          {:status 200
-                           :headers {"Content-Type" "text/html"}
-                           :body "<h1>Hello, KonPy!</h1>
-                                  <p><a href='/example'>go example</a></p>"})}}]
-   ["/login" {:get {:handler login-page}
-              :post {:handler login-post}}]
+   ["/" {:get {:handler login-page}
+         :post {:handler login-post}}]
    ["/example" {:get {:handler example/example-page}
-                :post {:handler example/example-post}}]])
+                :post {:handler example/example-post}}]
+   ["/assignments"
+    ["/" under-construction]]
+   ["/answers"
+    ["/" under-construction]]])
 
 (defn not-found-handler
   [_]

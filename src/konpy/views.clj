@@ -33,3 +33,11 @@
   (-> content
       base
       render))
+
+(defn under-construction
+  [_request]
+  (page [:div {:class "text-4xl bg-red-500"} "UNDER CONSTRUCTION"]))
+
+(comment
+  (under-construction nil)
+  :rcf)
