@@ -7,7 +7,11 @@
 - assignments
 - answers
 
-## 0.3.0-SNAPSHOT (2025-05-01)
+## 0.3.1-SNAPSHOT
+
+- missed tag?
+
+## 0.3.0 (2025-05-01)
 
 - added (dummy) /assignments, /answers page.
 - added konpy/db.clj
