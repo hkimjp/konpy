@@ -3,11 +3,17 @@
             [konpy.routes :as routes]
             [taoensso.telemere :as t]))
 
+(defn start-db
+  [])
+
+(defn stop-db
+  [db])
+
 (defn start-server []
+  (t/log! :info "server started at port 3000.")
   (let [server (jetty/run-jetty
                 #'routes/root-handler
                 {:port  3000, :join? false})]
-    (t/log! :info "server started at port 3000.")
     server))
 
 (defn stop-server [server]

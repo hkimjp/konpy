@@ -1,7 +1,23 @@
 (ns user
   (:require [konpy.system :as system]
             [taoensso.telemere :as t]
-            [clj-reload.core :as reload]))
+            [konpy.db :as db]
+            #_[clj-reload.core :as reload]))
+
+(comment
+  (def conn (db/start
+             "storage/db.sqlite"))
+  (db/conn? conn)
+  (db/put conn '{:db/id -1 :name "kimura" :sex "male" :age 63})
+  (db/q conn '[:find ?e ?name ?age
+               :where
+               [?e :name ?name]
+               [?e :age ?age]])
+  (db/pull conn '[*] 1)
+  (db/pull conn 1)
+  (db/pull conn [:name :age] 5)
+  (db/stop)
+  :rcf)
 
 (def system nil)
 
