@@ -8,14 +8,20 @@
   (def conn (db/start
              "storage/db.sqlite"))
   (db/conn? conn)
+
   (db/put conn '{:db/id -1 :name "kimura" :sex "male" :age 63})
+
   (db/q conn '[:find ?e ?name ?age
                :where
                [?e :name ?name]
                [?e :age ?age]])
+
   (db/pull conn '[*] 1)
   (db/pull conn 1)
-  (db/pull conn [:name :age] 5)
+  (db/pull conn [:name :age] 8)
+  (db/q conn '[:find (count ?e)
+               :where
+               [?e _ _]])
   (db/stop)
   :rcf)
 

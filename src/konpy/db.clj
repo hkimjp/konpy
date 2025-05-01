@@ -6,11 +6,6 @@
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))
 
-(defn- shorten
-  ([s] (shorten s 80))
-  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
-           (str/replace-first s pat "$1..."))))
-
 (defonce storage (atom nil))
 
 ; (def conn nil)
@@ -19,6 +14,7 @@
   (d/conn? conn))
 
 (defn- make-storage [db]
+  (t/log! :info (str "make-stroage " db))
   (try
     (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
@@ -60,10 +56,18 @@
      (create db))))
 
 (defn stop []
-  (t/log! :info "stop")
+  (t/log! :info "db stopped")
   (storage-sql/close @storage))
 
 ;------------------------------------------
+
+(defn put [conn fact]
+  (t/log! :info (str "put " fact))
+  (d/transact! conn [fact]))
+
+(defn puts [conn facts]
+  (t/log! :info (str "put " facts))
+  (d/transact! conn facts))
 
 (defmacro q [conn query & inputs]
   (t/log! :info (str "q " query))
@@ -75,11 +79,4 @@
    (t/log! :info (str "pull " selector " " eid))
    (d/pull @conn selector eid)))
 
-(defn put [conn fact]
-  (t/log! :info (str "put " (shorten fact)))
-  (d/transact! conn [fact]))
-
-(defn puts [conn facts]
-  (t/log! :info (str "put " (shorten facts)))
-  (d/transact! conn facts))
 
