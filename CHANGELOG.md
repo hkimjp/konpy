@@ -1,12 +1,12 @@
 ## Unreleased
 
+- My `bump-version-up` script changes all of `SNAPSHOT` appeared in
+  `CHANGELOG.md`. This behavior should be changed.
 
 ## [0.2.0] (2025-05-01)
 
-- bump version up to 0.2.0.
-  My `bump-version-up` script changes all of `*-SNAPSHOT` appeared in `CHANGELOG.md`.
-  This behavior should be changed.
 - created systemd/{konpy.service,start.sh,stop.sh}
+- test success `just deploy-to ubuntu@eq.local konpy`.
 
 ## 0.1.1 (2025-04-30)
 
