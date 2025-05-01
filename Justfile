@@ -13,8 +13,11 @@ dev-container:
   clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
 
 CSS := "resources/public/css"
-tailwind:
+watch:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --watch
+
+minify:
+  tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --minify
 
 run:
   clojure -M:run-m
@@ -32,6 +35,7 @@ test:
     clojure -M:dev -m kaocha.runner
 
 build:
+  just minify
   clojure -T:build ci
 
 deploy:
@@ -39,15 +43,16 @@ deploy:
 
 #-------------------
 # FIXME: incomplete.
+# sample usage: just deploy-to eq.local konpy
 #-------------------
-deploy-to host app: build
+deploy-to host app:
   ssh {{host}} mkdir -p {{app}}/log
-  scp target/io.github.hkimjp/{{app}}-*.jar {{host}}:konpy/konpy.jar
-  rsync -av systemd {{host}}:konpy/
-  ssh {{host}} sudo cp konpy/systemd/konpy.service /lib/systemd/system
+  scp target/io.github.hkimjp/{{app}}-*.jar {{host}}:{{app}}/{{app}}.jar
+  scp systemd/{konpy.service,start.sh,stop.sh} {{host}}:{{app}}/
+  ssh {{host}} sudo cp {{app}}/{{app}}.service /lib/systemd/system
   ssh {{host}} sudo systemctl daemon-reload
-  ssh {{host}} sudo systemctl restart konpy
-  ssh {{host}} systemctl status konpy
+  ssh {{host}} sudo systemctl restart {{app}}.service
+  ssh {{host}} systemctl status {{app}}.service
 
 clean:
   rm -rf target

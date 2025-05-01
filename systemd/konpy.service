@@ -1,0 +1,15 @@
+[Unit]
+Description=konpyservice.
+
+[Service]
+User=ubuntu
+Type=simple
+WorkingDirectory=/home/ubuntu/konpy
+ExecStart=/bin/sh start.sh
+ExecStop=/bin/sh stop.sh
+# StandardOutput=append:/home/ubuntu/konpy/log/konpy.log
+# StandardError=append:/home/ubuntu/konpy/log/konpy.log
+
+
+[Install]
+WantedBy=multi-user.target
