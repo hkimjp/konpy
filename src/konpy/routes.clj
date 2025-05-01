@@ -5,7 +5,8 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
             [konpy.example :as example]
-            [konpy.login :refer [login-page login-post]]))
+            [konpy.login :refer [login-page login-post]]
+            [konpy.views :refer [under-construction]]))
 
 ; /assets/css ?
 (defn routes
@@ -21,9 +22,9 @@
    ["/example" {:get {:handler example/example-page}
                 :post {:handler example/example-post}}]
    ["/assignments"
-    ["/"]]
+    ["/" under-construction]]
    ["/answers"
-    "/"]])
+    ["/" under-construction]]])
 
 (defn not-found-handler
   [_]
