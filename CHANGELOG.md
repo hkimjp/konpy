@@ -1,5 +1,14 @@
 ## Unreleased
 
+- schema
+  :db/cardinarity :db/cardinarity/many
+- routes
+
+
+## 0.4.0-SNAPSHOT
+
+- (def schema {:identical {:db/cardinality :db.cardinality/many}})
+- added db/entity - how it works?
 
 ## [0.3.2] (2025-05-01)
 
@@ -8,7 +17,6 @@
 - not found page, more precisely.
 - assignments
 - answers
-
 
 ## 0.3.1 (2025-05-01)
 

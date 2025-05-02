@@ -2,37 +2,40 @@
   (:require [ring.adapter.jetty :as jetty]
             [taoensso.telemere :as t]
             [konpy.routes :as routes]
-            [konpy.db :as db]))
-
-(def storage "storage/db.sqlite")
+            [konpy.db :as db]
+            [environ.core :refer [env]]))
 
 (defn start-db
   []
-  (db/start storage))
+  (db/start "storage/db.sqlite"))
 
 (defn stop-db
   []
   (db/stop))
 
+(def server (atom nil))
+
 (defn start-server
   []
-  (let [server (jetty/run-jetty
-                #'routes/root-handler
-                {:port  3000, :join? false})]
-    (t/log! :info "server started at port 3000.")
-    server))
+  (let [port (or (env :port) "3000")]
+    (reset! server
+            (jetty/run-jetty
+             #'routes/root-handler
+             {:port (parse-long port) :join? false}))
+    (t/log! :info (str "server started at port " port))))
 
 (defn stop-server
-  [server]
-  (.stop server)
+  []
+  (.stop @server)
   (t/log! :info "server stopped."))
 
 (defn start-system
   []
   (start-db)
-  {::server (start-server)})
+  (start-ser
 
 (defn stop-system
   [system]
   (stop-db)
   (stop-server (::server system)))
+

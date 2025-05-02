@@ -1,8 +1,8 @@
 (ns konpy.core
-  (:require [konpy.server :as s])
+  (:require [konpy.system :as system])
   (:gen-class))
 
 (defn -main
   [& _args]
-  (s/start-server nil))
+  (system/start-server))
 
