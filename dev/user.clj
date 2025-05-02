@@ -13,11 +13,11 @@
 
 (t/log! :debug "debug check")
 
-; returns nil
-; (get-in {} [:session :identity])
+(system/start-system)
 
 (comment
   (reload/reload)
+
   (system/start-system)
 
   (system/restart-system)
