@@ -3,7 +3,7 @@
 - compile routes.
 
 
-## 0.4.2-SNAPSHOT
+## 0.4.2 (2025-05-02)
 
 - /logout
 - prep kp.melt.kyutech.ac.jp, port 8505.
