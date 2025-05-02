@@ -1,15 +1,12 @@
 set dotenv-load
 
-# shows available recipies
 help:
   just --list
 
-repl: dev
-dev:
+repl:
   clojure -M:dev -m nrepl.cmdline
 
-container-repl: dev-container
-dev-container:
+container-repl
   clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
 
 CSS := "resources/public/css"
@@ -41,10 +38,6 @@ build:
 deploy:
   just deploy-to 'ubuntu@app.melt.kyutech.ac.jp' konpy
 
-#-------------------
-# FIXME: incomplete.
-# sample usage: just deploy-to eq.local konpy
-#-------------------
 deploy-to host app:
   ssh {{host}} mkdir -p {{app}}/log
   scp target/io.github.hkimjp/{{app}}-*.jar {{host}}:{{app}}/{{app}}.jar
