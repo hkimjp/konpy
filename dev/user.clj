@@ -7,11 +7,7 @@
             [clj-reload.core :as reload]
             #_[clojure.string :as str]))
 
-(= "true" (env :develop))
-
 (t/set-min-level! :debug)
-
-(t/log! :debug "debug check")
 
 (system/start-system)
 

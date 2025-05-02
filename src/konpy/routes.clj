@@ -29,7 +29,7 @@
     ["/" ka/tasks]
     ["/edit" {:get ka/edit
               :post ka/edit!}]
-    ["/delete" {:delete ka/delete!}]
+    ["/delete/:n" {:delete ka/delete!}]
     ["/new" {:get ka/new
              :post ka/create!}]]])
 
