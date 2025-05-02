@@ -1,19 +1,19 @@
 ## Unreleased
 
-## 0.3.1 (2025-05-01)
-  `CHANGELOG.md`. This behavior should be changed.
+-  my `bump-version` changes all of SNAPSHOT appeared in `CHANGELOG.md`.
+  This behavior should be changed.
+
+## 0.4.0-SNAPSHOT
+
+
+## [0.3.2] (2025-05-01)
+
+- copy konpy.clj to hkimjp/datascript.clj
 - login
 - not found page, more precisely.
 - assignments
 - answers
-
-## 0.3.2-SNAPSHOT
-
-- hkimjp/datascript.clj
-
-## [0.3.1] (2025-05-01)
-
-- missed tag?
+- missing tag name?
 
 ## 0.3.0 (2025-05-01)
 
@@ -35,5 +35,6 @@
 
 - initialized repository.
 
-[0.3.1]: https://github.com/hkimjp/konpy/compare/0.2.0...0.3.1
+[0.4.0]: https://github.com/hkimjp/konpy/compare/0.3.1...0.4.0
+[0.3.2]: https://github.com/hkimjp/konpy/compare/0.2.0...0.3.2
 [0.2.0]: https://github.com/hkimjp/konpy/compare/0.1.0...0.2.0
