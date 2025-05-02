@@ -32,7 +32,7 @@
 (defn start-system
   []
   (start-db)
-  (start-ser
+  (start-server))
 
 (defn stop-system
   [system]

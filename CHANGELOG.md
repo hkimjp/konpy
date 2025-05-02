@@ -9,6 +9,8 @@
 
 - (def schema {:identical {:db/cardinality :db.cardinality/many}})
 - added db/entity - how it works?
+- gitignored `.env`.
+- **BREAKING** resources/public/assets/css
 
 ## [0.3.2] (2025-05-01)
 

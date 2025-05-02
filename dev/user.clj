@@ -4,12 +4,16 @@
             [konpy.db :as db]
             [environ.core :refer [env]]
             konpy.core-test
-            #_[clj-reload.core :as reload]))
+            [clj-reload.core :as reload]
+            #_[clojure.string :as str]))
 
-(env :develop)
-(env :port)
+(str :abc)
+(t/log! :info (str "develop " (env :develop)))
+
 (system/start-system)
+
 (comment
+  (reload/reload)
   (db/conn?)
   (db/start "storage/db.sqlite")
   (db/conn?)

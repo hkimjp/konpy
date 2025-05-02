@@ -3,7 +3,7 @@ set dotenv-load
 help:
   just --list
 
-CSS := "resources/public/css"
+CSS := "resources/public/assets/css"
 watch:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --watch
 

@@ -2,6 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
+(def ^:private version "0.4.0-SNAPSHOT")
 (defn base
   [content]
   [:html {:lang "en"}
@@ -11,13 +12,16 @@
             :content "width=device-width, initial-scale=1"}]
     [:link {:type "text/css"
             :rel "stylesheet"
-            :href "/css/output.css"}]
+            :href "/assets/css/output.css"}]
     [:title "今週のPython"]]
    [:body
     [:div {:class "container"}
      content
+     [:hr]
+     "hkimura "
+     version
      [:script {:type "text/javascript"
-               :src "/js/htmx.min.js"
+               :src "/assets/js/htmx.min.js"
                :defer true}]]]])
 
 (defn render
