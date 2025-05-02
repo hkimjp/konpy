@@ -1,9 +1,9 @@
 ## Unreleased
 
--  my `bump-version` changes all of SNAPSHOT appeared in `CHANGELOG.md`.
+## 0.3.2 (2025-05-02)
   This behavior should be changed.
 
-## 0.4.0-SNAPSHOT
+## 0.3.2 (2025-05-02)
 
 
 ## [0.3.2] (2025-05-01)
