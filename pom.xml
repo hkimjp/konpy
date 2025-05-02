@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.hkimjp</groupId>
   <artifactId>konpy</artifactId>
-<version>0.3.2</version>
+<version>0.4.0-SNAPSHOT</version>
   <name>hkimjp/konpy</name>
   <description>FIXME: my new application.</description>
   <url>https://github.com/hkimjp/konpy</url>
@@ -22,13 +22,13 @@
     <url>https://github.com/hkimjp/konpy</url>
     <connection>scm:git:git://github.com/hkimjp/konpy.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hkimjp/konpy.git</developerConnection>
-<tag>v0.3.2</tag>
+<tag>v0.4.0-SNAPSHOT</tag>
   </scm>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-<version>0.3.2</version>
+<version>0.4.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
