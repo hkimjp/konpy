@@ -30,7 +30,7 @@
 
 (defn login!
   [{{:keys [login password]} :params}]
-  (t/log! :info (str "login " login " password " password))
+  (t/log! :info (str "login " login " password *"))
   (if (env :develop)
     (-> (resp/redirect "/assignments/")
         (assoc-in [:session :identity] login))

@@ -21,12 +21,12 @@
          :post {:handler login!}}]
    ["/logout" logout!]
    ["/assignments" {:middleware [km/wrap-users]}
-    ["/" ka/list]
-    ["/list-all" ka/list-all]]
+    ["/" ka/task]
+    #_["/tasks" ka/tasks]]
    ["/answers" {:middleware [km/wrap-users]}
     ["/" under-construction]]
    ["/admin" {:middleware [km/wrap-admin]}
-    ["/" ka/all]
+    ["/" ka/tasks]
     ["/edit" {:get ka/edit
               :post ka/edit!}]
     ["/delete" {:delete ka/delete!}]
