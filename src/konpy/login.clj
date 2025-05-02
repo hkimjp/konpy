@@ -5,10 +5,10 @@
             [hato.client :as hc]
             [hiccup2.core :as h]
             [ring.util.response :as resp]
-            ring.util.anti-forgery))
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
+            [environ.core :refer [env]]))
 
 ; for a while. need replace.
-(def debug? true)
 (def l22 "https://l22.melt.kyutech.ac.jp")
 
 (defn login-page
@@ -18,7 +18,7 @@
     [:div "今週の Python"]
     [:div.flex
      [:form {:method "post"}
-      (h/raw (ring.util.anti-forgery/anti-forgery-field))
+      (h/raw (anti-forgery-field))
       [:input {:placeholder "your account" :name "login"}]
       [:input {:type "password" :name "password"}]
       [:button
@@ -28,7 +28,7 @@
 (defn login-post
   [{{:keys [login password]} :params}]
   (t/log! :info (str "login " login " password " password))
-  (if debug?
+  (if (env :develop)
     (-> (resp/redirect "/assignments")
         (assoc-in [:session :identity] login))
     (try

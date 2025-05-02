@@ -1,7 +1,7 @@
 ;; should devide into assignments and answers?
 (ns konpy.routes
   (:require [reitit.ring :as reitit-ring]
-            [ring.util.response :as response]
+            #_[ring.util.response :as response]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
             [konpy.example :as example]
@@ -11,11 +11,7 @@
 ; /assets/css ?
 (defn routes
   []
-  [["/css/*" (reitit-ring/create-resource-handler
-              {:path "/" :root "public"})]
-   ["/js/*" (reitit-ring/create-resource-handler
-             {:path "/" :root "public"})]
-   ["/images/*" (reitit-ring/create-resource-handler
+  [["/assets/*" (reitit-ring/create-resource-handler
                  {:path "/" :root "public"})]
    ["/" {:get {:handler login-page}
          :post {:handler login-post}}]

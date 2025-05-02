@@ -1,7 +1,7 @@
 (ns konpy.server
   (:require
    [ring.adapter.jetty :as jetty]
-   [ring.util.response :as response]
+   #_[ring.util.response :as response]
    [taoensso.telemere :as t]
    [konpy.routes :refer [root-handler]]))
 

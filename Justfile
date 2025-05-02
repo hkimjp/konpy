@@ -3,18 +3,18 @@ set dotenv-load
 help:
   just --list
 
-repl:
-  clojure -M:dev -m nrepl.cmdline
-
-container-repl
-  clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
-
-CSS := "resources/public/css"
+CSS := "resources/public/assets/css"
 watch:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --watch
 
 minify:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --minify
+
+repl:
+  clojure -M:dev -m nrepl.cmdline
+
+container-repl:
+  clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
 
 run:
   clojure -M:run-m

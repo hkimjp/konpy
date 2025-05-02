@@ -1,7 +1,7 @@
 (ns konpy.db
   (:require
    [clojure.java.io :as io]
-   [clojure.string :as str]
+   #_[clojure.string :as str]
    [datascript.core :as d]
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))
@@ -27,14 +27,16 @@
       (t/log! :error (.getMessage e))
       (throw (Exception. "db dir does not exist.")))))
 
+(def schema {:identical {:db/cardinality :db.cardinality/many}})
+
 (defn- create
   ([]
    (t/log! :info "create on-memory datascript.")
-   (d/create-conn nil))
+   (d/create-conn schema))
   ([db]
    (reset! storage (make-storage db))
    (t/log! :info "create sqlite backended datascript.")
-   (d/create-conn nil {:storage @storage})))
+   (d/create-conn schema {:storage @storage})))
 
 (defn- restore
   [db]
@@ -62,16 +64,16 @@
 
 ;------------------------------------------
 
-(defn put [fact]
-  (t/log! :info (str "put " fact))
-  (d/transact! conn [fact]))
+; (defn put [fact]
+;   (t/log! :info (str "put " fact))
+;   (d/transact! conn [fact]))
 
 (defn- shorten
   ([s] (shorten s 80))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
            (str/replace-first s pat "$1..."))))
 
-(defn puts [facts]
+(defn put [facts]
   (t/log! :info (str "put " (shorten facts)))
   (d/transact! conn facts))
 
@@ -79,10 +81,16 @@
   (t/log! :info (str "q " query))
   `(d/q ~query @conn ~@inputs))
 
+(defn- db [conn]
+  (deref conn))
+
 (defn pull
   ([eid] (pull '[*] eid))
   ([selector eid]
    (t/log! :info (str "pull " selector " " eid))
-   (d/pull @conn selector eid)))
+   (d/pull (db conn) selector eid)))
 
-
+(defn entity
+  [eid]
+  (t/log! :info (str "entity " eid))
+  (d/entity (db conn) eid))
