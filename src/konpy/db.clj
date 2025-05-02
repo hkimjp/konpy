@@ -8,9 +8,9 @@
 
 (defonce storage (atom nil))
 
-; (def conn nil)
+(def conn nil)
 
-(defn conn? [conn]
+(defn conn? []
   (d/conn? conn))
 
 (defn- make-storage [db]
@@ -48,34 +48,40 @@
 (defn start
   ([]
    (t/log! :info "start on-memory datascript.")
-   (create))
+   (alter-var-root #'conn (constantly (create))))
   ([db]
    (t/log! :info "start datascript with sqlite backend.")
    (if (.exists (io/file db))
-     (restore db)
-     (create db))))
+     (alter-var-root #'conn (constantly (restore db)))
+     (alter-var-root #'conn (constantly (create db))))))
 
 (defn stop []
   (t/log! :info "db stopped")
-  (storage-sql/close @storage))
+  (storage-sql/close @storage)
+  (alter-var-root #'conn (constantly nil)))
 
 ;------------------------------------------
 
-(defn put [conn fact]
+(defn put [fact]
   (t/log! :info (str "put " fact))
   (d/transact! conn [fact]))
 
-(defn puts [conn facts]
-  (t/log! :info (str "put " facts))
+(defn- shorten
+  ([s] (shorten s 80))
+  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
+           (str/replace-first s pat "$1..."))))
+
+(defn puts [facts]
+  (t/log! :info (str "put " (shorten facts)))
   (d/transact! conn facts))
 
-(defmacro q [conn query & inputs]
+(defmacro q [query & inputs]
   (t/log! :info (str "q " query))
-  `(d/q ~query @~conn ~@inputs))
+  `(d/q ~query @conn ~@inputs))
 
 (defn pull
-  ([conn eid] (pull conn '[*] eid))
-  ([conn selector eid]
+  ([eid] (pull '[*] eid))
+  ([selector eid]
    (t/log! :info (str "pull " selector " " eid))
    (d/pull @conn selector eid)))
 
