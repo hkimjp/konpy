@@ -30,7 +30,7 @@
 
 (defn login!
   [{{:keys [login password]} :params}]
-  (t/log! :info (str "login " login " password " password))
+  (t/log! :info (str "login " login " password *"))
   (if (env :develop)
     (-> (resp/redirect "/assignments/")
         (assoc-in [:session :identity] login))
@@ -47,3 +47,8 @@
         (t/log! :warn (.getMessage e))
         (-> (resp/redirect "/")
             (assoc :session {} :flash "server does not respond."))))))
+
+(defn logout!
+  [_]
+  (-> (resp/redirect "/")
+      (assoc :session {})))
