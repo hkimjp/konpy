@@ -28,5 +28,5 @@
 
 .env
 /storage
-/resources/public/css/output.css
-.env
+/resources/public/assets/css/output.css
+

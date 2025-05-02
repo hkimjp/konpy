@@ -38,7 +38,7 @@ build:
 deploy:
   just deploy-to 'ubuntu@app.melt.kyutech.ac.jp' konpy
 
-deploy-to host app:
+deploy-to host app: build
   ssh {{host}} mkdir -p {{app}}/log
   scp target/io.github.hkimjp/{{app}}-*.jar {{host}}:{{app}}/{{app}}.jar
   scp systemd/{konpy.service,start.sh,stop.sh} {{host}}:{{app}}/
