@@ -26,5 +26,6 @@
 /classes
 /target
 
+.env
 /storage
 /resources/public/css/output.css
