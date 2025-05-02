@@ -5,38 +5,41 @@
             [hato.client :as hc]
             [hiccup2.core :as h]
             [ring.util.response :as resp]
-            ring.util.anti-forgery))
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
+            [environ.core :refer [env]]))
 
 ; for a while. need replace.
-(def debug? true)
 (def l22 "https://l22.melt.kyutech.ac.jp")
 
 (defn login-page
-  [_]
+  [request]
+  (t/log! :info (str "flash " (:flash request)))
   (page
    [:div
-    [:div "今週の Python"]
+    [:div "LOGIN"]
+    (when-let [flash (:flash request)]
+      [:div {:class "text-red-500"} flash])
     [:div.flex
      [:form {:method "post"}
-      (h/raw (ring.util.anti-forgery/anti-forgery-field))
+      (h/raw (anti-forgery-field))
       [:input {:placeholder "your account" :name "login"}]
       [:input {:type "password" :name "password"}]
       [:button
        {:class "bg-sky-100 hover:bg-sky-300 active:bg-red-500"}
        "LOGIN"]]]]))
 
-(defn login-post
+(defn login!
   [{{:keys [login password]} :params}]
   (t/log! :info (str "login " login " password " password))
-  (if debug?
-    (-> (resp/redirect "/assignments")
+  (if (env :develop)
+    (-> (resp/redirect "/assignments/")
         (assoc-in [:session :identity] login))
     (try
       (let [resp (hc/get (str l22 "/api/user/" login)
                          {:timeout 3000 :as :json})]
         (if (and (some? resp)
                  (hashers/check password (get-in resp [:body :password])))
-          (-> (resp/redirect "/assignments")
+          (-> (resp/redirect "/assignments/")
               (assoc-in [:session :identity] login))
           (-> (resp/redirect "/")
               (assoc :session {} :flash "login failed"))))

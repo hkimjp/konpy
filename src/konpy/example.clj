@@ -12,7 +12,7 @@
      "example page. need reload? or?"]
     [:p "Please login. are you there?"]
     [:form {:method "post"}
-     (h/raw (ring.util.anti-forgery/anti-forgery-field))
+     (h/raw (anti-forgery-field))
      [:input {:placeholder "your account" :name "login"}]
      [:input {:type "password" :name "password"}]
      [:button

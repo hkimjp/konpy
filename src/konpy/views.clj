@@ -2,6 +2,8 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
+(def ^:private version "0.4.1")
+
 (defn base
   [content]
   [:html {:lang "en"}
@@ -11,13 +13,17 @@
             :content "width=device-width, initial-scale=1"}]
     [:link {:type "text/css"
             :rel "stylesheet"
-            :href "/css/output.css"}]
+            :href "/assets/css/output.css"}]
     [:title "今週のPython"]]
    [:body
-    [:div {:class "container"}
+    [:div {:class "mx-auto"}
+     [:div {:class "font-meduim text-4xl text-white bg-sky-700"} "今週のPython"]
      content
+     [:hr]
+     "hkimura "
+     version
      [:script {:type "text/javascript"
-               :src "/js/htmx.min.js"
+               :src "/assets/js/htmx.min.js"
                :defer true}]]]])
 
 (defn render
@@ -35,9 +41,13 @@
       render))
 
 (defn under-construction
-  [_request]
-  (page [:div {:class "text-4xl bg-red-500"} "UNDER CONSTRUCTION"]))
+  [request]
+  (page
+   [:div {:class "mx-auto items-center"}
+    [:div {:class "text-4xl bg-red-500 text-white"} "UNDER CONSTRUCTION"]
+    [:div {:class "font-medium text-sky-500"}
+     [:p  "uri: " (:uri request)]]]))
 
 (comment
-  (under-construction nil)
+  (:body (under-construction {:uri "hellow"}))
   :rcf)

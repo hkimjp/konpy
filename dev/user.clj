@@ -2,27 +2,63 @@
   (:require [konpy.system :as system]
             [taoensso.telemere :as t]
             [konpy.db :as db]
+            [environ.core :refer [env]]
             konpy.core-test
-            #_[clj-reload.core :as reload]))
+            [clj-reload.core :as reload]
+            #_[clojure.string :as str]))
+
+(= "true" (env :develop))
+
+(t/set-min-level! :debug)
+
+; returns nil
+; (get-in {} [:session :identity])
 
 (comment
-  ()
-  (def conn (db/start "storage/db.sqlite"))
+  (reload/reload)
+  (system/start-system)
+
+  (system/restart-system)
 
   (db/conn?)
+  (db/start "storage/db.sqlite")
+  (db/conn?)
+  (db/put [{:db/id -1 :name "hiroshi" :sex "male" :age 63}])
 
-  (db/put '{:db/id -1 :name "miyuki" :sex "female" :age 57})
+  (db/put [[:db/add -1 :name "akari"]
+           [:db/add -1 :work "kyoto"]
+           [:db/add -1 :age 32]])
+
+  (def eid '[:find ?e
+             :where
+             [?e]])
+
+  (db/q eid)
+
+  (db/pull 1)
+
+  ;; how to use `db/entity`?
+  (db/entity 1)
+
+  (def name-age-q '[:find ?name ?age
+                    :where
+                    [?e :name ?name]
+                    [?e :age ?age]])
+
+  (db/q name-age-q)
 
   (db/q '[:find ?e ?name ?age
           :in $ ?name
           :where
           [?e :name ?name]
           [?e :age ?age]]
-        "miyuki")
+        "akari")
 
-  (db/pull '[*] 1)
-  (db/pull  1)
-  (db/pull [:name :age] 8)
+  (db/pull ['*] 1)
+  (db/pull  [:work] 1)
+
+  (db/pull [:name :age] 1)
+
   (db/q '[:find (count ?e)
           :where
           [?e _ _]])
