@@ -1,10 +1,5 @@
 ## Unreleased
 
-## 0.3.2 (2025-05-02)
-  This behavior should be changed.
-
-## 0.3.2 (2025-05-02)
-
 
 ## [0.3.2] (2025-05-01)
 
@@ -13,7 +8,12 @@
 - not found page, more precisely.
 - assignments
 - answers
+
+
+## 0.3.1 (2025-05-01)
+
 - missing tag name?
+- do not use this branch.
 
 ## 0.3.0 (2025-05-01)
 
@@ -35,6 +35,6 @@
 
 - initialized repository.
 
-[0.4.0]: https://github.com/hkimjp/konpy/compare/0.3.1...0.4.0
+[0.4.0]: https://github.com/hkimjp/konpy/compare/0.3.2...0.4.0
 [0.3.2]: https://github.com/hkimjp/konpy/compare/0.2.0...0.3.2
 [0.2.0]: https://github.com/hkimjp/konpy/compare/0.1.0...0.2.0
