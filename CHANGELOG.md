@@ -4,7 +4,7 @@
 - logout
 
 
-## 0.4.0-SNAPSHOT (2025-05-02)
+## 0.4.1 (2025-05-02)
 
 - (def schema {:identical {:db/cardinality :db.cardinality/many}})
 - added db/entity - how it works?
