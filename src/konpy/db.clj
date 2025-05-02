@@ -1,7 +1,7 @@
 (ns konpy.db
   (:require
    [clojure.java.io :as io]
-   #_[clojure.string :as str]
+   [clojure.string :as str]
    [datascript.core :as d]
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))

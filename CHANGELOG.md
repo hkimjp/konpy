@@ -1,8 +1,7 @@
 ## Unreleased
 
-- schema
-  :db/cardinarity :db/cardinarity/many
-- routes
+- compile routes.
+- logout
 
 
 ## 0.4.0-SNAPSHOT (2025-05-02)
@@ -11,14 +10,19 @@
 - added db/entity - how it works?
 - gitignored `.env`.
 - **BREAKING** resources/public/assets/css
+- /admin/assignments/
+- middleware namespace `kp.middleware`.
+- success authentication against `l22`.
+- display flash in /login.
+- **BREAKING** `/` is the link to login. no /login route.
 
 ## [0.3.2] (2025-05-01)
 
 - copy konpy.clj to hkimjp/datascript.clj
-- login
+- /login
+- /assignments
+- /answers
 - not found page, more precisely.
-- assignments
-- answers
 
 ## 0.3.1 (2025-05-01)
 

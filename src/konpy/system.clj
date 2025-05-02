@@ -35,7 +35,12 @@
   (start-server))
 
 (defn stop-system
-  [system]
+  []
   (stop-db)
-  (stop-server (::server system)))
+  (stop-server))
+
+(defn restart-system
+  []
+  (stop-system)
+  (start-system))
 

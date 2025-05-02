@@ -7,13 +7,19 @@
             [clj-reload.core :as reload]
             #_[clojure.string :as str]))
 
-(str :abc)
-(t/log! :info (str "develop " (env :develop)))
+(= "true" (env :develop))
 
-(system/start-system)
+(t/set-min-level! :debug)
+
+; returns nil
+; (get-in {} [:session :identity])
 
 (comment
   (reload/reload)
+  (system/start-system)
+
+  (system/restart-system)
+
   (db/conn?)
   (db/start "storage/db.sqlite")
   (db/conn?)
