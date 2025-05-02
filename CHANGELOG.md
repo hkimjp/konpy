@@ -6,7 +6,8 @@
 ## 0.4.2-SNAPSHOT
 
 - /logout
-
+- prep kp.melt.kyutech.ac.jp, port 8505.
+- successed deploy test as kp.melt.
 
 ## 0.4.1 (2025-05-02)
 
