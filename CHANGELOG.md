@@ -1,7 +1,11 @@
 ## Unreleased
 
 - compile routes.
-- logout
+
+
+## 0.4.2-SNAPSHOT
+
+- /logout
 
 
 ## 0.4.1 (2025-05-02)

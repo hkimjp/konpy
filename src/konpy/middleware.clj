@@ -3,28 +3,30 @@
             [ring.util.response :as resp]
             [taoensso.telemere :as t]))
 
+(defn- user [request]
+  (get-in request [:session :identity]))
+
 ;; refactor
 (defn wrap-users
   [handler]
   ; (t/log! :info "wrap-users")
   (fn [request]
-    (t/log! :info (str "wrap-users" (:uri request)))
-    (if (= "develop" (env :develop))
+    (let [user (user request)]
+      (t/log! :info user)
       (handler request)
-      (if (some? (get-in request [:session :identity]))
+      (if (some? user)
         (handler request)
-        (-> (resp/redirect "/login")
+        (-> (resp/redirect "/")
             (assoc :session {} :flash "need login"))))))
 
 ;; refactor!
 (defn wrap-admin [handler]
   ; (t/log! :info "wrap-admin")
   (fn [request]
-    (t/log! :info (:uri request))
-    (if (= "develop" (env :develop))
-      (handler request)
-      (if (= (env :admin) (get-in request [:session :login]))
+    (let [user (user request)]
+      (t/log! :info (str "admin " (env :admin) " user " user))
+      (if (= (env :admin) user)
         (handler request)
-        (-> (resp/redirect "/login")
+        (-> (resp/redirect "/")
             (assoc :session {} :flash "admin only"))))))
 

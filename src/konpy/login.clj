@@ -47,3 +47,8 @@
         (t/log! :warn (.getMessage e))
         (-> (resp/redirect "/")
             (assoc :session {} :flash "server does not respond."))))))
+
+(defn logout!
+  [_]
+  (-> (resp/redirect "/")
+      (assoc :session {})))
