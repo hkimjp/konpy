@@ -3,7 +3,12 @@
 - compile routes.
 - use `java-time`.
 
-## 0.4.3-SNAPSHOT
+## 0.4.4-SNAPSHOT
+
+
+## 0.4.3 (2025-05-03)
+
+- **BUG** Cannot invoke "java.util.concurrent.Future.get()" because "fut" is null
 
 
 ## [0.4.2] (2025-05-02)
