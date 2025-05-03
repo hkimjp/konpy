@@ -3,11 +3,11 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
             ;
-            [konpy.assignments :as a]
+            [konpy.tasks :as tasks]
             [konpy.admin :as admin]
             [konpy.answers :as answers]
             [konpy.login :refer [login-page login! logout!]]
-            [konpy.views :refer [under-construction]]
+            [konpy.utils :refer [under-construction-page]]
             [konpy.middleware :as m]
             ;
             [konpy.example :as example]))
@@ -21,11 +21,11 @@
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
    ["/logout" logout!]
-   ["/assignments" {:middleware [m/wrap-users]}
-    ["/" a/task]
-    ["/tasks" a/tasks]]
+   ["/tasks" {:middleware [m/wrap-users]}
+    ["/" tasks/tasks-this-week]
+    ["/all" tasks/tasks-all]]
    ["/answers" {:middleware [m/wrap-users]}
-    ["/" under-construction]]
+    ["/" under-construction-page]]
    ["/admin" {:middleware [m/wrap-admin]}
     ["/" {:get {:handler admin/tasks}}]
     ["/new" {:get {:handler admin/new}
