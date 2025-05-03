@@ -4,12 +4,13 @@
 - (set! *default-data-reader-fn* tagged-literal)
 
 
-## 0.4.5-SNAPSHOT (2025-05-03)
+## 0.4.5 (2025-05-04)
 
 - (admin/puttask! ^long week ^long num ^String task)
 - tasks sort-by :num
-- admin sort-bu (juxt :week :num)
+- admin sort-by (juxt :week :num)
 - `seed-in` function defined in `dev/user.clj`.
+- a little tailwind.
 
 ## 0.4.4 (2025-05-03)
 
