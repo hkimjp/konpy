@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.4.2-SNAPSHOT")
+(def ^:private version "0.4.5-SNAPSHOT")
 
 (defn base
   [content]
@@ -15,7 +15,7 @@
             :rel "stylesheet"
             :href "/assets/css/output.css"}]
     [:title "kp"]]
-   [:body
+   [:body#body
     [:div {:class "mx-auto"}
      [:div {:class "font-meduim text-4xl text-white bg-sky-700"} "今週のPython"]
      content
@@ -39,15 +39,3 @@
   (-> content
       base
       render))
-
-(defn under-construction
-  [request]
-  (page
-   [:div {:class "mx-auto items-center"}
-    [:div {:class "text-4xl bg-red-500 text-white"} "UNDER CONSTRUCTION"]
-    [:div {:class "font-medium text-sky-500"}
-     [:p  "uri: " (:uri request)]]]))
-
-(comment
-  (:body (under-construction {:uri "hellow"}))
-  :rcf)

@@ -1,9 +1,10 @@
 (ns konpy.system
   (:require [ring.adapter.jetty :as jetty]
+            [clj-reload.core :as reload]
             [taoensso.telemere :as t]
+            [environ.core :refer [env]]
             [konpy.routes :as routes]
-            [konpy.db :as db]
-            [environ.core :refer [env]]))
+            [konpy.db :as db]))
 
 (defn start-db
   []
@@ -42,5 +43,6 @@
 (defn restart-system
   []
   (stop-system)
+  ; (reload/reload)
   (start-system))
 

@@ -16,12 +16,14 @@
 (defn- make-storage [db]
   (t/log! :info (str "make-stroage " db))
   (try
-    (let [datasource (doto (org.sqlite.SQLiteDataSource.)
+    (let [; url (.setUrl (str "jdbc:sqlite:" db))
+          datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
           pooled-datasource (storage-sql/pool
                              datasource
                              {:max-conn 10
                               :max-idle-conn 4})]
+      ; (t/log! :info (str "url: " url))
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
@@ -46,6 +48,8 @@
 
 (defn gc []
   (d/collect-garbage @storage))
+
+; (set! *default-data-reader-fn* tagged-literal)
 
 (defn start
   ([]
@@ -81,6 +85,10 @@
 (defmacro q [query & inputs]
   (t/log! :info (str "q " query))
   `(d/q ~query @conn ~@inputs))
+
+; (defn q [query & inputs]
+;   (t/log! :info (str "not macro, q " query))
+;   (apply d/q query @conn inputs))
 
 (defn pull
   ([eid] (pull '[*] eid))

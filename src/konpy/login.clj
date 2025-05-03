@@ -1,12 +1,13 @@
 (ns konpy.login
-  (:require [taoensso.telemere :as t]
-            [konpy.views :refer [page]]
-            [buddy.hashers :as hashers]
-            [hato.client :as hc]
-            [hiccup2.core :as h]
-            [ring.util.response :as resp]
-            [ring.util.anti-forgery :refer [anti-forgery-field]]
-            [environ.core :refer [env]]))
+  (:require
+   [buddy.hashers :as hashers]
+   [environ.core :refer [env]]
+   [hato.client :as hc]
+   [hiccup2.core :as h]
+   [ring.util.anti-forgery :refer [anti-forgery-field]]
+   [ring.util.response :as resp]
+   [taoensso.telemere :as t]
+   [konpy.views :refer [page]]))
 
 ; for a while. need replace.
 (def l22 "https://l22.melt.kyutech.ac.jp")
@@ -32,23 +33,26 @@
   [{{:keys [login password]} :params}]
   (t/log! :info (str "login " login " password *"))
   (if (env :develop)
-    (-> (resp/redirect "/assignments/")
+    (-> (resp/redirect "/tasks/")
         (assoc-in [:session :identity] login))
     (try
       (let [resp (hc/get (str l22 "/api/user/" login)
                          {:timeout 3000 :as :json})]
         (if (and (some? resp)
                  (hashers/check password (get-in resp [:body :password])))
-          (-> (resp/redirect "/assignments/")
+          (-> (resp/redirect "/tasks/")
               (assoc-in [:session :identity] login))
           (-> (resp/redirect "/")
               (assoc :session {} :flash "login failed"))))
       (catch Exception e
         (t/log! :warn (.getMessage e))
         (-> (resp/redirect "/")
-            (assoc :session {} :flash "server does not respond."))))))
+            (assoc :session {} :flash "enter login/password"))))))
 
 (defn logout!
   [_]
   (-> (resp/redirect "/")
       (assoc :session {})))
+
+(comment
+  (:body (login-page nil)))

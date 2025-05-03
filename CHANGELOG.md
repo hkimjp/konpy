@@ -1,9 +1,38 @@
 ## Unreleased
 
 - compile routes.
+- use `java-time`.
+- `seed` function.
+- (set! *default-data-reader-fn* tagged literal)
+
+## 0.4.5-SNAPSHOT (2025-05-03)
+
+- (admin/puttask! ^long week ^long num ^String task)
+- tasks sort-by :num
+- admin sort-bu (juxt :week :num)
+
+## 0.4.4 (2025-05-03)
+
+- updated libraries.
+
+| :file    | :name                         | :current  | :latest |
+|--------- | ------------------------------| --------- | --------|
+| deps.edn | io.github.tonsky/clojure-plus | 1.3.3     | 1.4.0   |
+| deps.edn | com.taoensso/telemere         | 1.0.0-RC5 | 1.0.0   |
+| pom.xml  | org.clojure/clojure           | 0.4.3     | 1.12.0  |
+
+- added `utils/weeks`.
+- removed `deadline` entity from database.
+  showint it caliculated from `weeks` is enough.
+- **BREAKING** renamed `/assignments` to `/tasks`.
+
+## 0.4.3 (2025-05-03)
+
+- **BUG** Cannot invoke "java.util.concurrent.Future.get()" because "fut" is null
+- fixed - did not started datascript in production.
 
 
-## 0.4.2 (2025-05-02)
+## [0.4.2] (2025-05-02)
 
 - /logout
 - prep kp.melt.kyutech.ac.jp, port 8505.

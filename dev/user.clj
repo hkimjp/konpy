@@ -1,24 +1,78 @@
 (ns user
-  (:require [konpy.system :as system]
-            [taoensso.telemere :as t]
-            [konpy.db :as db]
-            [environ.core :refer [env]]
-            konpy.core-test
-            [clj-reload.core :as reload]
-            #_[clojure.string :as str]))
-
-(= "true" (env :develop))
+  (:require
+   [clj-reload.core :as reload]
+   [environ.core :refer [env]]
+   [java-time.api :as jt]
+   [taoensso.telemere :as t]
+   [konpy.admin :refer [put-task!]]
+   [konpy.db :as db]
+   [konpy.utils :as u]
+   [konpy.system :as system]
+   konpy.core-test))
 
 (t/set-min-level! :debug)
 
-(t/log! :debug "debug check")
-
-; returns nil
-; (get-in {} [:session :identity])
+(system/start-system)
 
 (comment
+
+  (def x [{:foo 2 :bar 11}
+          {:bar 99 :foo 1}
+          {:bar 55 :foo 2}
+          {:foo 1 :bar 77}])
+
+  (defn f [^long x ^long y]
+    (+ x y))
+
+  (sort-by (juxt :foo :bar) x)
+
+  (def seeds
+    ["タイピング練習を50回こなす"
+     "タイピング練習で最高点10点以上とる"
+     "VScode の背景色を明るく、あるいは逆に暗くするには？"
+     "VScode で作るテキストファイルの文字の大きさを変えるには？"
+     "Python で 1/1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10をプリントしなさい。"
+     "Python で apple, orange, banana, grape, melon, peach, pine を 一行に一つずつプリントしなさい。"
+     "Python で |, /, -, \\, |, /, -, \\ をプリントしなさい。"
+     ,
+     "print( ) で九九の表をプリントしなさい。"
+     "数字がきちんと並ぶように改良しなさい。"
+     "数字の後にコンマ(,)を表示しなさい。"
+     "マークダウンで表を作る方法をネットで調べる。"
+     "九九の表をマークダウンでプリントする。"])
+
+  (defn seeds-in [week seeds]
+    (doseq [s seeds]
+      (println s)
+      (put-task! week (rand-int 10) s)))
+
+  (seeds-in 5 seeds)
+
+  (db/q '[:find ?e ?week ?num ?task ?issued
+          :in $ ?week
+          :where
+          [?e :week ?week]
+          [?e :num ?num]
+          [?e :task ?task]
+          [?e :issued ?issued]]
+        5)
+
+  (u/weeks)
+
+  (jt/local-date)
+  (jt/local-date 2025 3 5)
+  (jt/instant)
+
+  (def start-date (jt/local-date 2025 3 31))
+  (def today (jt/local-date))
+
+  start-date
+  today
+  (jt/gap (jt/local-date) start-date)
+
+  (env :port)
+
   (reload/reload)
-  (system/start-system)
 
   (system/restart-system)
 
@@ -79,32 +133,4 @@
   (db/stop)
   (db/conn?)
 
-  :rcf)
-
-(def system nil)
-
-(defn start-system!
-  []
-  (if system
-    (t/log! :info "Already Started")
-    (alter-var-root #'system (constantly (system/start-system)))))
-
-(defn stop-system!
-  []
-  (when system
-    (system/stop-system system)
-    (alter-var-root #'system (constantly nil))))
-
-(defn restart-system!
-  []
-  (stop-system!)
-  (start-system!))
-
-(defn server
-  []
-  (::system/server system))
-
-(comment
-  (restart-system!)
-  (server)
   :rcf)
