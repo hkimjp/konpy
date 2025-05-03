@@ -5,7 +5,8 @@
 - `seed` function.
 - (set! *default-data-reader-fn* tagged literal)
 
-## 0.4.4-SNAPSHOT
+
+## 0.4.4 (2025-05-03)
 
 - updated libraries.
 
