@@ -28,7 +28,7 @@
        (for [{:keys [week num task]} ret]
          [:p (str week "-" num " " task)])]])))
 
-(sort-by :num r)
+; (sort-by :num r)
 
 (defn tasks-all
   "no edit."
@@ -39,7 +39,8 @@
                   [?e :week ?week]
                   [?e :num ?num]
                   [?e :task ?task]]
-        ret (q tasks-q)]
+        ret (->> (q tasks-q)
+                 (sort-by (juxt :week :num)))]
     (page
      [:div
       [:div
