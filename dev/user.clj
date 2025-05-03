@@ -1,23 +1,21 @@
 (ns user
-  (:require [konpy.system :as system]
-            [taoensso.telemere :as t]
-            [konpy.db :as db]
-            [environ.core :refer [env]]
-            konpy.core-test
-            [clj-reload.core :as reload]
-            #_[clojure.string :as str]))
-
-(= "true" (env :develop))
+  (:require
+   [clj-reload.core :as reload]
+   [environ.core :refer [env]]
+   [taoensso.telemere :as t]
+   [konpy.db :as db]
+   [konpy.system :as system]
+   konpy.core-test))
 
 (t/set-min-level! :debug)
 
-(t/log! :debug "debug check")
-
-; returns nil
-; (get-in {} [:session :identity])
+(system/start-system)
 
 (comment
+  (env :port)
+
   (reload/reload)
+
   (system/start-system)
 
   (system/restart-system)
@@ -80,29 +78,6 @@
   (db/conn?)
 
   :rcf)
-
-(def system nil)
-
-(defn start-system!
-  []
-  (if system
-    (t/log! :info "Already Started")
-    (alter-var-root #'system (constantly (system/start-system)))))
-
-(defn stop-system!
-  []
-  (when system
-    (system/stop-system system)
-    (alter-var-root #'system (constantly nil))))
-
-(defn restart-system!
-  []
-  (stop-system!)
-  (start-system!))
-
-(defn server
-  []
-  (::system/server system))
 
 (comment
   (restart-system!)

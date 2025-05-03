@@ -24,6 +24,8 @@
   ;; rum/rum                        {:mvn/version "0.12.11"}
   ;; HTTP client
   hato/hato                      {:mvn/version "1.0.0"}
+  ;; utils
+  io.github.tonsky/clj-reload    {:mvn/version "0.9.4"}
   ;; Database
   datascript/datascript          {:mvn/version "1.7.4"}
   tonsky/datascript-storage-sql
