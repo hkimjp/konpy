@@ -36,7 +36,7 @@
      [:div
       [:div
        (for [{:keys [week num task deadline]} ret]
-         [:p (str "週" week " 番号 " num " 課題 " task " 〆切 " deadline)])
+         [:p (str week "-" num " " deadline "課題 " task)])
        [:p [:a {:href "/admin/new"} "new"]]]])))
 
 ; (pull 8)

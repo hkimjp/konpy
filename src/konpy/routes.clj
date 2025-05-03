@@ -1,13 +1,13 @@
 (ns konpy.routes
   (:require [reitit.ring :as reitit-ring]
-            #_[ring.util.response :as response]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
             [konpy.assignments :as ka]
-            [konpy.example :as example]
             [konpy.login :refer [login-page login! logout!]]
             [konpy.views :refer [under-construction]]
-            [konpy.middleware :as km]))
+            [konpy.middleware :as km]
+            ;
+            [konpy.example :as example]))
 
 ; FIXME: everytime compile.
 (defn routes
@@ -15,8 +15,7 @@
   [""
    ["/assets/*" (reitit-ring/create-resource-handler
                  {:path "/" :root "public"})]
-   ["/example" {:get {:handler example/example-page}
-                :post {:handler example/example-post}}]
+
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
    ["/logout" logout!]
@@ -31,7 +30,12 @@
               :post ka/edit!}]
     ["/delete/:n" {:delete ka/delete!}]
     ["/new" {:get ka/new
-             :post ka/create!}]]])
+             :post ka/create!}]]
+   ;
+   ["/example"
+    ["" {:get  {:handler example/example-page}
+         :post {:handler example/example-post}}]
+    ["/confirm" {:get {:handler example/example-confirm}}]]])
 
 (defn not-found-handler
   [_]

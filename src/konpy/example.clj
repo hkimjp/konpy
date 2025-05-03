@@ -1,7 +1,8 @@
 (ns konpy.example
-  (:require [konpy.views :refer [page]]
+  (:require [konpy.views :refer [page render]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]
-            [hiccup2.core :as h]))
+            [hiccup2.core :as h]
+            [taoensso.telemere :as t]))
 
 (defn example-page [_request]
   (page
@@ -17,11 +18,27 @@
      [:input {:type "password" :name "password"}]
      [:button
       {:class "bg-sky-100 hover:bg-sky-300 active:bg-red-500"}
-      "LOGIN"]]]))
+      "LOGIN"]]
+    [:button
+     {:class "bg-sky-500 active:bg-red-500"
+      :hx-confirm "are you sure?"
+      :hx-get     "/example/confirm"
+      :hx-target  "#confirm"
+      :hx-swap    "outerHTML"}
+     "confirm"]
+    [:div#confirm "not yet confirmed"]]))
 
-(defn example-post [request]
+(defn example-post [{{:keys [login password]} :params}]
+  (t/log! :info "called example-post")
   (page
    [:div
-    [:p "body: " (slurp (:body request))]
-    [:p ":params" (str (:params request))]]))
+    [:p "login: " login]
+    [:p "password: " password]]))
 
+(defn example-confirm [_]
+  (t/log! :info "called example-confirm")
+  (render [:div#confirm "confirmed"]))
+
+(comment
+  (example-confirm nil)
+  :rcf)
