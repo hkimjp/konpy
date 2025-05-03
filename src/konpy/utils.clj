@@ -1,12 +1,15 @@
 (ns konpy.utils
   (:require
    [java-time.api :as jt]
-   [konpy.views :refer [page]]))
+   [konpy.views :refer [page render]]))
 
 ; views namespace?
 (defn under-construction-page [_]
   (page
    [:div {:class ""} "under construction"]))
+
+(defn yet [_]
+  (render [:div "再読み込みで戻るはず。"]))
 
 (defn now []
   (str (jt/local-date)))

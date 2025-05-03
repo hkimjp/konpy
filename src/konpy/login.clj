@@ -33,14 +33,14 @@
   [{{:keys [login password]} :params}]
   (t/log! :info (str "login " login " password *"))
   (if (env :develop)
-    (-> (resp/redirect "/tasks/")
+    (-> (resp/redirect "/tasks")
         (assoc-in [:session :identity] login))
     (try
       (let [resp (hc/get (str l22 "/api/user/" login)
                          {:timeout 3000 :as :json})]
         (if (and (some? resp)
                  (hashers/check password (get-in resp [:body :password])))
-          (-> (resp/redirect "/tasks/")
+          (-> (resp/redirect "/tasks")
               (assoc-in [:session :identity] login))
           (-> (resp/redirect "/")
               (assoc :session {} :flash "login failed"))))

@@ -58,7 +58,7 @@
 (defn create! [{{:keys [week num task]} :params}]
   (t/log! {:level :info :data {:task task}} "create!")
   (put-task! (parse-long week) (parse-long num) task)
-  (resp/redirect "/admin/"))
+  (resp/redirect "/admin"))
 
 (defn edit [_]
   (under-construction-page nil))
