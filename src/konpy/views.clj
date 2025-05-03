@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.4.3")
+(def ^:private version "0.4.4")
 
 (defn base
   [content]
@@ -39,16 +39,3 @@
   (-> content
       base
       render))
-
-; util?
-(defn under-construction
-  [request]
-  (page
-   [:div {:class "mx-auto items-center"}
-    [:div {:class "text-4xl bg-red-500 text-white"} "UNDER CONSTRUCTION"]
-    [:div {:class "font-medium text-sky-500"}
-     [:p  "uri: " (:uri request)]]]))
-
-(comment
-  (:body (under-construction {:uri "hellow"}))
-  :rcf)

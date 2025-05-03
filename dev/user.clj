@@ -2,8 +2,11 @@
   (:require
    [clj-reload.core :as reload]
    [environ.core :refer [env]]
+   [java-time.api :as jt]
    [taoensso.telemere :as t]
+   [konpy.admin :refer [put-task!]]
    [konpy.db :as db]
+   [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
 
@@ -12,11 +15,56 @@
 (system/start-system)
 
 (comment
+
+  (rand-int 10)
+
+  (def seeds
+    ["タイピング練習を50回こなす"
+     "タイピング練習で最高点10点以上とる"
+     "VScode の背景色を明るく、あるいは逆に暗くするには？"
+     "VScode で作るテキストファイルの文字の大きさを変えるには？"
+     "Python で 1/1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10をプリントしなさい。"
+     "Python で apple, orange, banana, grape, melon, peach, pine を 一行に一つずつプリントしなさい。"
+     "Python で |, /, -, \\, |, /, -, \\ をプリントしなさい。"
+     ,
+     "print( ) で九九の表をプリントしなさい。"
+     "数字がきちんと並ぶように改良しなさい。"
+     "数字の後にコンマ(,)を表示しなさい。"
+     "マークダウンで表を作る方法をネットで調べる。"
+     "九九の表をマークダウンでプリントする。"])
+
+  (defn seeds-in [week seeds]
+    (doseq [s seeds]
+      (println s)
+      (put-task! (parse-long week) (rand-int 10) s)))
+
+  (seeds-in seeds 2)
+
+  (db/q '[:find ?e ?week ?num ?task ?issued
+          :in $ ?week
+          :where
+          [?e :week ?week]
+          [?e :num ?num]
+          [?e :task ?task]
+          [?e :issued ?issued]]
+        5)
+
+  (u/weeks)
+
+  (jt/local-date)
+  (jt/local-date 2025 3 5)
+  (jt/instant)
+
+  (def start-date (jt/local-date 2025 3 31))
+  (def today (jt/local-date))
+
+  start-date
+  today
+  (jt/gap (jt/local-date) start-date)
+
   (env :port)
 
   (reload/reload)
-
-  (system/start-system)
 
   (system/restart-system)
 
@@ -77,9 +125,4 @@
   (db/stop)
   (db/conn?)
 
-  :rcf)
-
-(comment
-  (restart-system!)
-  (server)
   :rcf)
