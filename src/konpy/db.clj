@@ -49,6 +49,8 @@
 (defn gc []
   (d/collect-garbage @storage))
 
+; (set! *default-data-reader-fn* tagged-literal)
+
 (defn start
   ([]
    (t/log! :info "start on-memory datascript.")
