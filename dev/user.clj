@@ -1,13 +1,15 @@
 (ns user
-  (:require [konpy.system :as system]
-            [taoensso.telemere :as t]
-            [konpy.db :as db]
-            [environ.core :refer [env]]
-            konpy.core-test))
+  (:require
+   [clj-reload.core :as reload]
+   [environ.core :refer [env]]
+   [taoensso.telemere :as t]
+   [konpy.db :as db]
+   [konpy.system :as system]
+   konpy.core-test))
 
 (t/set-min-level! :debug)
 
-; (system/start-system)
+(system/start-system)
 
 (comment
   (env :port)
