@@ -11,8 +11,8 @@
 (defn tasks
   "list all the tasks. edit, delete and add."
   [_]
-  (let [tasks-q '[:find ?week ?num ?task ?issued
-                  :keys week num task issued
+  (let [tasks-q '[:find ?e ?week ?num ?task ?issued
+                  :keys e week num task issued
                   :where
                   [?e :week ?week]
                   [?e :num ?num]
@@ -22,11 +22,18 @@
                  (sort-by (juxt :week :num)))]
     (page
      [:div
+      (for [{:keys [e week num task issued]} ret]
+        [:div {:class "flex"}
+         [:form {:class "mx-xl"}
+          [:div {:class "flex items-center"}
+           [:input {:type "hidden" :name "e" :value e}]
+           [:input {:class "text-center size-10 shadow-lg outline outline-black/5" :value week}]
+           " - "
+           [:input {:class "text-center size-10 shadow-lg outline outline-black/5" :value num}]
+           [:textarea {:class "w-120 outline outline-black/5 shadow-lg"} task]
+           [:button {:class "rounded-full bg-sky-200 hover:bg-sky-500 active:bg-red-500"} "update"]]]])
       [:div
-       (for [{:keys [week num task issued]} ret]
-         [:p (str week "-" num " " issued " " task)])]
-      [:div
-       [:p [:a {:href "/admin/new"} "new"]]]])))
+       [:p [:a {:href "/admin/new" :class "rounded-sm bg-red-100 hover:bg-red-500"} "new"]]]])))
 
 (defn new [_]
   (page
@@ -39,7 +46,7 @@
                  :name "task"}]
      [:input {:name "week" :value 1}]
      [:input {:name "num" :value 1}]
-     [:input {:type "submit" :value "create"}]]]))
+     [:button "create"]]]))
 
 (defn put-task! [^long week ^long num ^String task]
   (put! [{:db/add -1
