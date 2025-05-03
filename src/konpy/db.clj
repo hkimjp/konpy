@@ -6,6 +6,11 @@
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))
 
+; (set! *default-data-reader-fn* tagged-literal)
+
+; *default-data-reader-fn*
+; #object[clojure.lang.Namespace 0x23bff419 "user"]
+
 (defonce storage (atom nil))
 
 (def conn nil)
@@ -49,7 +54,9 @@
 (defn gc []
   (d/collect-garbage @storage))
 
-; (set! *default-data-reader-fn* tagged-literal)
+(comment
+  (gc)
+  :rcf)
 
 (defn start
   ([]

@@ -10,6 +10,16 @@
    [konpy.system :as system]
    konpy.core-test))
 
+(comment
+  ;; success in VScode + Calva.
+  (set! *default-data-reader-fn* tagged-literal)
+  *default-data-reader-fn*
+  ; #object[clojure.lang.Namespace 0x23bff419 "user"]
+
+  (def x (tagged-literal 'user {:name "Foo"}))
+
+  :rcf)
+
 (t/set-min-level! :debug)
 
 (system/start-system)
