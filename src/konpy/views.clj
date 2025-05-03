@@ -15,7 +15,7 @@
             :rel "stylesheet"
             :href "/assets/css/output.css"}]
     [:title "kp"]]
-   [:body
+   [:body#body
     [:div {:class "mx-auto"}
      [:div {:class "font-meduim text-4xl text-white bg-sky-700"} "今週のPython"]
      content
@@ -40,6 +40,7 @@
       base
       render))
 
+; util?
 (defn under-construction
   [request]
   (page
