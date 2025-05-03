@@ -25,7 +25,14 @@
      [:div
       [:div
        (for [{:keys [week num task]} ret]
-         [:p (str week "-" num " " task)])]])))
+         [:div {:class "flex"}
+          [:span (str week "-" num " " task)]
+          [:button
+           {:class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"
+            :hx-confirm "まだ未完成です。"
+            :hx-get "/tasks/yet"
+            :hx-swap "outerHTML"}
+           "回答"]])]])))
 
 (defn tasks-all
   "no edit."

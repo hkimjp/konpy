@@ -7,7 +7,7 @@
             [konpy.admin :as admin]
             [konpy.answers :as answers]
             [konpy.login :refer [login-page login! logout!]]
-            [konpy.utils :refer [under-construction-page]]
+            [konpy.utils :refer [under-construction-page yet]]
             [konpy.middleware :as m]
             ;
             [konpy.example :as example]))
@@ -22,12 +22,13 @@
          :post {:handler login!}}]
    ["/logout" logout!]
    ["/tasks" {:middleware [m/wrap-users]}
-    ["/" tasks/tasks-this-week]
+    ["" tasks/tasks-this-week]
+    ["/yet" yet]
     ["/all" tasks/tasks-all]]
    ["/answers" {:middleware [m/wrap-users]}
     ["/" under-construction-page]]
    ["/admin" {:middleware [m/wrap-admin]}
-    ["/" {:get {:handler admin/tasks}}]
+    ["" {:get {:handler admin/tasks}}]
     ["/new" {:get {:handler admin/new}
              :post {:handler admin/create!}}]]
    ["/edit/:n" {:get admin/edit
