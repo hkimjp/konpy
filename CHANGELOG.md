@@ -1,10 +1,16 @@
 ## Unreleased
 
 - compile routes.
-- use `java-time`.
-- `seed` function.
-- (set! *default-data-reader-fn* tagged literal)
+- (set! *default-data-reader-fn* tagged-literal)
 
+
+## 0.4.5 (2025-05-04)
+
+- (admin/puttask! ^long week ^long num ^String task)
+- tasks sort-by :num
+- admin sort-by (juxt :week :num)
+- `seed-in` function defined in `dev/user.clj`.
+- a little tailwind.
 
 ## 0.4.4 (2025-05-03)
 
@@ -20,12 +26,12 @@
 - removed `deadline` entity from database.
   showint it caliculated from `weeks` is enough.
 - **BREAKING** renamed `/assignments` to `/tasks`.
+- `java-time`.
 
 ## 0.4.3 (2025-05-03)
 
 - **BUG** Cannot invoke "java.util.concurrent.Future.get()" because "fut" is null
 - fixed - did not started datascript in production.
-
 
 ## [0.4.2] (2025-05-02)
 

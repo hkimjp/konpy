@@ -5,14 +5,20 @@
    [taoensso.telemere :as t]
    [konpy.routes :refer [root-handler]]))
 
-(defn start-server [_system]
-  (let [server (jetty/run-jetty
-                #'root-handler
-                {:port  3000, :join? false})]
-    (t/log! :info "server started at port 3000.")
-    server))
+(def server (atom nil))
 
-(defn stop-server [server]
-  (.stop server)
+(defn start-server []
+  (reset! server (jetty/run-jetty
+                #'root-handler
+                {:port  3000, :join? false}))
+   (t/log! :info "server started at port 3000.")
+   server)
+
+(defn stop-server []
+  (.stop @server)
   (t/log! :info "server stopped."))
 
+(comment
+  (start-server)
+  (stop-server)
+  :rcf)

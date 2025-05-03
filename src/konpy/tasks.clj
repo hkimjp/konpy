@@ -19,7 +19,8 @@
                   [?e :week ?week]
                   [?e :num ?num]
                   [?e :task ?task]]
-        ret (q tasks-q (weeks))]
+        ret (->> (q tasks-q (weeks))
+                 (sort-by :num))]
     (page
      [:div
       [:div
@@ -35,7 +36,8 @@
                   [?e :week ?week]
                   [?e :num ?num]
                   [?e :task ?task]]
-        ret (q tasks-q)]
+        ret (->> (q tasks-q)
+                 (sort-by (juxt :week :num)))]
     (page
      [:div
       [:div

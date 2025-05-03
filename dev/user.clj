@@ -10,13 +10,31 @@
    [konpy.system :as system]
    konpy.core-test))
 
+(comment
+  ;; success in VScode + Calva.
+  (set! *default-data-reader-fn* tagged-literal)
+  *default-data-reader-fn*
+  ; #object[clojure.lang.Namespace 0x23bff419 "user"]
+
+  (def x (tagged-literal 'user {:name "Foo"}))
+
+  :rcf)
+
 (t/set-min-level! :debug)
 
 (system/start-system)
 
 (comment
 
-  (rand-int 10)
+  (def x [{:foo 2 :bar 11}
+          {:bar 99 :foo 1}
+          {:bar 55 :foo 2}
+          {:foo 1 :bar 77}])
+
+  (defn f [^long x ^long y]
+    (+ x y))
+
+  (sort-by (juxt :foo :bar) x)
 
   (def seeds
     ["タイピング練習を50回こなす"
@@ -36,9 +54,9 @@
   (defn seeds-in [week seeds]
     (doseq [s seeds]
       (println s)
-      (put-task! (parse-long week) (rand-int 10) s)))
+      (put-task! week (rand-int 10) s)))
 
-  (seeds-in seeds 2)
+  (seeds-in 5 seeds)
 
   (db/q '[:find ?e ?week ?num ?task ?issued
           :in $ ?week
