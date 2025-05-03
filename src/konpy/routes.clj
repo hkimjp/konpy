@@ -2,6 +2,7 @@
   (:require [reitit.ring :as reitit-ring]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
+            ;
             [konpy.assignments :as a]
             [konpy.admin :as admin]
             [konpy.answers :as answers]
@@ -27,8 +28,8 @@
     ["/" under-construction]]
    ["/admin" {:middleware [m/wrap-admin]}
     ["/" {:get {:handler admin/tasks}}]
-    ["/new" {:get {:handler admin/new}}]
-    :post {:handler admin/create!}]
+    ["/new" {:get {:handler admin/new}
+             :post {:handler admin/create!}}]]
    ["/edit/:n" {:get admin/edit
                 :post admin/edit!}]
    ["/delete/:n" {:delete admin/delete!}]

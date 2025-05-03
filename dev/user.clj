@@ -7,7 +7,7 @@
 
 (t/set-min-level! :debug)
 
-(system/start-system)
+; (system/start-system)
 
 (comment
   (env :port)

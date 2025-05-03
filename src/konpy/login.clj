@@ -1,12 +1,13 @@
 (ns konpy.login
-  (:require [taoensso.telemere :as t]
-            [konpy.views :refer [page]]
-            [buddy.hashers :as hashers]
-            [hato.client :as hc]
-            [hiccup2.core :as h]
-            [ring.util.response :as resp]
-            [ring.util.anti-forgery :refer [anti-forgery-field]]
-            [environ.core :refer [env]]))
+  (:require
+   [buddy.hashers :as hashers]
+   [environ.core :refer [env]]
+   [hato.client :as hc]
+   [hiccup2.core :as h]
+   [ring.util.anti-forgery :refer [anti-forgery-field]]
+   [ring.util.response :as resp]
+   [taoensso.telemere :as t]
+   [konpy.views :refer [page]]))
 
 ; for a while. need replace.
 (def l22 "https://l22.melt.kyutech.ac.jp")
@@ -52,3 +53,6 @@
   [_]
   (-> (resp/redirect "/")
       (assoc :session {})))
+
+(comment
+  (:body (login-page nil)))
