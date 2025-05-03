@@ -18,7 +18,8 @@
                   [?e :num ?num]
                   [?e :task ?task]
                   [?e :issued ?issued]]
-        ret (q tasks-q)]
+        ret (->> (q tasks-q)
+                 (sort-by (juxt :week :num)))]
     (page
      [:div
       [:div
@@ -40,17 +41,16 @@
      [:input {:name "num" :value 1}]
      [:input {:type "submit" :value "create"}]]]))
 
-;; week num string?
-(defn put-task! [week num task]
+(defn put-task! [^long week ^long num ^String task]
   (put! [{:db/add -1
-          :week (parse-long week)
-          :num  (parse-long num)
+          :week week
+          :num  num
           :task task
           :issued (now)}]))
 
 (defn create! [{{:keys [week num task]} :params}]
   (t/log! {:level :info :data {:task task}} "create!")
-  (put-task! week num task)
+  (put-task! (parse-long week) (parse-long num) task)
   (resp/redirect "/admin/"))
 
 (defn edit [_]
