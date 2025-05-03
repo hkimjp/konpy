@@ -3,36 +3,11 @@
             [taoensso.telemere :as t]
             [konpy.db :as db]
             [environ.core :refer [env]]
-            konpy.core-test
-            [clj-reload.core :as reload]
-            #_[clojure.string :as str]))
+            konpy.core-test))
 
 (t/set-min-level! :debug)
 
 (system/start-system)
-
-(def system nil)
-
-(defn start-system!
-  []
-  (if system
-    (t/log! :info "Already Started")
-    (alter-var-root #'system (constantly (system/start-system)))))
-
-(defn stop-system!
-  []
-  (when system
-    (system/stop-system system)
-    (alter-var-root #'system (constantly nil))))
-
-(defn restart-system!
-  []
-  (stop-system!)
-  (start-system!))
-
-(defn server
-  []
-  (::system/server system))
 
 (comment
   (env :port)

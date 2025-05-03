@@ -46,7 +46,7 @@
       (catch Exception e
         (t/log! :warn (.getMessage e))
         (-> (resp/redirect "/")
-            (assoc :session {} :flash "server does not respond."))))))
+            (assoc :session {} :flash "enter login/password"))))))
 
 (defn logout!
   [_]

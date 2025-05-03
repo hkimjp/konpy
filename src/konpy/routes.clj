@@ -2,10 +2,12 @@
   (:require [reitit.ring :as reitit-ring]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [taoensso.telemere :as t]
-            [konpy.assignments :as ka]
+            [konpy.assignments :as a]
+            [konpy.admin :as admin]
+            [konpy.answers :as answers]
             [konpy.login :refer [login-page login! logout!]]
             [konpy.views :refer [under-construction]]
-            [konpy.middleware :as km]
+            [konpy.middleware :as m]
             ;
             [konpy.example :as example]))
 
@@ -15,22 +17,21 @@
   [""
    ["/assets/*" (reitit-ring/create-resource-handler
                  {:path "/" :root "public"})]
-
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
    ["/logout" logout!]
-   ["/assignments" {:middleware [km/wrap-users]}
-    ["/" ka/task]
-    #_["/tasks" ka/tasks]]
-   ["/answers" {:middleware [km/wrap-users]}
+   ["/assignments" {:middleware [m/wrap-users]}
+    ["/" a/task]
+    ["/tasks" a/tasks]]
+   ["/answers" {:middleware [m/wrap-users]}
     ["/" under-construction]]
-   ["/admin" {:middleware [km/wrap-admin]}
-    ["/" ka/tasks]
-    ["/edit" {:get ka/edit
-              :post ka/edit!}]
-    ["/delete/:n" {:delete ka/delete!}]
-    ["/new" {:get ka/new
-             :post ka/create!}]]
+   ["/admin" {:middleware [m/wrap-admin]}
+    ["/" {:get {:handler admin/tasks}}]
+    ["/new" {:get {:handler admin/new}}]
+    :post {:handler admin/create!}]
+   ["/edit/:n" {:get admin/edit
+                :post admin/edit!}]
+   ["/delete/:n" {:delete admin/delete!}]
    ;
    ["/example"
     ["" {:get  {:handler example/example-page}
