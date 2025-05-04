@@ -7,7 +7,8 @@
             [konpy.db :as db]))
 
 ; (set! *default-data-reader-fn* clojure.core/tagged-literal)
-(alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
+; (alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
+; *default-data-reader-fn*
 
 (defn start-db
   []
@@ -17,7 +18,7 @@
   []
   (db/stop))
 
-(def server (atom nil))
+(defonce server (atom nil))
 
 (defn start-server
   []
@@ -30,8 +31,9 @@
 
 (defn stop-server
   []
-  (.stop @server)
-  (t/log! :info "server stopped."))
+  (when @server
+    (.stop @server)
+    (t/log! :info "server stopped.")))
 
 (defn start-system
   []
@@ -48,3 +50,13 @@
   (stop-system)
   ; (reload/reload)
   (start-system))
+
+(comment
+  (start-server)
+  (start-db)
+  (stop-server)
+  (stop-db)
+  (start-system)
+  (stop-system)
+  (restart-system)
+  :rcf)

@@ -27,13 +27,19 @@
          [:form {:class "mx-xl"}
           [:div {:class "flex items-center"}
            [:input {:type "hidden" :name "e" :value e}]
-           [:input {:class "text-center size-10 shadow-lg outline outline-black/5" :value week}]
+           [:input {:class "text-center size-10 shadow-lg outline outline-black/5"
+                    :value week}]
            " - "
-           [:input {:class "text-center size-10 shadow-lg outline outline-black/5" :value num}]
-           [:textarea {:class "w-120 outline outline-black/5 shadow-lg"} task]
-           [:button {:class "rounded-full bg-sky-200 hover:bg-sky-500 active:bg-red-500"} "update"]]]])
+           [:input {:class "text-center size-10 shadow-lg outline outline-black/5"
+                    :value num}]
+           [:textarea {:class "w-120 outline outline-black/5 shadow-lg"}
+            task]
+           [:button {:class "rounded-full bg-sky-200 hover:bg-sky-500 active:bg-red-500"}
+            "update"]]]])
       [:div
-       [:p [:a {:href "/admin/new" :class "rounded-sm bg-red-100 hover:bg-red-500"} "new"]]]])))
+       [:p [:a {:href "/admin/new"
+                :class "text-2xl p-6 rounded-sm bg-sky-200 hover:bg-sky-500 active:bg-red-500"}
+            "new"]]]])))
 
 (defn new [_]
   (page
