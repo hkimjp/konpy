@@ -2,6 +2,8 @@
 
 - compile routes.
 - (set! *default-data-reader-fn* tagged-literal)
+- konpy.db wrapper?
+
 
 ## 0.5.0-SNAPSHOT (2025-05-04)
 

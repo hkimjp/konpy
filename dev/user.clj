@@ -14,7 +14,6 @@
 
 (system/restart-system)
 
-(conj [{:b 1} {:c 2}] {:a 0})
 (comment
   (def seeds
     ["タイピング練習を50回こなす"

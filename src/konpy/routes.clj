@@ -1,5 +1,7 @@
 (ns konpy.routes
-  (:require [reitit.ring :as reitit-ring]
+  (:require
+   [clojure.java.io :as io]
+   [reitit.ring :as reitit-ring]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [taoensso.telemere :as t]
    ;
@@ -18,6 +20,7 @@
   [""
    ["/assets/*" (reitit-ring/create-resource-handler
                   {:path "/" :root "public"})]
+   ["/favicon.ico" (constantly (slurp (io/resource "public/favicon.ico")))]
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
    ["/logout" logout!]
