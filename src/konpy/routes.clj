@@ -5,7 +5,7 @@
    ;
    [konpy.tasks :as tasks]
    [konpy.admin :as admin]
-   [konpy.answers :as answers]
+   [konpy.answer :as answer]
    [konpy.login :refer [login-page login! logout!]]
    [konpy.views :refer [yet]]
    [konpy.middleware :as m]
@@ -25,9 +25,9 @@
     ["" tasks/tasks-this-week]
     ["/yet" yet]
     ["/all" tasks/tasks-all]]
-   ["/answers" {:middleware [m/wrap-users]}
-    ["" {:get {:handler answers/answer}
-         :post {:handler answers/answer!}}]]
+   ["/answer/:eid" {:middleware [m/wrap-users]}
+    ["" {:get {:handler answer/answer}
+         :post {:handler answer/answer!}}]]
    ["/admin" {:middleware [m/wrap-admin]}
     ["" {:get {:handler admin/tasks}}]
     ["/new" {:get {:handler admin/new}

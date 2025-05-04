@@ -10,6 +10,7 @@
 - returned content-type text/html from not-found.
 - favicon.ico
 - move `under-construction-page` from `utils` namespace to `views` namespace.
+- **BREAKING** konpy.answers -> konpy.answer
 
 ## 0.4.5 (2025-05-04)
 
