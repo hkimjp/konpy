@@ -14,6 +14,7 @@
 
 (system/restart-system)
 
+(conj [{:b 1} {:c 2}] {:a 0})
 (comment
   (def seeds
     ["タイピング練習を50回こなす"
@@ -58,7 +59,7 @@
           [?e :num ?num]
           [?e :task ?task]
           [?e :issued ?issued]]
-        5)
+    5)
 
   (u/weeks)
 
@@ -123,7 +124,7 @@
           :where
           [?e :name ?name]
           [?e :age ?age]]
-        "akari")
+    "akari")
 
   (db/pull ['*] 1)
   (db/pull  [:work] 1)
