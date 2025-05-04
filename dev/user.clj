@@ -8,17 +8,7 @@
    [konpy.db :as db]
    [konpy.utils :as u]
    [konpy.system :as system]
-   konpy.core-test))
-
-(comment
-  ;; success in VScode + Calva.
-  (set! *default-data-reader-fn* tagged-literal)
-  *default-data-reader-fn*
-  ; #object[clojure.lang.Namespace 0x23bff419 "user"]
-
-  (def x (tagged-literal 'user {:name "Foo"}))
-
-  :rcf)
+   [konpy.core-test]))
 
 (t/set-min-level! :debug)
 
@@ -52,11 +42,12 @@
      "九九の表をマークダウンでプリントする。"])
 
   (defn seeds-in [week seeds]
-    (doseq [s seeds]
-      (println s)
-      (put-task! week (rand-int 10) s)))
+    (let [c (atom 0)]
+      (doseq [s seeds]
+        (swap! c inc)
+        (put-task! week @c s))))
 
-  (seeds-in 5 seeds)
+  (seeds-in 4 seeds)
 
   (db/q '[:find ?e ?week ?num ?task ?issued
           :in $ ?week
