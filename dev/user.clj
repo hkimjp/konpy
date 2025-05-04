@@ -8,13 +8,44 @@
    [konpy.db :as db]
    [konpy.utils :as u]
    [konpy.system :as system]
-   [konpy.core-test]))
+   konpy.core-test))
+
+; (alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
 
 (t/set-min-level! :debug)
 
 (system/start-system)
 
+(def seeds
+  ["タイピング練習を50回こなす"
+   "タイピング練習で最高点10点以上とる"
+   "VScode の背景色を明るく、あるいは逆に暗くするには？"
+   "VScode で作るテキストファイルの文字の大きさを変えるには？"
+   "Python で 1/1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10をプリントしなさい。"
+   "Python で apple, orange, banana, grape, melon, peach, pine を 一行に一つずつプリントしなさい。"
+   "Python で |, /, -, \\, |, /, -, \\ をプリントしなさい。"
+   ,
+   "print( ) で九九の表をプリントしなさい。"
+   "数字がきちんと並ぶように改良しなさい。"
+   "数字の後にコンマ(,)を表示しなさい。"
+   "マークダウンで表を作る方法をネットで調べる。"
+   "九九の表をマークダウンでプリントする。"])
+
+(defn seeds-in [week seeds]
+  (let [c (atom 0)]
+    (doseq [s seeds]
+      (swap! c inc)
+      (put-task! week @c s))))
+
 (comment
+
+  (seeds-in 4 seeds)
+
+  (system/start-db)
+  *default-data-reader-fn*
+  (u/now)
+
+  *default-data-reader-fn*
 
   (def x [{:foo 2 :bar 11}
           {:bar 99 :foo 1}
@@ -25,29 +56,6 @@
     (+ x y))
 
   (sort-by (juxt :foo :bar) x)
-
-  (def seeds
-    ["タイピング練習を50回こなす"
-     "タイピング練習で最高点10点以上とる"
-     "VScode の背景色を明るく、あるいは逆に暗くするには？"
-     "VScode で作るテキストファイルの文字の大きさを変えるには？"
-     "Python で 1/1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10をプリントしなさい。"
-     "Python で apple, orange, banana, grape, melon, peach, pine を 一行に一つずつプリントしなさい。"
-     "Python で |, /, -, \\, |, /, -, \\ をプリントしなさい。"
-     ,
-     "print( ) で九九の表をプリントしなさい。"
-     "数字がきちんと並ぶように改良しなさい。"
-     "数字の後にコンマ(,)を表示しなさい。"
-     "マークダウンで表を作る方法をネットで調べる。"
-     "九九の表をマークダウンでプリントする。"])
-
-  (defn seeds-in [week seeds]
-    (let [c (atom 0)]
-      (doseq [s seeds]
-        (swap! c inc)
-        (put-task! week @c s))))
-
-  (seeds-in 4 seeds)
 
   (db/q '[:find ?e ?week ?num ?task ?issued
           :in $ ?week

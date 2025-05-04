@@ -1,10 +1,13 @@
 (ns konpy.system
   (:require [ring.adapter.jetty :as jetty]
-            [clj-reload.core :as reload]
+            ; [clj-reload.core :as reload]
             [taoensso.telemere :as t]
             [environ.core :refer [env]]
             [konpy.routes :as routes]
             [konpy.db :as db]))
+
+; (set! *default-data-reader-fn* clojure.core/tagged-literal)
+(alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
 
 (defn start-db
   []
@@ -45,4 +48,3 @@
   (stop-system)
   ; (reload/reload)
   (start-system))
-

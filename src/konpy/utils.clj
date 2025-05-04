@@ -11,6 +11,7 @@
 (defn yet [_]
   (render [:div "再読み込みで戻るはず。"]))
 
+; FIXME: tagged literal?
 (defn now []
   (str (jt/local-date)))
 

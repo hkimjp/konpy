@@ -6,10 +6,8 @@
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))
 
-; (set! *default-data-reader-fn* tagged-literal)
-
-; *default-data-reader-fn*
-; #object[clojure.lang.Namespace 0x23bff419 "user"]
+; how to use this?
+; (alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
 
 (defonce storage (atom nil))
 
@@ -21,14 +19,12 @@
 (defn- make-storage [db]
   (t/log! :info (str "make-stroage " db))
   (try
-    (let [; url (.setUrl (str "jdbc:sqlite:" db))
-          datasource (doto (org.sqlite.SQLiteDataSource.)
+    (let [datasource (doto (org.sqlite.SQLiteDataSource.)
                        (.setUrl (str "jdbc:sqlite:" db)))
           pooled-datasource (storage-sql/pool
                              datasource
                              {:max-conn 10
                               :max-idle-conn 4})]
-      ; (t/log! :info (str "url: " url))
       (storage-sql/make pooled-datasource {:dbtype :sqlite}))
     (catch Exception e
       (t/log! :error (.getMessage e))
@@ -49,7 +45,9 @@
   [db]
   (t/log! {:level :info :data db} "restore")
   (reset! storage (make-storage db))
-  (d/restore-conn @storage))
+  (t/log! "reset storage")
+  (d/restore-conn @storage) ; <- tagged literal issue.
+  )
 
 (defn gc []
   (d/collect-garbage @storage))
