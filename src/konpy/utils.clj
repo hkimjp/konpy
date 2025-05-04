@@ -1,20 +1,23 @@
 (ns konpy.utils
   (:require
    [java-time.api :as jt]
-   [konpy.views :refer [page]]))
+   [konpy.views :refer [page render]]))
 
-; views namespace?
-(defn under-construction-page [_]
-  (page
-   [:div {:class ""} "under construction"]))
 
+
+; FIXME: tagged literal?
 (defn now []
-  (str (jt/local-date)))
+  (str (jt/local-date))
+  #_(java.util.Date.)
+  #_(jt/local-date))
 
 (comment
   (now)
+  (jt/local-date)
   (jt/instant)
-  (java.util.Date.))
+  (java.util.Date.)
+  :rcf)
+
 (defn user [request]
   (get-in request [:session :identity]))
 

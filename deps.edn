@@ -29,7 +29,7 @@
   hato/hato                      {:mvn/version "1.0.0"}
   ;; utils
   io.github.tonsky/clj-reload    {:mvn/version "0.9.4"}
-  ;; Database
+  ;;Database
   datascript/datascript          {:mvn/version "1.7.4"}
   tonsky/datascript-storage-sql
   {:git/url "https://github.com/tonsky/datascript-storage-sql"
