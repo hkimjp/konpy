@@ -1,10 +1,14 @@
 (ns konpy.system
   (:require [ring.adapter.jetty :as jetty]
-            [clj-reload.core :as reload]
+            ; [clj-reload.core :as reload]
             [taoensso.telemere :as t]
             [environ.core :refer [env]]
             [konpy.routes :as routes]
             [konpy.db :as db]))
+
+; (set! *default-data-reader-fn* clojure.core/tagged-literal)
+; (alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
+; *default-data-reader-fn*
 
 (defn start-db
   []
@@ -14,21 +18,25 @@
   []
   (db/stop))
 
-(def server (atom nil))
+(defonce server (atom nil))
 
 (defn start-server
   []
-  (let [port (or (env :port) "3000")]
+  (let [port (or (env :port) "3000")
+        handler (if (= (env :develop) "true")
+                  #'routes/app
+                  routes/app)]
     (reset! server
             (jetty/run-jetty
-             #'routes/root-handler
+             handler
              {:port (parse-long port) :join? false}))
     (t/log! :info (str "server started at port " port))))
 
 (defn stop-server
   []
-  (.stop @server)
-  (t/log! :info "server stopped."))
+  (when @server
+    (.stop @server)
+    (t/log! :info "server stopped.")))
 
 (defn start-system
   []
@@ -46,3 +54,12 @@
   ; (reload/reload)
   (start-system))
 
+(comment
+  (start-server)
+  (start-db)
+  (stop-server)
+  (stop-db)
+  (start-system)
+  (stop-system)
+  (restart-system)
+  :rcf)

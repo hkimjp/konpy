@@ -10,32 +10,20 @@
    [konpy.system :as system]
    konpy.core-test))
 
-(comment
-  ;; success in VScode + Calva.
-  (set! *default-data-reader-fn* tagged-literal)
-  *default-data-reader-fn*
-  ; #object[clojure.lang.Namespace 0x23bff419 "user"]
+(t/set-min-level! :debug)
 
-  (def x (tagged-literal 'user {:name "Foo"}))
+(system/restart-system)
+
+(comment
+  (db/q '[:find ?e ?author ?answer ?to
+          :where
+          [?e :author ?author]
+          [?e :answer ?answer]
+          [?e :to ?to]])
 
   :rcf)
 
-(t/set-min-level! :debug)
-
-(system/start-system)
-
 (comment
-
-  (def x [{:foo 2 :bar 11}
-          {:bar 99 :foo 1}
-          {:bar 55 :foo 2}
-          {:foo 1 :bar 77}])
-
-  (defn f [^long x ^long y]
-    (+ x y))
-
-  (sort-by (juxt :foo :bar) x)
-
   (def seeds
     ["タイピング練習を50回こなす"
      "タイピング練習で最高点10点以上とる"
@@ -52,11 +40,25 @@
      "九九の表をマークダウンでプリントする。"])
 
   (defn seeds-in [week seeds]
-    (doseq [s seeds]
-      (println s)
-      (put-task! week (rand-int 10) s)))
+    (let [c (atom 0)]
+      (doseq [s seeds]
+        (swap! c inc)
+        (put-task! week @c s))))
 
   (seeds-in 5 seeds)
+  :rcf)
+
+(comment
+
+  (def x [{:foo 2 :bar 11}
+          {:bar 99 :foo 1}
+          {:bar 55 :foo 2}
+          {:foo 1 :bar 77}])
+
+  (defn f [^long x ^long y]
+    (+ x y))
+
+  (sort-by (juxt :foo :bar) x)
 
   (db/q '[:find ?e ?week ?num ?task ?issued
           :in $ ?week

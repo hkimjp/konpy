@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.4.5-SNAPSHOT")
+(def ^:private version "0.6.0")
 
 (defn base
   [content]
@@ -12,7 +12,7 @@
     [:meta {:name "viewport"
             :content "width=device-width, initial-scale=1"}]
     [:link {:type "text/css"
-            :rel "stylesheet"
+            :rel  "stylesheet"
             :href "/assets/css/output.css"}]
     [:title "kp"]]
    [:body#body
@@ -24,7 +24,7 @@
      "hkimura "
      version
      [:script {:type "text/javascript"
-               :src "/assets/js/htmx.min.js"
+               :src  "/assets/js/htmx.min.js"
                :defer true}]]]])
 
 (defn render
@@ -40,3 +40,10 @@
   (-> content
       base
       render))
+
+(defn under-construction-page [_]
+  (page
+   [:div {:class ""} "under construction"]))
+
+(defn yet [_]
+  (render [:div "再読み込みで戻るはず。"]))

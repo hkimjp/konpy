@@ -1,24 +1,27 @@
 (ns konpy.utils
   (:require
-   [java-time.api :as jt]
-   [konpy.views :refer [page]]))
+   [environ.core :refer [env]]
+   [java-time.api :as jt]))
 
-; views namespace?
-(defn under-construction-page [_]
-  (page
-   [:div {:class ""} "under construction"]))
-
-(defn now []
-  (str (jt/local-date)))
-
+; FIXME: tagged literal?
 (comment
-  (now)
+  (jt/local-date)
   (jt/instant)
+  (java.util.Date.)
+  :rcf)
+
+(defn develop?
+  []
+  (= (env :develop) "true"))
+
+(defn now
+  []
   (java.util.Date.))
+
 (defn user [request]
   (get-in request [:session :identity]))
 
-(def start-day (jt/local-date 2025 3 31))
+(def start-day (jt/local-date 2025 4 2))
 
 (defn weeks
   "Returns how many weeks have passed since the argument `date`.
@@ -28,5 +31,6 @@
    (quot (jt/time-between start-day date :days) 7)))
 
 (comment
-  (weeks (jt/local-date 2025 6 6))
+  (= 4 (weeks (jt/local-date 2025 5 6)))
+  (= 5 (weeks (jt/local-date 2025 5 7)))
   :rcf)

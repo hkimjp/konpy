@@ -2,7 +2,20 @@
 
 - compile routes.
 - (set! *default-data-reader-fn* tagged-literal)
+- konpy.db wrapper?
 
+## 0.6.0 (2025-05-05)
+
+- fixed a bug in `middleware/wrap-user`.
+
+## 0.5.0 (2025-05-04)
+
+- **BREAKING** removed '/' from endpoint url.
+- start to `konpy.answers`
+- returned content-type text/html from not-found.
+- favicon.ico
+- move `under-construction-page` from `utils` namespace to `views` namespace.
+- **BREAKING** konpy.answers -> konpy.answer
 
 ## 0.4.5 (2025-05-04)
 
