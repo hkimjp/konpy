@@ -10,16 +10,17 @@
    [konpy.system :as system]
    konpy.core-test))
 
-(t/set-min-level! :debug)
+(t/set-min-level! :info)
 
 (system/restart-system)
 
 (comment
-  (db/q '[:find ?e ?author ?answer ?to
+  (db/q '[:find ?author
+          :in $ ?to
           :where
           [?e :author ?author]
-          [?e :answer ?answer]
-          [?e :to ?to]])
+          [?e :sha1 ?to]]
+        -6652132719765422345036288287526973911102942116N)
 
   :rcf)
 

@@ -14,8 +14,8 @@
    ;
    [konpy.example :as example]))
 
-; FIXME: everytime compile.
-(def routes
+(defn routes
+  []
   [["/assets/*" (reitit-ring/create-resource-handler
                  {:path "/" :root "public"})]
    ["/favicon.ico" (constantly (slurp (io/resource "public/favicon.ico")))]
@@ -26,7 +26,7 @@
     ["" tasks/tasks-this-week]
     ["/yet" yet]
     ["/all" tasks/tasks-all]]
-   ["/answer/:eid" {:middleware [[m/wrap-users]]}
+   ["/answer/:e" {:middleware [[m/wrap-users]]}
     [""
      {:get  {:handler answer/answer}
       :post {:handler answer/answer!}}]]
@@ -34,9 +34,9 @@
     ["" {:get {:handler admin/tasks}}]
     ["/new" {:get  {:handler admin/new}
              :post {:handler admin/create!}}]
-    ["/edit/:n" {:get  admin/edit
+    ["/edit/:e" {:get  admin/edit
                  :post admin/edit!}]
-    ["/delete/:n" {:delete admin/delete!}]]
+    ["/delete/:e" {:delete admin/delete!}]]
    ;
    ["/example"
     ["" {:get  {:handler example/example-page}
@@ -49,10 +49,18 @@
    :headers {"Content-Type" "text/html"}
    :body "<h1 style='color:red;'>Not Found</h1>"})
 
-(def app
-  (reitit-ring/ring-handler
-   (reitit-ring/router routes)
-   #'not-found-handler
-   {:middleware [[wrap-defaults site-defaults]]}))
+(defn root-handler
+  [request]
+  (t/log! :info (str (:request-method request) " - " (:uri request)))
+  (let [handler (reitit-ring/ring-handler
+                 (reitit-ring/router (routes))
+                 #'not-found-handler
+                 {:middleware [[wrap-defaults site-defaults]]})]
+    (handler request)))
 
+; (defn root-handler
+;   (reitit-ring/ring-handler
+;    (reitit-ring/router routes)
+;    not-found-handler
+;    {:middleware [[wrap-defaults site-defaults]]}))
 
