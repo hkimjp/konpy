@@ -4,7 +4,7 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
 
-## 0.6.0-SNAPSHOT
+## 0.6.0 (2025-05-05)
 
 - fixed a bug in `middleware/wrap-user`.
 
