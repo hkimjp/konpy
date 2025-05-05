@@ -4,7 +4,7 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
 
-## 0.6.1-SNAPSHOT
+## 0.6.1 (2025-05-05)
 
 - utils/sha1
 - utils/remove-spaces
