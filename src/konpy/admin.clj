@@ -1,12 +1,12 @@
 (ns konpy.admin
   (:require [taoensso.telemere :as t]
-            [hiccup2.core :as h]
-            [ring.util.response :as resp]
-            [ring.util.anti-forgery :refer [anti-forgery-field]]
-            ; [environ.core :refer [env]]
-            [konpy.db :refer [put! q]]
-            [konpy.utils :refer [now under-construction-page]]
-            [konpy.views :refer [page]]))
+   [hiccup2.core :as h]
+   [ring.util.response :as resp]
+   [ring.util.anti-forgery :refer [anti-forgery-field]]
+   ; [environ.core :refer [env]]
+   [konpy.db :refer [put! q]]
+   [konpy.utils :refer [now]]
+   [konpy.views :refer [page  under-construction-page]]))
 
 (defn tasks
   "list all the tasks. edit, delete and add."
@@ -19,40 +19,42 @@
                   [?e :task ?task]
                   [?e :issued ?issued]]
         ret (->> (q tasks-q)
-                 (sort-by (juxt :week :num)))]
+              (sort-by (juxt :week :num)))]
     (page
-     [:div
-      (for [{:keys [e week num task issued]} ret]
-        [:div {:class "flex"}
-         [:form {:class "mx-xl"}
-          [:div {:class "flex items-center"}
-           [:input {:type "hidden" :name "e" :value e}]
-           [:input {:class "text-center size-10 shadow-lg outline outline-black/5"
-                    :value week}]
-           " - "
-           [:input {:class "text-center size-10 shadow-lg outline outline-black/5"
-                    :value num}]
-           [:textarea {:class "w-120 outline outline-black/5 shadow-lg"}
-            task]
-           [:button {:class "rounded-full bg-sky-200 hover:bg-sky-500 active:bg-red-500"}
-            "update"]]]])
       [:div
-       [:p [:a {:href "/admin/new"
-                :class "text-2xl p-6 rounded-sm bg-sky-200 hover:bg-sky-500 active:bg-red-500"}
-            "new"]]]])))
+       [:div [:a {:href "/tasks"} "->tasks"]]
+       (for [{:keys [e week num task]}
+             (conj ret {:e -1 :week "" :num "" :task ""})]
+         [:div {:class "flex"}
+          [:form {:class "mx-xl"}
+           [:div {:class "flex items-center"}
+            [:input {:type "hidden" :name "e" :value e}]
+            [:input {:class "text-center size-10 shadow-lg outline outline-black/5"
+                     :value week}]
+            " - "
+            [:input {:class "text-center size-10 shadow-lg outline outline-black/5"
+                     :value num}]
+            [:textarea {:class "w-120 outline outline-black/5 shadow-lg"}
+             task]
+            [:button {:class "rounded-full bg-sky-200 hover:bg-sky-500 active:bg-red-500"}
+             "update"]]]])
+       [:div {:class "flex"}
+        [:p [:a {:href "/admin/new"
+                 :class "p-1 rounded-sm bg-sky-200 hover:bg-sky-500 active:bg-red-500"}
+             "new"]]]])))
 
 (defn new [_]
   (page
-   [:div
-    [:div {:class "text-4xl"} "new task"]
-    [:form {:method "post"}
-     (h/raw (anti-forgery-field))
-     [:textarea {:class ""
-                 :placeholder "new task"
-                 :name "task"}]
-     [:input {:name "week" :value 1}]
-     [:input {:name "num" :value 1}]
-     [:button "create"]]]))
+    [:div
+     [:div {:class "text-4xl"} "new task"]
+     [:form {:method "post"}
+      (h/raw (anti-forgery-field))
+      [:textarea {:class ""
+                  :placeholder "new task"
+                  :name "task"}]
+      [:input {:name "week" :value 1}]
+      [:input {:name "num" :value 1}]
+      [:button "create"]]]))
 
 (defn put-task! [^long week ^long num ^String task]
   (put! [{:db/add -1

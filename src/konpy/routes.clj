@@ -1,20 +1,26 @@
 (ns konpy.routes
-  (:require [reitit.ring :as reitit-ring]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [taoensso.telemere :as t]
-            ;
-            [konpy.tasks :as tasks]
-            [konpy.admin :as admin]
-            [konpy.answers :as answers]
-            [konpy.login :refer [login-page login! logout!]]
-            [konpy.utils :refer [under-construction-page yet]]
-            [konpy.middleware :as m]
-            ;
-            [konpy.example :as example]))
+  (:require
+   [clojure.java.io :as io]
+   [reitit.ring :as reitit-ring]
+   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+   [taoensso.telemere :as t]
+   ;
+   [konpy.tasks :as tasks]
+   [konpy.admin :as admin]
+   [konpy.answer :as answer]
+   [konpy.login :refer [login-page login! logout!]]
+   [konpy.views :refer [yet]]
+   [konpy.middleware :as m]
+   ;
+   [konpy.example :as example]))
 
-(def routes
-  [["/assets/*" (reitit-ring/create-resource-handler
-                 {:path "/" :root "public"})]
+; FIXME: everytime compile.
+(defn routes
+  []
+  [""
+   ["/assets/*" (reitit-ring/create-resource-handler
+                  {:path "/" :root "public"})]
+   ["/favicon.ico" (constantly (slurp (io/resource "public/favicon.ico")))]
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
    ["/logout" logout!]
@@ -22,8 +28,9 @@
     ["" tasks/tasks-this-week]
     ["/yet" yet]
     ["/all" tasks/tasks-all]]
-   ["/answers" {:middleware [m/wrap-users]}
-    ["/" under-construction-page]]
+   ["/answer/:eid" {:middleware [m/wrap-users]}
+    ["" {:get {:handler answer/answer}
+         :post {:handler answer/answer!}}]]
    ["/admin" {:middleware [m/wrap-admin]}
     ["" {:get {:handler admin/tasks}}]
     ["/new" {:get {:handler admin/new}
@@ -32,6 +39,7 @@
                  :post admin/edit!}]
     ["/delete/:n" {:delete admin/delete!}]]
    ;
+
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
@@ -41,14 +49,13 @@
   [_]
   {:status 404
    :headers {"Content-Type" "text/html"}
-   :body "not found"})
+   :body "<h1 style='color:red;'>Not Found</h1>"})
 
 (defn root-handler
   [request]
   (t/log! :info (str (:request-method request) " - " (:uri request)))
   (let [handler (reitit-ring/ring-handler
-                 (reitit-ring/router routes)
-                 #'not-found-handler
-                 {:middleware [[wrap-defaults site-defaults]]})]
+                  (reitit-ring/router (routes))
+                  #'not-found-handler
+                  {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))
-

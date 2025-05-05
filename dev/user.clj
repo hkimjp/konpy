@@ -58,7 +58,7 @@
           [?e :num ?num]
           [?e :task ?task]
           [?e :issued ?issued]]
-        5)
+    5)
 
   (u/weeks)
 
@@ -123,7 +123,7 @@
           :where
           [?e :name ?name]
           [?e :age ?age]]
-        "akari")
+    "akari")
 
   (db/pull ['*] 1)
   (db/pull  [:work] 1)
