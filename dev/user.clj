@@ -10,7 +10,7 @@
    [konpy.system :as system]
    konpy.core-test))
 
-(t/set-min-level! :info)
+(t/set-min-level! :debug)
 
 (system/restart-system)
 
@@ -46,9 +46,19 @@
         (swap! c inc)
         (put-task! week @c s))))
 
-  (seeds-in 5 seeds)
-  :rcf)
+  (seeds-in 4 seeds)
 
+  (db/q '[:find ?author
+          :in $ ?x
+          :where
+          [?e :answer ?answer]
+          [?e :author ?author]
+          [?e :sha1 ?sha1]
+          [(= ?sha1 ?x)]]
+        "356a192b7913b04c54574d18c28d46e6395428ab")
+
+  :rcf)
+#{["1\r\n" "356a192b7913b04c54574d18c28d46e6395428ab"] ["1" "356a192b7913b04c54574d18c28d46e6395428ab"] ["2" "da4b9237bacccdf19c0760cab7aec4a8359010b0"] ["3" "77de68daecd823babbb58edb1c8e14d7106e83bb"]}
 (comment
 
   (def x [{:foo 2 :bar 11}

@@ -31,15 +31,11 @@
   :rcf)
 
 ; https://groups.google.com/g/clojure/c/Kpf01CX_ClM
-(defn create-hash
-  [data-barray]
-  (.digest (java.security.MessageDigest/getInstance "SHA1") data-barray))
-
 (defn sha1 [s]
-  (-> s
-      (.getBytes "UTF-8")
-      create-hash
-      java.math.BigInteger.))
+  (->> (.getBytes s "UTF-8")
+       (.digest (java.security.MessageDigest/getInstance "SHA1"))
+       (java.math.BigInteger. 1)
+       (format "%x")))
 
 (defn remove-spaces [s]
   (-> s
