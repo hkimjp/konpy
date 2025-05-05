@@ -22,10 +22,13 @@
 
 (defn start-server
   []
-  (let [port (or (env :port) "3000")]
+  (let [port (or (env :port) "3000")
+        handler (if (= (env :develop) "true")
+                  #'routes/root-handler
+                  routes/root-handler)]
     (reset! server
             (jetty/run-jetty
-             #'routes/root-handler
+             handler
              {:port (parse-long port) :join? false}))
     (t/log! :info (str "server started at port " port))))
 

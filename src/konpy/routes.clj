@@ -17,9 +17,8 @@
 ; FIXME: everytime compile.
 (defn routes
   []
-  [""
-   ["/assets/*" (reitit-ring/create-resource-handler
-                  {:path "/" :root "public"})]
+  [["/assets/*" (reitit-ring/create-resource-handler
+                 {:path "/" :root "public"})]
    ["/favicon.ico" (constantly (slurp (io/resource "public/favicon.ico")))]
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
@@ -29,17 +28,16 @@
     ["/yet" yet]
     ["/all" tasks/tasks-all]]
    ["/answer/:eid" {:middleware [m/wrap-users]}
-    ["" {:get {:handler answer/answer}
+    ["" {:get  {:handler answer/answer}
          :post {:handler answer/answer!}}]]
    ["/admin" {:middleware [m/wrap-admin]}
     ["" {:get {:handler admin/tasks}}]
-    ["/new" {:get {:handler admin/new}
+    ["/new" {:get  {:handler admin/new}
              :post {:handler admin/create!}}]
-    ["/edit/:n" {:get admin/edit
+    ["/edit/:n" {:get  admin/edit
                  :post admin/edit!}]
     ["/delete/:n" {:delete admin/delete!}]]
    ;
-
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
@@ -55,7 +53,7 @@
   [request]
   (t/log! :info (str (:request-method request) " - " (:uri request)))
   (let [handler (reitit-ring/ring-handler
-                  (reitit-ring/router (routes))
-                  #'not-found-handler
-                  {:middleware [[wrap-defaults site-defaults]]})]
+                 (reitit-ring/router (routes))
+                 #'not-found-handler
+                 {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))

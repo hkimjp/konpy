@@ -5,6 +5,9 @@
 - konpy.db wrapper?
 - the same reply comes back twice every time.
 
+## 0.6.0-SNAPSHOT
+
+
 ## 0.5.0 (2025-05-04)
 
 - **BREAKING** removed '/' from endpoint url.
