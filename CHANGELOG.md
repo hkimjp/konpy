@@ -3,7 +3,7 @@
 - compile routes.
 - (set! *default-data-reader-fn* tagged-literal)
 
-## 0.4.6-SNAPSHOT
+## 0.5.0-SNAPSHOT (2025-05-04)
 
 - **BREAKING** removed '/' from endpoint url.
 
