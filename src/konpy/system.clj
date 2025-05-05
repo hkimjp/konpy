@@ -24,8 +24,8 @@
   []
   (let [port (or (env :port) "3000")
         handler (if (= (env :develop) "true")
-                  #'routes/root-handler
-                  routes/root-handler)]
+                  #'routes/app
+                  routes/app)]
     (reset! server
             (jetty/run-jetty
              handler

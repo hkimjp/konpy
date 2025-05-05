@@ -14,6 +14,10 @@
   []
   (= (env :develop) "true"))
 
+(defn now
+  []
+  (java.util.Date.))
+
 (defn user [request]
   (get-in request [:session :identity]))
 

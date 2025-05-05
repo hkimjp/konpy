@@ -28,7 +28,8 @@
              "送信"]]]]]))
 
 (defn put-answer! [{:keys [eid author answer]}]
-  (t/log! :info (str "put-answer " eid author answer)))
+  (t/log! :info (str "put-answer " eid author answer))
+  (db/put! [{:db/add -1 :author author :answer answer :to eid :identical []}]))
 
 (defn answer! [{params :params :as request}]
   (let [params (dissoc params :__anti-forgery-token)]

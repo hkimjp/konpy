@@ -15,6 +15,15 @@
 (system/restart-system)
 
 (comment
+  (db/q '[:find ?e ?author ?answer ?to
+          :where
+          [?e :author ?author]
+          [?e :answer ?answer]
+          [?e :to ?to]])
+
+  :rcf)
+
+(comment
   (def seeds
     ["タイピング練習を50回こなす"
      "タイピング練習で最高点10点以上とる"
@@ -58,7 +67,7 @@
           [?e :num ?num]
           [?e :task ?task]
           [?e :issued ?issued]]
-    5)
+        5)
 
   (u/weeks)
 
@@ -123,7 +132,7 @@
           :where
           [?e :name ?name]
           [?e :age ?age]]
-    "akari")
+        "akari")
 
   (db/pull ['*] 1)
   (db/pull  [:work] 1)
