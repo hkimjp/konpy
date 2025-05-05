@@ -36,7 +36,7 @@
         (swap! c inc)
         (put-task! week @c s))))
 
-  (seeds-in 4 seeds)
+  (seeds-in 5 seeds)
   :rcf)
 
 (comment

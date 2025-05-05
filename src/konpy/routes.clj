@@ -34,10 +34,10 @@
    ["/admin" {:middleware [m/wrap-admin]}
     ["" {:get {:handler admin/tasks}}]
     ["/new" {:get {:handler admin/new}
-             :post {:handler admin/create!}}]]
-   ["/edit/:n" {:get admin/edit
-                :post admin/edit!}]
-   ["/delete/:n" {:delete admin/delete!}]
+             :post {:handler admin/create!}}]
+    ["/edit/:n" {:get admin/edit
+                 :post admin/edit!}]
+    ["/delete/:n" {:delete admin/delete!}]]
    ;
 
    ["/example"
@@ -49,7 +49,7 @@
   [_]
   {:status 404
    :headers {"Content-Type" "text/html"}
-   :body "not found"})
+   :body "<h1 style='color:red;'>Not Found</h1>"})
 
 (defn root-handler
   [request]
