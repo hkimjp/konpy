@@ -3,7 +3,10 @@
 - compile routes.
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
-- the same reply comes back twice every time.
+
+## 0.6.0-SNAPSHOT
+
+- fixed a bug in `middleware/wrap-user`.
 
 ## 0.5.0 (2025-05-04)
 

@@ -15,7 +15,6 @@
   (fn [request]
     (let [user (user request)]
       (t/log! :debug (str "wrap-users " user))
-      (handler request)
       (if (some? user)
         (handler request)
         (-> (resp/redirect "/")
