@@ -84,7 +84,7 @@
            (str/replace-first s pat "$1..."))))
 
 (defn put! [facts]
-  (t/log! :info (str "put " (shorten facts)))
+  (t/log! :info (str "put! " (shorten facts)))
   (d/transact! conn facts))
 
 (defmacro q [query & inputs]

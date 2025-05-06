@@ -26,7 +26,7 @@
       [:input {:placeholder "your account" :name "login"}]
       [:input {:type "password" :name "password"}]
       [:button
-       {:class "bg-sky-100 hover:bg-sky-300 active:bg-red-500"}
+       {:class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
        "LOGIN"]]]]))
 
 (defn login!

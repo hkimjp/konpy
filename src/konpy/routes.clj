@@ -31,12 +31,15 @@
      {:get  {:handler answer/answer}
       :post {:handler answer/answer!}}]]
    ["/admin" {:middleware [[m/wrap-admin]]}
-    ["" {:get {:handler admin/tasks}}]
-    ["/new" {:get  {:handler admin/new}
-             :post {:handler admin/create!}}]
-    ["/edit/:e" {:get  admin/edit
-                 :post admin/edit!}]
-    ["/delete/:e" {:delete admin/delete!}]]
+    ["" {:get  {:handler admin/tasks}
+         :post {:handler admin/upsert!}}]
+    ; ["/upsert" {;:get  {:handler admin/new}
+    ;             :post {:handler admin/upsert!}}]
+    ; ["/edit/:e" {:get  admin/edit
+    ;              :post admin/edit!}]
+    ; ;; no delete?
+    ;["/delete/:e" {:delete admin/delete!}]
+    ]
    ;
    ["/example"
     ["" {:get  {:handler example/example-page}

@@ -1,6 +1,6 @@
 (ns konpy.system
   (:require [ring.adapter.jetty :as jetty]
-            ; [clj-reload.core :as reload]
+            [clj-reload.core :as reload]
             [taoensso.telemere :as t]
             [environ.core :refer [env]]
             [konpy.routes :as routes]

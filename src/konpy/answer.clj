@@ -8,26 +8,45 @@
    [konpy.utils :refer [user remove-spaces sha1]]
    [konpy.views :refer [page]]))
 
-(defn answer [{{:keys [e]} :path-params :as request}]
-  (t/log! :info (str "e " e " user:" (user request)))
-  (page
-   [:div
-    [:div "課題番号: " e]
-    [:div
-     [:label "answer:"]
-     [:form {:method "post"}
-      (h/raw (anti-forgery-field))
-      [:input {:type "hidden" :name "e" :value e}]
-      [:div [:textarea {:class "w-120 h-60 outline outline-black/5 shadow-lg"
-                        :name "answer"
-                        :prompt "your answer"}]]
-      [:div [:button
-             {:type "submit"
-              :class "bg-sky-100 hover:bg-sky-500 active:bg-red-500 rounded-2xl"}
-             "送信"]]]]]))
+(defn find-answers
+  [author to]
+  (let [q '[:find ?answer
+            :in $ ?author ?to
+            :where
+            [?e :auther ?author]
+            [?e :to ?to]
+            [?e :answer ?answer]]]
+    (db/q q author to)))
 
-(defn identical [n]
+(comment
+  (find-answers "hkimura" 1)
+  (db/pull 1))
+
+(defn answer
+  [{{:keys [e]} :path-params :as request}]
+  (t/log! :info (str "e " e " user:" (user request)))
+  (let [user (user request)
+        answers (find-answers user e)]
+
+    (page
+     [:div
+      [:div "番号: " e]
+      [:div
+       [:label "answer:"]
+       [:form {:method "post"}
+        (h/raw (anti-forgery-field))
+        [:input {:type "hidden" :name "e" :value e}]
+        [:div [:textarea {:class "w-120 h-60 outline outline-black/5 shadow-lg"
+                          :name "answer"
+                          :prompt "your answer"}]]
+        [:div [:button
+               {:type  "submit"
+                :class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
+               "送信"]]]]])))
+
+(defn identical
   "returns authors whose answer's sha1 is equal to n."
+  [n]
   ["hkimura"])
 
 (defn answer! [{{:keys [e answer]} :params :as request}]
