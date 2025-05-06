@@ -5,7 +5,7 @@
 - konpy.db wrapper?
 - when eid=-1, create. otherwise update.
 
-## 0.6.5-SNAPSHOT
+## 0.6.5 (2025-05-06)
 
 - what I want is not the "multi valued attribute".
 
