@@ -6,10 +6,6 @@
             [konpy.routes :as routes]
             [konpy.db :as db]))
 
-; (set! *default-data-reader-fn* clojure.core/tagged-literal)
-; (alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
-; *default-data-reader-fn*
-
 (defn start-db
   []
   (db/start "storage/db.sqlite"))

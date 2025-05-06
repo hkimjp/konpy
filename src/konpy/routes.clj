@@ -9,7 +9,6 @@
    [konpy.admin :as admin]
    [konpy.answer :as answer]
    [konpy.login :refer [login-page login! logout!]]
-   [konpy.views :refer [yet]]
    [konpy.middleware :as m]
    ;
    [konpy.example :as example]))
@@ -24,23 +23,16 @@
    ["/logout" logout!]
    ["/tasks" {:middleware [[m/wrap-users]]}
     ["" tasks/tasks-this-week]
-    ["/yet" yet]
     ["/all" tasks/tasks-all]]
    ["/answer/:e" {:middleware [[m/wrap-users]]}
     [""
      {:get  {:handler answer/answer}
-      :post {:handler answer/answer!}}]]
+      :post {:handler answer/answer!}}]
+    ["/self" answer/answers-self]
+    ["/all"  answer/answers-all]]
    ["/admin" {:middleware [[m/wrap-admin]]}
     ["" {:get  {:handler admin/tasks}
-         :post {:handler admin/upsert!}}]
-    ; ["/upsert" {;:get  {:handler admin/new}
-    ;             :post {:handler admin/upsert!}}]
-    ; ["/edit/:e" {:get  admin/edit
-    ;              :post admin/edit!}]
-    ; ;; no delete?
-    ;["/delete/:e" {:delete admin/delete!}]
-    ]
-   ;
+         :post {:handler admin/upsert!}}]]
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
