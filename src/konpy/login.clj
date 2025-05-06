@@ -54,5 +54,3 @@
   (-> (resp/redirect "/")
       (assoc :session {})))
 
-(comment
-  (:body (login-page nil)))

@@ -49,13 +49,3 @@
   (stop-system)
   ; (reload/reload)
   (start-system))
-
-(comment
-  (start-server)
-  (start-db)
-  (stop-server)
-  (stop-db)
-  (start-system)
-  (stop-system)
-  (restart-system)
-  :rcf)

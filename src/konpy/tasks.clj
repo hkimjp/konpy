@@ -1,13 +1,8 @@
 (ns konpy.tasks
   (:require
-   [taoensso.telemere :as t]
-   [hiccup2.core :as h]
-   [ring.util.response :as resp]
-   [ring.util.anti-forgery :refer [anti-forgery-field]]
-   ; [environ.core :refer [env]]
-   [konpy.utils :refer [user now weeks admin?]]
-   [konpy.views :refer [page under-construction-page]]
-   [konpy.db :refer [put! q]]))
+   [konpy.utils :refer [user weeks admin?]]
+   [konpy.views :refer [page]]
+   [konpy.db :refer [q]]))
 
 (defn tasks-this-week
   "show this weeks assignments.
