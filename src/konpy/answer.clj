@@ -6,7 +6,7 @@
    [taoensso.telemere :as t]
    [konpy.db :as db]
    [konpy.utils :refer [user remove-spaces sha1 now]]
-   [konpy.views :refer [page under-construction-page]]))
+   [konpy.views :refer [page]]))
 
 (def btn "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 (def te  "w-120 h-60 outline outline-black/5 shadow-lg")
