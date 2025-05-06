@@ -11,7 +11,7 @@
 ; FIXME: tagged literal?
 (defn now
   []
-  (str (java.util.Date.)))
+  (java.util.Date.))
 
 (defn user [request]
   (get-in request [:session :identity]))
