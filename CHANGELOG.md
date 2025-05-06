@@ -4,7 +4,10 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - tailwindcss
 - display, logins, submissions.
+- admin/stat - who logined, who submitted, etc.
 
+
+## 0.7.0-SNAPSHOT
 
 ## 0.6.7 (2025-05-06)
 
@@ -34,7 +37,7 @@
 - updated libraries
 
 | :file    | :name                       | :current | :latest |
-|----------+-----------------------------+----------+---------|
+|--------- | --------------------------- | -------- | --------|
 | deps.edn | datascript/datascript       | 1.7.4    | 1.7.5   |
 |          | io.github.tonsky/clj-reload | 0.9.4    | 0.9.5   |
 |          | io.github.tonsky/clj-reload | 0.9.4    | 0.9.5   |
