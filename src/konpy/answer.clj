@@ -10,17 +10,21 @@
 
 (defn find-answers
   [author tid]
-  (db/q '[:find ?answer ?updated
-          :keys answer updated
+  (db/q '[:find ?answer ?updated ?identical ?e
+          :keys answer updated identical e
           :in $ ?author ?tid
           :where
           [?e :author ?author]
           [?e :task/id ?tid]
           [?e :answer ?answer]
+          [?e :identical ?identical]
           [?e :updated ?updated]]
         author tid))
 
 ; (find-answers "hkimura" 1)
+
+; (db/pull 19)
+; (find-answers "abc" 1)
 
 (defn last-answer
   [author tid]
@@ -28,44 +32,61 @@
 
 ; (last-answer "hkimura" 1)
 
+(defn identical
+  "returns authors whose answer's sha1 is equal to `sha1`."
+  [sha1]
+  (->> (db/q '[:find ?author
+               :in $ ?sha1
+               :where
+               [?e :author ?author]
+               [?e :sha1 ?sha1]]
+             sha1)
+       (mapv first)))
+
+(comment
+  (db/q '[:find ?e
+          :where
+          [?e :task/id ?t]])
+  (identical "ab51f5a4885cbadf8e3e47737d5d9211dd8c9a94")
+  (db/pull 16)
+  (print-str ["abc" "def"])
+  :rcf)
+
 (defn answer
   [{{:keys [e]} :path-params :as request}]
-  (let [e (parse-long e)
-        task (db/pull e)
+  (let [tid (parse-long e)
+        task (db/pull tid)
         user (user request)
-        last-answer (last-answer user e)]
-    (t/log! :info (str "e " e " user:" user))
+        last-answer (last-answer user tid)]
+    (t/log! :info (str "last-answer " last-answer))
     (page
      [:div
-      [:div "課題:" (:task task)]
+      [:div "課題: " (:task task)]
       [:div
        [:form {:method "post"}
         (h/raw (anti-forgery-field))
-        [:input {:type "hidden" :name "e" :value e}]
+        [:input {:type "hidden" :name "e" :value tid}]
         [:div [:textarea {:class "w-120 h-60 outline outline-black/5 shadow-lg"
                           :name "answer"}
                (:answer last-answer)]]
+        (when-let [same (:identical last-answer)]
+          [:div "同一回答: " (print-str same)])
         [:div [:button
                {:type  "submit"
                 :class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
                "送信"]]]]])))
 
-(defn identical
-  "returns authors whose answer's sha1 is equal to n."
-  [n]
-  ["hkimura"])
 
-(defn answer! [{{:keys [e answer]} :params :as request}]
-  (let [e (parse-long e)
+  (let [tid (parse-long e)
         sha1 (-> answer remove-spaces sha1)
         identical (identical sha1)]
-    (t/log! :info (str "e " e " answer " answer))
+    (t/log! :info (str "tid " tid " answer " answer))
     (t/log! :info (str "sha1 " sha1))
-    (t/log! :info (str identical))
+    (t/log! :info (str "identical " identical))
     (try
       (db/put! [{:db/add -1
+                 :task/id tid
                  :author (user request)
-                 :task/id e
                  :answer answer
                  :sha1 sha1
                  :updated (now)

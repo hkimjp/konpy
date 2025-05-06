@@ -44,6 +44,11 @@
   (seeds-in 4 seeds-4)
   (seeds-in 5 seeds-5)
 
+  (db/q '[:find ?e
+          :where
+          [?e :identical "a"]])
+
+  (:identical (db/pull 29))
   (system/stop-system)
   (reload/reload)
 
