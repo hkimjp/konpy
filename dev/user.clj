@@ -10,7 +10,7 @@
    [konpy.system :as system]
    konpy.core-test))
 
-(t/set-min-level! :info)
+(t/set-min-level! :debug)
 
 (system/restart-system)
 
@@ -30,9 +30,9 @@
    "九九の表をマークダウンでプリントする。"])
 
 (def seeds-5
-  ["5週目の課題"
-   "Beep()を鳴らす"
-   "Beep()できらきら星"])
+  ["Python でドレミファソラシド演奏する。"
+   "Python でベートーベン「運命」の出だしを演奏する。"
+   "Python できらきら星を演奏する。"])
 
 (defn seeds-in [week seeds]
   (let [c (atom 0)]
