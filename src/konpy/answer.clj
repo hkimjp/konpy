@@ -76,7 +76,8 @@
                 :class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
                "送信"]]]]])))
 
-
+(defn answer!
+  [{{:keys [e answer]} :params :as request}]
   (let [tid (parse-long e)
         sha1 (-> answer remove-spaces sha1)
         identical (identical sha1)]
