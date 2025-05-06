@@ -4,7 +4,10 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
 - when eid=-1, create. otherwise update.
-- multi valued attribute
+
+## 0.6.5-SNAPSHOT
+
+- what I want is not the "multi valued attribute".
 
 ## 0.6.4 (2025-05-06)
 

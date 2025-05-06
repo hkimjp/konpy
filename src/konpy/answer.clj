@@ -23,8 +23,9 @@
 
 ; (find-answers "hkimura" 1)
 
-(db/pull 19)
-(find-answers "abc" 1)
+; (db/pull 19)
+; (find-answers "abc" 1)
+
 (defn last-answer
   [author tid]
   (last (sort-by :updated (find-answers author tid))))
@@ -48,6 +49,7 @@
           [?e :task/id ?t]])
   (identical "ab51f5a4885cbadf8e3e47737d5d9211dd8c9a94")
   (db/pull 16)
+  (print-str ["abc" "def"])
   :rcf)
 
 (defn answer
@@ -56,10 +58,10 @@
         task (db/pull tid)
         user (user request)
         last-answer (last-answer user tid)]
-    (t/log! :info (str "last-answer" last-answer))
+    (t/log! :info (str "last-answer " last-answer))
     (page
      [:div
-      [:div "課題:" (:task task)]
+      [:div "課題: " (:task task)]
       [:div
        [:form {:method "post"}
         (h/raw (anti-forgery-field))
@@ -67,13 +69,14 @@
         [:div [:textarea {:class "w-120 h-60 outline outline-black/5 shadow-lg"
                           :name "answer"}
                (:answer last-answer)]]
-        [:div "同一回答:" (:identical last-answer)]
+        (when-let [same (:identical last-answer)]
+          [:div "同一回答: " (print-str same)])
         [:div [:button
                {:type  "submit"
                 :class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
                "送信"]]]]])))
 
-(defn answer! [{{:keys [e answer]} :params :as request}]
+
   (let [tid (parse-long e)
         sha1 (-> answer remove-spaces sha1)
         identical (identical sha1)]

@@ -30,7 +30,8 @@
       (t/log! :error (.getMessage e))
       (throw (Exception. "db dir does not exist.")))))
 
-(def schema {:identical {:db/cardinality :db.cardinality/many}})
+;(def schema {:identical {:db/cardinality :db.cardinality/many}})
+(def schema nil)
 
 (defn- create
   ([]
