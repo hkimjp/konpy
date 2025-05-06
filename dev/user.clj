@@ -15,6 +15,9 @@
 (system/restart-system)
 
 (comment
+  (system/stop-system)
+  (reload/reload)
+
   (db/q '[:find ?author
           :in $ ?to
           :where

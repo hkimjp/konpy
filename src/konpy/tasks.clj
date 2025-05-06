@@ -5,14 +5,14 @@
    [ring.util.response :as resp]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    ; [environ.core :refer [env]]
-   [konpy.utils :refer [user now weeks]]
+   [konpy.utils :refer [user now weeks admin?]]
    [konpy.views :refer [page under-construction-page]]
    [konpy.db :refer [put! q]]))
 
 (defn tasks-this-week
   "show this weeks assignments.
    this page must provide link to answer and views."
-  [_]
+  [request]
   (let [tasks-q '[:find ?e ?week ?num ?task
                   :keys e week num task
                   :in $ ?week
@@ -30,7 +30,11 @@
          [:span
           [:a {:class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"
                :href (str "/answer/" e)}
-           "回答"]]])])))
+           "回答"]]])
+      (when (admin? (user request))
+        [:div [:a {:class "rounded-xl text-white bg-red-500 hover:bg-red-700 active:bg-red-500"
+                   :href (str "/admin")}
+               "admin"]])])))
 
 (defn tasks-all
   "no edit."

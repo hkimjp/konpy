@@ -4,6 +4,19 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
 
+## 0.6.0 (2025-05-05)
+
+- updated libraries
+
+| :file    | :name                       | :current | :latest |
+|----------+-----------------------------+----------+---------|
+| deps.edn | datascript/datascript       | 1.7.4    | 1.7.5   |
+|          | io.github.tonsky/clj-reload | 0.9.4    | 0.9.5   |
+|          | io.github.tonsky/clj-reload | 0.9.4    | 0.9.5   |
+|          | io.github.tonsky/fast-edn   | 1.1.2    | 1.1.3   |
+| pom.xml  | org.clojure/clojure         | 0.6.1    | 1.12.0  |
+
+
 ## 0.6.1 (2025-05-05)
 
 - utils/sha1

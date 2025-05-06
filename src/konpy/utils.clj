@@ -16,6 +16,9 @@
 (defn user [request]
   (get-in request [:session :identity]))
 
+(defn admin? [user]
+  (= user (env :admin)))
+
 (def start-day (jt/local-date 2025 4 2))
 
 (defn weeks
