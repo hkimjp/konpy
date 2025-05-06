@@ -14,7 +14,7 @@
 
 (system/restart-system)
 
-(def seeds
+(def seeds-4
   ["タイピング練習を50回こなす"
    "タイピング練習で最高点10点以上とる"
    "VScode の背景色を明るく、あるいは逆に暗くするには？"
@@ -29,15 +29,21 @@
    "マークダウンで表を作る方法をネットで調べる。"
    "九九の表をマークダウンでプリントする。"])
 
+(def seeds-5
+  ["5週目の課題"
+   "Beep()を鳴らす"
+   "Beep()できらきら星"])
+
 (defn seeds-in [week seeds]
   (let [c (atom 0)]
     (doseq [s seeds]
       (swap! c inc)
-      (upsert-task! week @c s))))
-
-; (seeds-in 4 seeds)
+      (upsert-task! -1 week @c s))))
 
 (comment
+  (seeds-in 4 seeds-4)
+  (seeds-in 5 seeds-5)
+
   (system/stop-system)
   (reload/reload)
 

@@ -5,6 +5,10 @@
 - konpy.db wrapper?
 - when eid=-1, create. otherwise update.
 
+## 0.6.4 (2025-05-06)
+
+- can answer.
+
 ## 0.6.3 (2025-05-06)
 
 - can create tasks.
