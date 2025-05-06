@@ -4,9 +4,12 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
 
-## 0.6.3-SNAPSHOT
+## 0.6.3 (2025-05-06)
 
 - can create tasks.
+
+## 0.6.2 (2025-05-05)
+
 - updated libraries
 
 | :file    | :name                       | :current | :latest |
