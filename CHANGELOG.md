@@ -2,12 +2,14 @@
 
 - compile routes in production.
 - (set! *default-data-reader-fn* tagged-literal)
-- self answers
-- ohter answers
 - tailwindcss
+- display, logins, submissions.
 
 
 ## 0.6.7 (2025-05-06)
+
+- self answers
+- ohter answers
 
 ## 0.6.6 - hotfix
 
