@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.6.4")
+(def ^:private version "0.6.7")
 
 (defn base
   [content]
@@ -41,9 +41,9 @@
       base
       render))
 
-(defn under-construction-page [_]
+(defn under-construction-page []
   (page
    [:div {:class ""} "under construction"]))
 
-(defn yet [_]
+(defn yet []
   (render [:div "再読み込みで戻るはず。"]))

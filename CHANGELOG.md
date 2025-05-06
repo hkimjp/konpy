@@ -1,9 +1,17 @@
 ## Unreleased
 
-- compile routes.
+- compile routes in production.
 - (set! *default-data-reader-fn* tagged-literal)
-- konpy.db wrapper?
-- when eid=-1, create. otherwise update.
+- self answers
+- ohter answers
+- tailwindcss
+
+
+## 0.6.7 (2025-05-06)
+
+## 0.6.6 - hotfix
+
+- wrongly deleted some part of answers.clj by mistake. resumed.
 
 ## 0.6.5 (2025-05-06)
 
