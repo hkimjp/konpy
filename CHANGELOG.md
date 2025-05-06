@@ -7,7 +7,7 @@
 - tailwindcss
 
 
-## 0.6.7-SNAPSHOT
+## 0.6.7 (2025-05-06)
 
 ## 0.6.6 - hotfix
 
