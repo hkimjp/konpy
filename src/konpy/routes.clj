@@ -29,7 +29,7 @@
      {:get  {:handler answer/answer}
       :post {:handler answer/answer!}}]
     ["/self" answer/answers-self]
-    ["/all"  answer/answers-all]]
+    ["/others"  answer/answers-others]]
    ["/admin" {:middleware [[m/wrap-admin]]}
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]]

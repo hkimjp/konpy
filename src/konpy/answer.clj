@@ -68,7 +68,10 @@
           [:div "同一回答: " (print-str same)])
         [:div [:button {:type  "submit" :class btn} "送信"]]
         [:div {:class "flex"}
-         [:a {:href (str "/answer/" tid "/self")}]]]]])))
+         [:a {:class btn :href (str "/answer/" tid "/self")}
+          "自分の別回答"]
+         [:a {:class btn :href (str "/answer/" tid "/others")}
+          "クラスメートの回答"]]]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
@@ -107,7 +110,6 @@
           [?e :updated ?updated]
           [?e :author "hkimura"]])
   (db/pull 25)
-  ()
   :rcf)
 
 (defn answers-self
@@ -120,6 +122,21 @@
        [:p "Date:" (str (:updated a))]
        [:p {:class te} (:answer a)]])]))
 
-(defn answers-all
-  [_request]
-  (under-construction-page))
+(def q-others '[:find ?answer ?updated ?author
+                :keys answer updated author
+                :in $ ?tid
+                :where
+                [?e :task/id ?tid]
+                [?e :author ?author]
+                [?e :answer ?answer]
+                [?e :updated ?updated]])
+
+(defn answers-others
+  [{{:keys [e]} :path-params :as request}]
+  (t/log! :info (str "answers-others " e " " (user request)))
+  (page
+   [:div
+    (for [a (db/q q-others (parse-long e))]
+      [:div
+       [:p (:author a) ", Date:" (str (:updated a))]
+       [:p {:class te} (:answer a)]])]))
