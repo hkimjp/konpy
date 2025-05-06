@@ -4,15 +4,38 @@
    [environ.core :refer [env]]
    [java-time.api :as jt]
    [taoensso.telemere :as t]
-   [konpy.admin :refer [put-task!]]
+   [konpy.admin :refer [upsert-task!]]
    [konpy.db :as db]
    [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
 
-(t/set-min-level! :debug)
+(t/set-min-level! :info)
 
 (system/restart-system)
+
+(def seeds
+  ["タイピング練習を50回こなす"
+   "タイピング練習で最高点10点以上とる"
+   "VScode の背景色を明るく、あるいは逆に暗くするには？"
+   "VScode で作るテキストファイルの文字の大きさを変えるには？"
+   "Python で 1/1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10をプリントしなさい。"
+   "Python で apple, orange, banana, grape, melon, peach, pine を 一行に一つずつプリントしなさい。"
+   "Python で |, /, -, \\, |, /, -, \\ をプリントしなさい。"
+   ,
+   "print( ) で九九の表をプリントしなさい。"
+   "数字がきちんと並ぶように改良しなさい。"
+   "数字の後にコンマ(,)を表示しなさい。"
+   "マークダウンで表を作る方法をネットで調べる。"
+   "九九の表をマークダウンでプリントする。"])
+
+(defn seeds-in [week seeds]
+  (let [c (atom 0)]
+    (doseq [s seeds]
+      (swap! c inc)
+      (upsert-task! week @c s))))
+
+; (seeds-in 4 seeds)
 
 (comment
   (system/stop-system)
@@ -25,32 +48,6 @@
           [?e :sha1 ?to]]
         -6652132719765422345036288287526973911102942116N)
 
-  :rcf)
-
-(comment
-  (def seeds
-    ["タイピング練習を50回こなす"
-     "タイピング練習で最高点10点以上とる"
-     "VScode の背景色を明るく、あるいは逆に暗くするには？"
-     "VScode で作るテキストファイルの文字の大きさを変えるには？"
-     "Python で 1/1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10をプリントしなさい。"
-     "Python で apple, orange, banana, grape, melon, peach, pine を 一行に一つずつプリントしなさい。"
-     "Python で |, /, -, \\, |, /, -, \\ をプリントしなさい。"
-     ,
-     "print( ) で九九の表をプリントしなさい。"
-     "数字がきちんと並ぶように改良しなさい。"
-     "数字の後にコンマ(,)を表示しなさい。"
-     "マークダウンで表を作る方法をネットで調べる。"
-     "九九の表をマークダウンでプリントする。"])
-
-  (defn seeds-in [week seeds]
-    (let [c (atom 0)]
-      (doseq [s seeds]
-        (swap! c inc)
-        (put-task! week @c s))))
-
-  (seeds-in 4 seeds)
-
   (db/q '[:find ?author
           :in $ ?x
           :where
@@ -61,7 +58,7 @@
         "356a192b7913b04c54574d18c28d46e6395428ab")
 
   :rcf)
-#{["1\r\n" "356a192b7913b04c54574d18c28d46e6395428ab"] ["1" "356a192b7913b04c54574d18c28d46e6395428ab"] ["2" "da4b9237bacccdf19c0760cab7aec4a8359010b0"] ["3" "77de68daecd823babbb58edb1c8e14d7106e83bb"]}
+
 (comment
 
   (def x [{:foo 2 :bar 11}

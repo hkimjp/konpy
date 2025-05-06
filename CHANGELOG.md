@@ -3,10 +3,13 @@
 - compile routes.
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
+- when eid=-1, create. otherwise update.
 
 ## 0.6.3 (2025-05-06)
 
 - can create tasks.
+- can update tasks.
+- renamed `create-tasks!` to `upsert-tasks!`.
 
 ## 0.6.2 (2025-05-05)
 
