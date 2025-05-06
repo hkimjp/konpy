@@ -7,7 +7,7 @@
             [konpy.utils :refer [now]]
             [konpy.views :refer [page]]))
 
-(def btn "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
 (def box "text-center size-10 shadow-lg outline outline-black/5")
 
@@ -23,8 +23,8 @@
                       [?e :issued ?issued]])
                  (sort-by (juxt :week :num)))]
     (page
-     [:div
-      [:div {:class "flex"}
+     [:div {:class "mx-4"}
+      [:div {:class "flex gap-4 my-2"}
        [:a {:href "/tasks" :class btn}  "tasks"]
        [:a {:href "/logout" :class btn} "logout"]]
       [:div
