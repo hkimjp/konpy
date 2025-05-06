@@ -3,8 +3,12 @@
 - compile routes in production.
 - (set! *default-data-reader-fn* tagged-literal)
 - tailwindcss
-- display, logins, submissions.
+- in admin page, display, logins, submissions.
 
+## 0.7.0-SNAPSHOT
+
+- nobody can see other students' answers until he answer the question
+  including admin.
 
 ## 0.6.7 (2025-05-06)
 
