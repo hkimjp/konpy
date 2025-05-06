@@ -21,7 +21,8 @@
                       [?e :num ?num]
                       [?e :task ?task]
                       [?e :issued ?issued]])
-                 (sort-by (juxt :week :num)))]
+                 (sort-by (juxt :week :num))
+                 vec)]
     (page
      [:div {:class "mx-4"}
       [:div {:class "flex gap-4 my-2"}
@@ -41,7 +42,7 @@
             [:textarea {:class "w-120 outline outline-black/5 shadow-lg"
                         :name "task"}
              task]
-            [:button {:class btn} "update"]]]])]])))
+            [:button {:class btn} "upsert"]]]])]])))
 
 (defn upsert-task! [^long e ^long week ^long num ^String task]
   (put! [{:db/id e

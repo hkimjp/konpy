@@ -20,13 +20,13 @@
     [:div.font-bold.p-2 "LOGIN"]
     (when-let [flash (:flash request)]
       [:div {:class "text-red-500"} flash])
-    [:div.p-2
-     [:form.flex.gap-4 {:method "post"}
+    [:div.p-1
+     [:form {:method "post"}
       (h/raw (anti-forgery-field))
-      [:input.border-1.border-solid {:placeholder "your account" :name "login"}]
-      [:input.border-1.border-solid {:type "password" :placeholder "password" :name "password"}]
+      [:input.border-1.border-solid.p-1 {:placeholder "your account" :name "login"}]
+      [:input.border-1.border-solid.p-1 {:type "password" :placeholder "password" :name "password"}]
       [:button
-       {:class "rounded-xl p-1 text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
+       {:class "p-1 text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
        "LOGIN"]]]]))
 
 (defn login!
