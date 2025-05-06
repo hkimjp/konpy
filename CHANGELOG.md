@@ -3,7 +3,11 @@
 - compile routes.
 - (set! *default-data-reader-fn* tagged-literal)
 - konpy.db wrapper?
-- when eid=-1, create. otherwise update.
+- java.lang.NullPointerException when empty week-num or task provided.
+
+## 0.6.6 - hotfix
+
+- wrongly deleted some part of answers.clj by mistake. resumed.
 
 ## 0.6.5 (2025-05-06)
 
