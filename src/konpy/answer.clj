@@ -8,8 +8,8 @@
    [konpy.utils :refer [user remove-spaces sha1 now]]
    [konpy.views :refer [page]]))
 
-(def btn "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
-(def te  "w-120 h-60 outline outline-black/5 shadow-lg")
+(def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def te  "text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
 
 (defn find-answers
   [author tid]
@@ -25,6 +25,7 @@
         author tid))
 
 (defn last-answer
+  "if no answer, returns nil."
   [author tid]
   (last (sort-by :updated (find-answers author tid))))
 
@@ -46,6 +47,7 @@
   (identical "ab51f5a4885cbadf8e3e47737d5d9211dd8c9a94")
   (db/pull 16)
   (print-str ["abc" "def"])
+  (last-answer "aaa" 1)
   :rcf)
 
 (defn answer
@@ -56,7 +58,7 @@
         last-answer (last-answer user tid)]
     (t/log! :info (str "last-answer " last-answer))
     (page
-     [:div
+     [:div.mx-4
       [:div "課題: " (:task task)]
       [:div
        [:form {:method "post"}
@@ -67,11 +69,12 @@
         (when-let [same (:identical last-answer)]
           [:div "同一回答: " (print-str same)])
         [:div [:button {:type  "submit" :class btn} "送信"]]
-        [:div {:class "flex"}
+        [:div {:class "flex gap-4 my-2"}
          [:a {:class btn :href (str "/answer/" tid "/self")}
           "自分の別回答"]
-         [:a {:class btn :href (str "/answer/" tid "/others")}
-          "クラスメートの回答"]]]]])))
+         (when (some? last-answer)
+           [:a {:class btn :href (str "/answer/" tid "/others")}
+            "クラスメートの回答"])]]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
@@ -116,11 +119,11 @@
   [{{:keys [e]} :path-params :as request}]
   (t/log! :info (str "answers-self " e " " (user request)))
   (page
-   [:div
+   [:div {:class "mx-4"}
     (for [a (db/q q-self (parse-long e) (user request))]
       [:div
        [:p "Date:" (str (:updated a))]
-       [:p {:class te} (:answer a)]])]))
+       [:pre {:class te} (:answer a)]])]))
 
 (def q-others '[:find ?answer ?updated ?author
                 :keys answer updated author
@@ -135,8 +138,8 @@
   [{{:keys [e]} :path-params :as request}]
   (t/log! :info (str "answers-others " e " " (user request)))
   (page
-   [:div
+   [:div {:class "mx-4"}
     (for [a (db/q q-others (parse-long e))]
-      [:div
-       [:p (:author a) ", Date:" (str (:updated a))]
-       [:p {:class te} (:answer a)]])]))
+      [:div {:class "py-2"}
+       [:p "From: " (:author a) ", Date:" (str (:updated a))]
+       [:pre {:class te} (:answer a)]])]))

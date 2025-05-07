@@ -1,13 +1,8 @@
 (ns konpy.tasks
   (:require
-   [taoensso.telemere :as t]
-   [hiccup2.core :as h]
-   [ring.util.response :as resp]
-   [ring.util.anti-forgery :refer [anti-forgery-field]]
-   ; [environ.core :refer [env]]
-   [konpy.utils :refer [user now weeks admin?]]
-   [konpy.views :refer [page under-construction-page]]
-   [konpy.db :refer [put! q]]))
+   [konpy.utils :refer [user weeks admin?]]
+   [konpy.views :refer [page]]
+   [konpy.db :refer [q]]))
 
 (defn tasks-this-week
   "show this weeks assignments.
@@ -23,16 +18,16 @@
         ret (->> (q tasks-q (weeks))
                  (sort-by :num))]
     (page
-     [:div
+     [:div.mx-4
       (for [{:keys [e week num task]} ret]
-        [:div {:class "flex"}
+        [:div {:class "flex my-2"}
          [:span (str week "-" num " " task)]
          [:span
-          [:a {:class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"
+          [:a {:class "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500"
                :href (str "/answer/" e)}
            "回答"]]])
       (when (admin? (user request))
-        [:div [:a {:class "rounded-xl text-white bg-red-500 hover:bg-red-700 active:bg-red-500"
+        [:div [:a {:class "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500"
                    :href (str "/admin")}
                "admin"]])])))
 

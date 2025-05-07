@@ -30,7 +30,6 @@
       (t/log! :error (.getMessage e))
       (throw (Exception. "db dir does not exist.")))))
 
-;(def schema {:identical {:db/cardinality :db.cardinality/many}})
 (def schema nil)
 
 (defn- create
@@ -75,10 +74,6 @@
 
 ;------------------------------------------
 
-; (defn put [fact]
-;   (t/log! :info (str "put " fact))
-;   (d/transact! conn [fact]))
-
 (defn- shorten
   ([s] (shorten s 80))
   ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
@@ -91,10 +86,6 @@
 (defmacro q [query & inputs]
   (t/log! :info (str "q " query))
   `(d/q ~query @conn ~@inputs))
-
-; (defn q [query & inputs]
-;   (t/log! :info (str "not macro, q " query))
-;   (apply d/q query @conn inputs))
 
 (defn pull
   ([eid] (pull '[*] eid))

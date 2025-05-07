@@ -8,7 +8,7 @@
   []
   (= (env :develop) "true"))
 
-; FIXME: tagged literal?
+; FIXME: tagged literal.
 (defn now
   []
   (java.util.Date.))

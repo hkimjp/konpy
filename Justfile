@@ -40,6 +40,7 @@ deploy:
 
 deploy-to host app: build
   ssh {{host}} mkdir -p {{app}}/log
+  ssh {{host}} mkdir -p {{app}}/storage
   scp target/io.github.hkimjp/{{app}}-*.jar {{host}}:{{app}}/{{app}}.jar
   scp systemd/{konpy.service,start.sh,stop.sh} {{host}}:{{app}}/
   ssh {{host}} sudo cp {{app}}/{{app}}.service /lib/systemd/system
