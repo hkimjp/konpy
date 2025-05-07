@@ -54,7 +54,7 @@
             "answer")
     (page
      [:div.mx-4
-      [:div "課題: " (:task task)]
+      [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form {:method "post"
               ;:hx-confirm "回答を送信しますか？" :hx-post (str "/answer/" e)
               }
@@ -63,7 +63,7 @@
        [:div [:textarea {:class te :name "answer"}
               (:answer last-answer)]]
        (when-let [same (:identical last-answer)]
-         [:div "同一回答: " (print-str same)])
+         [:div [:span {:class "font-bold"} "同一回答: "] (print-str same)])
        [:div [:button {:class btn} "送信"]]]
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}

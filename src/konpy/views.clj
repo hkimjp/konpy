@@ -43,7 +43,7 @@
 
 (defn under-construction-page [_]
   (page
-   [:div {:class "text-2xl text-red-500"} "Under Construction"]))
+   [:div {:class "text-2xl text-red-500"} "Sorry, Under Construction."]))
 
 (defn yet [_]
   (render [:div "再読み込みで戻るはず。"]))
