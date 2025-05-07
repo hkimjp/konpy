@@ -2,17 +2,16 @@
 
 - compile routes in production.
 - (set! *default-data-reader-fn* tagged-literal)
-- tailwindcss
 - display, logins, submissions in admin page.
   check post /answers/:n
 - validate if :type "python" found.
 - can see future issues from current `/tasks/all`.
-- recent uploader
 - keep log/konpy.log when `service stop konpy`.
 
 
 ## 0.7.4 (2025-05-07)
 
+- recent uploader using htmx.
 
 ## 0.7.3 (2025-05-07)
 
