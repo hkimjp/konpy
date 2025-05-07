@@ -6,10 +6,11 @@
    [taoensso.telemere :as t]
    [konpy.db :as db]
    [konpy.utils :refer [user remove-spaces sha1 now shorten]]
-   [konpy.views :refer [page]]))
+   [konpy.views :refer [page render]]))
 
-(def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
-(def te  "p-1 text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
+(def btn  "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def lime "rounded-xl text-white p-1 bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+(def te   "p-1 text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
 
 (defn find-answers
   [author tid]
@@ -65,10 +66,10 @@
          [:div "同一回答: " (print-str same)])
        [:div [:button {:class btn} "送信"]]]
       [:div {:class "flex gap-4 my-2"}
-       [:a {:class btn :href (str "/answer/" tid "/self")}
+       [:a {:class lime :href (str "/answer/" tid "/self")}
         "自分の回答"]
        (when (some? last-answer)
-         [:a {:class btn :href (str "/answer/" tid "/others")}
+         [:a {:class lime :href (str "/answer/" tid "/others")}
           "他受講生の回答"])]
       [:div {:class "flex gap-4 my-2"}
        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
@@ -135,3 +136,26 @@
           ", "
           (str (:updated a))]
          [:textarea {:class te} (:answer a)]])])))
+
+(def ra-q '[:find ?author ?updated
+            :keys author updated
+            :where
+            [?e :author ?author]
+            [?e :updated ?updated]])
+
+(defn recent-answers
+  [{{:keys [n]} :path-params}]
+  (t/log! :debug (str (class n)))
+  (let [n (parse-long n)
+        answers (->> (db/q ra-q)
+                     (sort-by :updated)
+                     reverse
+                     (take n)
+                     (mapv :author))]
+    (render
+     [:div
+      (for [a answers]
+        [:span a ", "])])))
+
+
+

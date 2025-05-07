@@ -31,26 +31,34 @@
 
 (defn login!
   [{{:keys [login password]} :params}]
-  (t/log! :info (str "login " login " password *"))
+  ; (t/log! :debug (str "login " login " password *"))
   (if (env :develop)
-    (-> (resp/redirect "/tasks")
-        (assoc-in [:session :identity] login))
+    (do
+      (t/log! :info (str "develop mode"))
+      (t/log! :info (str "login success: " login))
+      (-> (resp/redirect "/tasks")
+          (assoc-in [:session :identity] login)))
     (try
       (let [resp (hc/get (str l22 "/api/user/" login)
                          {:timeout 3000 :as :json})]
         (if (and (some? resp)
                  (hashers/check password (get-in resp [:body :password])))
-          (-> (resp/redirect "/tasks")
-              (assoc-in [:session :identity] login))
-          (-> (resp/redirect "/")
-              (assoc :session {} :flash "login failed"))))
+          (do
+            (t/log! :info (str "login success: " login))
+            (-> (resp/redirect "/tasks")
+                (assoc-in [:session :identity] login)))
+          (do
+            (t/log! :info (str "login failed: " login))
+            (-> (resp/redirect "/")
+                (assoc :session {} :flash "login failed")))))
       (catch Exception e
         (t/log! :warn (.getMessage e))
         (-> (resp/redirect "/")
             (assoc :session {} :flash "enter login/password"))))))
 
 (defn logout!
-  [_]
+  [request]
+  (t/log! :info (str "logout " (get-in request [:session :identity])))
   (-> (resp/redirect "/")
       (assoc :session {})))
 

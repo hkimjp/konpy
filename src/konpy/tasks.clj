@@ -4,6 +4,12 @@
    [konpy.views :refer [page]]
    [konpy.db :refer [q]]))
 
+(def box-sky  "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+
+(def box-lime "rounded-xl text-white p-1 bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+
+(def box-red "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500")
+
 (defn tasks-this-week
   "show this weeks assignments.
    this page must provide link to answer and views."
@@ -23,16 +29,22 @@
         [:div {:class "flex my-2"}
          [:span (str week "-" num " " task)]
          [:span
-          [:a {:class "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500"
+          [:a {:class box-sky
                :href (str "/answer/" e)}
            "回答"]]])
+      [:button {:class box-lime
+                :hx-get "/answers/recent/10"
+                :hx-target "#answers"
+                :hx-swap "outerHTML"}
+       "最近の回答者"]
+      [:div#answers]
       [:div {:class "py-2"}
-       [:a {:class "rounded-xl text-white p-1 bg-lime-500 hover:bg-lime-700 active:bg-red-500"
-            :href "/tasks/all"}
-        "過去問題"] "（回答不可）"]
+       [:a {:class box-lime
+            :href "/answers/login"}
+        "最近のログイン"]]
       (when (admin? (user request))
         [:div {:class "py-2"}
-         [:a {:class "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500"
+         [:a {:class box-red
               :href (str "/admin")}
           "admin"]])])))
 

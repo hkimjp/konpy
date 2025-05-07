@@ -11,7 +11,7 @@
 
 (defn wrap-users
   [handler]
-  (t/log! :debug "wrap-users")
+  ; (t/log! :debug "wrap-users")
   (fn [request]
     (let [user (user request)]
       (t/log! :info (str "wrap-users " user))
@@ -21,7 +21,7 @@
             (assoc :session {} :flash "need login"))))))
 
 (defn wrap-admin [handler]
-  (t/log! :debug "wrap-admin")
+  ;(t/log! :debug "wrap-admin")
   (fn [request]
     (let [user (user request)]
       (t/log! :info (str "wrap-admin " user))

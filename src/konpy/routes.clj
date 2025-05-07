@@ -10,6 +10,7 @@
    [konpy.answer :as answer]
    [konpy.login :refer [login-page login! logout!]]
    [konpy.middleware :as m]
+   [konpy.views :refer [under-construction-page]]
    ;
    [konpy.example :as example]))
 
@@ -31,6 +32,9 @@
       :post {:handler answer/answer!}}]
     ["/self" answer/answers-self]
     ["/others"  answer/answers-others]]
+   ["/answers" {:middleware [[m/wrap-users]]}
+    ["/recent/:n" answer/recent-answers]
+    ["/login" under-construction-page]]
    ["/admin" {:middleware [[m/wrap-admin]]}
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]]
