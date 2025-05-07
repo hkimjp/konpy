@@ -40,16 +40,6 @@
              sha1)
        (mapv first)))
 
-(comment
-  (db/q '[:find ?e
-          :where
-          [?e :task/id ?t]])
-  (identical "ab51f5a4885cbadf8e3e47737d5d9211dd8c9a94")
-  (db/pull 16)
-  (print-str ["abc" "def"])
-  (last-answer "aaa" 1)
-  :rcf)
-
 (defn answer
   [{{:keys [e]} :path-params :as request}]
   (let [tid (parse-long e)
@@ -68,13 +58,15 @@
                (:answer last-answer)]]
         (when-let [same (:identical last-answer)]
           [:div "同一回答: " (print-str same)])
-        [:div [:button {:type  "submit" :class btn} "送信"]]
-        [:div {:class "flex gap-4 my-2"}
-         [:a {:class btn :href (str "/answer/" tid "/self")}
-          "自分の別回答"]
-         (when (some? last-answer)
-           [:a {:class btn :href (str "/answer/" tid "/others")}
-            "クラスメートの回答"])]]]])))
+        [:div [:button {:type  "submit" :class btn} "送信"]]]
+       [:div {:class "flex gap-4 my-2"}
+        [:a {:class btn :href (str "/answer/" tid "/self")}
+         "自分の別回答"]
+        (when (some? last-answer)
+          [:a {:class btn :href (str "/answer/" tid "/others")}
+           "クラスメートの回答"])]
+       [:div {:class "flex gap-4 my-2"}
+        [:a {:class btn :href "/tasks"} "問題に戻る"]]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
