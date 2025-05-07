@@ -61,10 +61,10 @@
         [:div [:button {:type  "submit" :class btn} "送信"]]]
        [:div {:class "flex gap-4 my-2"}
         [:a {:class btn :href (str "/answer/" tid "/self")}
-         "自分の別回答"]
+         "自分の回答"]
         (when (some? last-answer)
           [:a {:class btn :href (str "/answer/" tid "/others")}
-           "クラスメートの回答"])]
+           "全回答"])]
        [:div {:class "flex gap-4 my-2"}
         [:a {:class btn :href "/tasks"} "問題に戻る"]]]])))
 
