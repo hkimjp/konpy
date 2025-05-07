@@ -4,13 +4,15 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - tailwindcss
 - display, logins, submissions in admin page.
+  check post /answers/:n
 - validate if :type "python" found.
 
 
 ## 0.7.3-SNAPSHOT
 
-- /answer/:n から /tasks へ戻るボタン
+- add a button from `/answer/:n` to `/tasks`.
 - no use to `confirm to send`. since they can resend their answers.
+  usefull in `/admin` page?
 
 ## 0.7.2 (2025-05-07)
 

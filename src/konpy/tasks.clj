@@ -26,10 +26,15 @@
           [:a {:class "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500"
                :href (str "/answer/" e)}
            "回答"]]])
+      [:div {:class "py-2"}
+       [:a {:class "rounded-xl text-white p-1 bg-lime-500 hover:bg-lime-700 active:bg-red-500"
+            :href "/tasks/all"}
+        "過去問題"] "（回答不可）"]
       (when (admin? (user request))
-        [:div [:a {:class "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500"
-                   :href (str "/admin")}
-               "admin"]])])))
+        [:div {:class "py-2"}
+         [:a {:class "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500"
+              :href (str "/admin")}
+          "admin"]])])))
 
 (defn tasks-all
   "no edit."
@@ -43,6 +48,6 @@
         ret (->> (q tasks-q)
                  (sort-by (juxt :week :num)))]
     (page
-     [:div
+     [:div {:class "mx-4 py-2"}
       (for [{:keys [week num task]} ret]
         [:p (str week "-" num " " task)])])))

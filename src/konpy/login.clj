@@ -14,7 +14,7 @@
 
 (defn login-page
   [request]
-  (t/log! :info (str "flash " (:flash request)))
+  (t/log! :info (str "login-page flash: " (:flash request)))
   (page
    [:div.mx-4
     [:div.font-bold.p-2 "LOGIN"]
