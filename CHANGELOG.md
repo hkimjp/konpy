@@ -11,7 +11,7 @@
 - keep log/konpy.log when `service stop konpy`.
 
 
-## 0.7.4-SNAPSHOT
+## 0.7.4 (2025-05-07)
 
 
 ## 0.7.3 (2025-05-07)
