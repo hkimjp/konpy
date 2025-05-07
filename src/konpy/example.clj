@@ -23,8 +23,9 @@
      {:class "bg-sky-500 active:bg-red-500"
       :hx-confirm "are you sure?"
       :hx-get     "/example/confirm"
-      :hx-target  "#confirm"
-      :hx-swap    "outerHTML"}
+      ; :hx-target  "#confirm"
+      ; :hx-swap    "outerHTML"
+      }
      "confirm"]
     [:div#confirm "not yet confirmed"]]))
 

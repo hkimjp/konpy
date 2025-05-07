@@ -3,12 +3,14 @@
 - compile routes in production.
 - (set! *default-data-reader-fn* tagged-literal)
 - tailwindcss
-- in admin page, display, logins, submissions.
+- display, logins, submissions in admin page.
 - validate if :type "python" found.
+
 
 ## 0.7.3-SNAPSHOT
 
 - /answer/:n から /tasks へ戻るボタン
+- no use to `confirm to send`. since they can resend their answers.
 
 ## 0.7.2 (2025-05-07)
 

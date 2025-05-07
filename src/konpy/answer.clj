@@ -50,23 +50,24 @@
     (page
      [:div.mx-4
       [:div "課題: " (:task task)]
-      [:div
-       [:form {:method "post"}
-        (h/raw (anti-forgery-field))
-        [:input {:type "hidden" :name "e" :value tid}]
-        [:div [:textarea {:class te :name "answer"}
-               (:answer last-answer)]]
-        (when-let [same (:identical last-answer)]
-          [:div "同一回答: " (print-str same)])
-        [:div [:button {:type  "submit" :class btn} "送信"]]]
-       [:div {:class "flex gap-4 my-2"}
-        [:a {:class btn :href (str "/answer/" tid "/self")}
-         "自分の回答"]
-        (when (some? last-answer)
-          [:a {:class btn :href (str "/answer/" tid "/others")}
-           "全回答"])]
-       [:div {:class "flex gap-4 my-2"}
-        [:a {:class btn :href "/tasks"} "問題に戻る"]]]])))
+      [:form {:method "post"
+              ;:hx-confirm "回答を送信しますか？" :hx-post (str "/answer/" e)
+              }
+       (h/raw (anti-forgery-field))
+       [:input {:type "hidden" :name "e" :value tid}]
+       [:div [:textarea {:class te :name "answer"}
+              (:answer last-answer)]]
+       (when-let [same (:identical last-answer)]
+         [:div "同一回答: " (print-str same)])
+       [:div [:button {:class btn} "送信"]]]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class btn :href (str "/answer/" tid "/self")}
+        "自分の回答"]
+       (when (some? last-answer)
+         [:a {:class btn :href (str "/answer/" tid "/others")}
+          "他受講生の回答"])]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
@@ -134,7 +135,7 @@
                      (sort-by :updated))]
     (page
      [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl underline"} "現在までの回答数 / 人数: "
+      [:div {:class "text-2xl underline"} "現在までの回答数 / 人数 "
        (count answers) " / " (-> (map :author answers) set count)]
       (for [a answers]
         [:div {:class "py-2"}
