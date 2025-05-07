@@ -12,7 +12,7 @@
 (def box "text-center size-10 shadow-lg outline outline-black/5")
 
 (defn tasks
-  "list all the tasks. edit, delete and add."
+  "list all the tasks with upsert buttons."
   [_]
   (let [ret (->> (q '[:find ?e ?week ?num ?task ?issued
                       :keys e week num task issued
@@ -53,6 +53,10 @@
 
 (defn upsert! [{{:keys [e week num task]} :params}]
   (t/log! {:level :info
-           :data {:e e :week week :num num :task task}} "upsertt!")
+           :data {:e e
+                  :week week
+                  :num num
+                  :task task}}
+          "upsert!")
   (upsert-task! (parse-long e) (parse-long week) (parse-long num) task)
   (resp/redirect "/admin"))

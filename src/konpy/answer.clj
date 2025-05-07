@@ -5,7 +5,7 @@
    [ring.util.response :as resp]
    [taoensso.telemere :as t]
    [konpy.db :as db]
-   [konpy.utils :refer [user remove-spaces sha1 now]]
+   [konpy.utils :refer [user remove-spaces sha1 now shorten]]
    [konpy.views :refer [page]]))
 
 (def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
@@ -30,7 +30,7 @@
   (last (sort-by :updated (find-answers author tid))))
 
 (defn identical
-  "returns authors whose answer's sha1 is equal to `sha1`."
+  "returns a list of author's login whose answer's sha1 value is equal to `sha1`."
   [sha1]
   (->> (db/q '[:find ?author
                :in $ ?sha1
@@ -40,50 +40,48 @@
              sha1)
        (mapv first)))
 
-(comment
-  (db/q '[:find ?e
-          :where
-          [?e :task/id ?t]])
-  (identical "ab51f5a4885cbadf8e3e47737d5d9211dd8c9a94")
-  (db/pull 16)
-  (print-str ["abc" "def"])
-  (last-answer "aaa" 1)
-  :rcf)
-
 (defn answer
   [{{:keys [e]} :path-params :as request}]
   (let [tid (parse-long e)
         task (db/pull tid)
         user (user request)
         last-answer (last-answer user tid)]
-    (t/log! :info (str "last-answer " last-answer))
+    (t/log! {:level :debug
+             :data {:tid tid
+                    :user user
+                    :last-answer (shorten last-answer)}}
+            "answer")
     (page
      [:div.mx-4
       [:div "課題: " (:task task)]
-      [:div
-       [:form {:method "post"}
-        (h/raw (anti-forgery-field))
-        [:input {:type "hidden" :name "e" :value tid}]
-        [:div [:textarea {:class te :name "answer"}
-               (:answer last-answer)]]
-        (when-let [same (:identical last-answer)]
-          [:div "同一回答: " (print-str same)])
-        [:div [:button {:type  "submit" :class btn} "送信"]]
-        [:div {:class "flex gap-4 my-2"}
-         [:a {:class btn :href (str "/answer/" tid "/self")}
-          "自分の別回答"]
-         (when (some? last-answer)
-           [:a {:class btn :href (str "/answer/" tid "/others")}
-            "クラスメートの回答"])]]]])))
+      [:form {:method "post"
+              ;:hx-confirm "回答を送信しますか？" :hx-post (str "/answer/" e)
+              }
+       (h/raw (anti-forgery-field))
+       [:input {:type "hidden" :name "e" :value tid}]
+       [:div [:textarea {:class te :name "answer"}
+              (:answer last-answer)]]
+       (when-let [same (:identical last-answer)]
+         [:div "同一回答: " (print-str same)])
+       [:div [:button {:class btn} "送信"]]]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class btn :href (str "/answer/" tid "/self")}
+        "自分の回答"]
+       (when (some? last-answer)
+         [:a {:class btn :href (str "/answer/" tid "/others")}
+          "他受講生の回答"])]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
   (let [tid (parse-long e)
         sha1 (-> answer remove-spaces sha1)
         identical (identical sha1)]
-    (t/log! :info (str "tid " tid " answer " answer))
-    (t/log! :info (str "sha1 " sha1))
-    (t/log! :info (str "identical " identical))
+    (t/log! {:level :debug
+             :data {:tid tid
+                    :sha1 (shorten 20 sha1)
+                    :identical (shorten 20 (str identical))}})
     (try
       (db/put! [{:db/add -1
                  :task/id tid
@@ -104,20 +102,8 @@
               [?e :answer ?answer]
               [?e :updated ?updated]])
 
-(comment
-  (db/q q-self 1 "hkimura")
-  (db/q '[:find ?e ?tid ?answer ?updated
-          :where
-          [?e :task/id ?tid]
-          [?e :answer ?answer]
-          [?e :updated ?updated]
-          [?e :author "hkimura"]])
-  (db/pull 25)
-  :rcf)
-
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
-  (t/log! :info (str "answers-self " e " " (user request)))
   (page
    [:div {:class "mx-4"}
     (for [a (->> (db/q q-self (parse-long e) (user request))
@@ -136,12 +122,16 @@
                 [?e :updated ?updated]])
 
 (defn answers-others
-  [{{:keys [e]} :path-params :as request}]
-  (t/log! :info (str "answers-others " e " " (user request)))
-  (page
-   [:div {:class "mx-4"}
-    (for [a (->> (db/q q-others (parse-long e))
-                 (sort-by :updated))]
-      [:div {:class "py-2"}
-       [:p "From: " (:author a) ", Date:" (str (:updated a))]
-       [:textarea {:class te} (:answer a)]])]))
+  [{{:keys [e]} :path-params}]
+  (let [answers (->> (db/q q-others (parse-long e))
+                     (sort-by :updated))]
+    (page
+     [:div {:class "mx-4 my-2"}
+      [:div {:class "text-2xl underline"} "現在までの回答数(人数): "
+       (count answers) " (" (-> (map :author answers) set count) ")"]
+      (for [a answers]
+        [:div {:class "py-2"}
+         [:p "From " [:span {:class "font-bold"} (:author a)]
+          ", "
+          (str (:updated a))]
+         [:textarea {:class te} (:answer a)]])])))
