@@ -5,8 +5,9 @@
 - tailwindcss
 - in admin page, display, logins, submissions.
 
-## 0.7.0-SNAPSHOT
+## 0.7.1 (2025-05-07)
 
+- replaced ':p' with ':pre' in /answer/:n/self and /answer/:n/others
 - nobody can see other students' answers until he answer the question
   including admin.
 
