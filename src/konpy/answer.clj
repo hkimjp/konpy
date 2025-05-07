@@ -9,7 +9,7 @@
    [konpy.views :refer [page]]))
 
 (def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
-(def te  "text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
+(def te  "p-1 text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
 
 (defn find-answers
   [author tid]
@@ -120,10 +120,11 @@
   (t/log! :info (str "answers-self " e " " (user request)))
   (page
    [:div {:class "mx-4"}
-    (for [a (db/q q-self (parse-long e) (user request))]
+    (for [a (->> (db/q q-self (parse-long e) (user request))
+                 (sort-by :updated))]
       [:div
        [:p "Date:" (str (:updated a))]
-       [:pre {:class te} (:answer a)]])]))
+       [:textarea {:class te} (:answer a)]])]))
 
 (def q-others '[:find ?answer ?updated ?author
                 :keys answer updated author
@@ -139,7 +140,8 @@
   (t/log! :info (str "answers-others " e " " (user request)))
   (page
    [:div {:class "mx-4"}
-    (for [a (db/q q-others (parse-long e))]
+    (for [a (->> (db/q q-others (parse-long e))
+                 (sort-by :updated))]
       [:div {:class "py-2"}
        [:p "From: " (:author a) ", Date:" (str (:updated a))]
-       [:pre {:class te} (:answer a)]])]))
+       [:textarea {:class te} (:answer a)]])]))
