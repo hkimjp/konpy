@@ -16,17 +16,17 @@
   [request]
   (t/log! :info (str "flash " (:flash request)))
   (page
-   [:div
-    [:div "LOGIN"]
+   [:div.mx-4
+    [:div.font-bold.p-2 "LOGIN"]
     (when-let [flash (:flash request)]
       [:div {:class "text-red-500"} flash])
-    [:div.flex
+    [:div.p-1
      [:form {:method "post"}
       (h/raw (anti-forgery-field))
-      [:input {:placeholder "your account" :name "login"}]
-      [:input {:type "password" :name "password"}]
+      [:input.border-1.border-solid.p-1 {:placeholder "your account" :name "login"}]
+      [:input.border-1.border-solid.p-1 {:type "password" :placeholder "password" :name "password"}]
       [:button
-       {:class "rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
+       {:class "p-1 text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
        "LOGIN"]]]]))
 
 (defn login!
@@ -54,5 +54,3 @@
   (-> (resp/redirect "/")
       (assoc :session {})))
 
-(comment
-  (:body (login-page nil)))

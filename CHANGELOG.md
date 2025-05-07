@@ -2,12 +2,18 @@
 
 - compile routes in production.
 - (set! *default-data-reader-fn* tagged-literal)
-- self answers
-- ohter answers
 - tailwindcss
+- in admin page, display, logins, submissions.
 
+## 0.7.0-SNAPSHOT
+
+- nobody can see other students' answers until he answer the question
+  including admin.
 
 ## 0.6.7 (2025-05-06)
+
+- self answers
+- ohter answers
 
 ## 0.6.6 - hotfix
 
@@ -32,7 +38,7 @@
 - updated libraries
 
 | :file    | :name                       | :current | :latest |
-|----------+-----------------------------+----------+---------|
+|--------- | --------------------------- | -------- | --------|
 | deps.edn | datascript/datascript       | 1.7.4    | 1.7.5   |
 |          | io.github.tonsky/clj-reload | 0.9.4    | 0.9.5   |
 |          | io.github.tonsky/clj-reload | 0.9.4    | 0.9.5   |
