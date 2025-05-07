@@ -8,11 +8,12 @@
 - validate if :type "python" found.
 
 
-## 0.7.3-SNAPSHOT
+## 0.7.3 (2025-05-07)
 
 - add a button from `/answer/:n` to `/tasks`.
 - no use to `confirm to send`. since they can resend their answers.
   usefull in `/admin` page?
+- show `/tasks/all` page. unanswerable.
 
 ## 0.7.2 (2025-05-07)
 
