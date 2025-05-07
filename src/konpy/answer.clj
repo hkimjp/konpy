@@ -130,10 +130,12 @@
 (defn answers-others
   [{{:keys [e]} :path-params :as request}]
   (t/log! :info (str "answers-others " e " " (user request)))
-  (page
-   [:div {:class "mx-4"}
-    (for [a (->> (db/q q-others (parse-long e))
-                 (sort-by :updated))]
-      [:div {:class "py-2"}
-       [:p "From: " (:author a) ", Date:" (str (:updated a))]
-       [:textarea {:class te} (:answer a)]])]))
+  (let [answers (->> (db/q q-others (parse-long e))
+                     (sort-by :updated))]
+    (page
+     [:div {:class "mx-4 my-2"}
+      [:div {:class "text-2xl underline"} "現在までの回答数: "  (count answers)]
+      (for [a answers]
+        [:div {:class "py-2"}
+         [:p "From: " (:author a) ", Date:" (str (:updated a))]
+         [:textarea {:class te} (:answer a)]])])))
