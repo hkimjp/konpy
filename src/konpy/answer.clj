@@ -134,8 +134,11 @@
                      (sort-by :updated))]
     (page
      [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl underline"} "現在までの回答数: "  (count answers)]
+      [:div {:class "text-2xl underline"} "現在までの回答数 / 人数: "
+       (count answers) " / " (-> (map :author answers) set count)]
       (for [a answers]
         [:div {:class "py-2"}
-         [:p "From: " (:author a) ", Date:" (str (:updated a))]
+         [:p "From " [:span {:class "font-bold"} (:author a)]
+          ", "
+          (str (:updated a))]
          [:textarea {:class te} (:answer a)]])])))
