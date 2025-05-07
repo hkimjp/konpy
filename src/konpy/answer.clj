@@ -9,7 +9,7 @@
    [konpy.views :refer [page]]))
 
 (def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
-(def te  "m-2 w-120 h-60 outline outline-black/5 shadow-lg")
+(def te  "text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
 
 (defn find-answers
   [author tid]
@@ -22,7 +22,7 @@
           [?e :answer ?answer]
           [?e :identical ?identical]
           [?e :updated ?updated]]
-    author tid))
+        author tid))
 
 (defn last-answer
   "if no answer, returns nil."
@@ -37,8 +37,8 @@
                :where
                [?e :author ?author]
                [?e :sha1 ?sha1]]
-         sha1)
-    (mapv first)))
+             sha1)
+       (mapv first)))
 
 (comment
   (db/q '[:find ?e
@@ -58,23 +58,23 @@
         last-answer (last-answer user tid)]
     (t/log! :info (str "last-answer " last-answer))
     (page
-      [:div.mx-4
-       [:div "課題: " (:task task)]
-       [:div
-        [:form {:method "post"}
-         (h/raw (anti-forgery-field))
-         [:input {:type "hidden" :name "e" :value tid}]
-         [:div [:textarea {:class te :name "answer"}
-                (:answer last-answer)]]
-         (when-let [same (:identical last-answer)]
-           [:div "同一回答: " (print-str same)])
-         [:div [:button {:type  "submit" :class btn} "送信"]]
-         [:div {:class "flex gap-4 my-2"}
-          [:a {:class btn :href (str "/answer/" tid "/self")}
-           "自分の別回答"]
-          (when (some? last-answer)
-            [:a {:class btn :href (str "/answer/" tid "/others")}
-             "クラスメートの回答"])]]]])))
+     [:div.mx-4
+      [:div "課題: " (:task task)]
+      [:div
+       [:form {:method "post"}
+        (h/raw (anti-forgery-field))
+        [:input {:type "hidden" :name "e" :value tid}]
+        [:div [:textarea {:class te :name "answer"}
+               (:answer last-answer)]]
+        (when-let [same (:identical last-answer)]
+          [:div "同一回答: " (print-str same)])
+        [:div [:button {:type  "submit" :class btn} "送信"]]
+        [:div {:class "flex gap-4 my-2"}
+         [:a {:class btn :href (str "/answer/" tid "/self")}
+          "自分の別回答"]
+         (when (some? last-answer)
+           [:a {:class btn :href (str "/answer/" tid "/others")}
+            "クラスメートの回答"])]]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
@@ -119,11 +119,11 @@
   [{{:keys [e]} :path-params :as request}]
   (t/log! :info (str "answers-self " e " " (user request)))
   (page
-    [:div
-     (for [a (db/q q-self (parse-long e) (user request))]
-       [:div
-        [:p "Date:" (str (:updated a))]
-        [:p {:class te} (:answer a)]])]))
+   [:div {:class "mx-4"}
+    (for [a (db/q q-self (parse-long e) (user request))]
+      [:div
+       [:p "Date:" (str (:updated a))]
+       [:pre {:class te} (:answer a)]])]))
 
 (def q-others '[:find ?answer ?updated ?author
                 :keys answer updated author
@@ -138,8 +138,8 @@
   [{{:keys [e]} :path-params :as request}]
   (t/log! :info (str "answers-others " e " " (user request)))
   (page
-    [:div
-     (for [a (db/q q-others (parse-long e))]
-       [:div
-        [:p (:author a) ", Date:" (str (:updated a))]
-        [:p {:class te} (:answer a)]])]))
+   [:div {:class "mx-4"}
+    (for [a (db/q q-others (parse-long e))]
+      [:div {:class "py-2"}
+       [:p "From: " (:author a) ", Date:" (str (:updated a))]
+       [:pre {:class te} (:answer a)]])]))
