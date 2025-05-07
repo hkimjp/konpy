@@ -4,6 +4,11 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - tailwindcss
 - in admin page, display, logins, submissions.
+- longer answers than prepared height of `pre`.
+- validate if :type "python" found.
+- textare is better than pre?
+- sort by date /answers/:n/others. also /answers/:n/self.
+
 
 ## 0.7.1 (2025-05-07)
 

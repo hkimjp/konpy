@@ -27,6 +27,8 @@
 /target
 
 .env
-/storage
 /resources/public/assets/css/output.css
-
+!/storage/.keep
+/storage/*
+!/log/.keep
+/log/*
