@@ -6,7 +6,7 @@
 - in admin page, display, logins, submissions.
 - validate if :type "python" found.
 
-## 0.7.2-SNAPSHOT
+## 0.7.2 (2025-05-07)
 
 - longer answers than prepared height of `pre`. textare is better than pre?
 - sort by date /answers/:n/others. also /answers/:n/self.
