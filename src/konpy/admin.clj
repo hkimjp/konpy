@@ -7,7 +7,7 @@
             [konpy.utils :refer [now]]
             [konpy.views :refer [page]]))
 
-(def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def btn "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
 (def box "text-center size-10 shadow-lg outline outline-black/5")
 
