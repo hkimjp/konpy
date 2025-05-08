@@ -12,6 +12,10 @@
 - redis.
 - just recipe to fetch db.sqlite and konpy.log.
 
+## 0.7.7-SNAPSHOT
+
+- forgot `[:div#logins]` and `[:div#answer]`.
+
 ## 0.7.6 (2025-05-08)
 
 - recent-logins. analyzing "log/konpy.log".
