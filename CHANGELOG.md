@@ -14,7 +14,7 @@
 - compare (reverse (sort)) and (sort reverse-f)
 
 
-## 0.7.8-SNAPSHOT
+## 0.7.8 (2025-05-09)
 
 - show identicals in `answers-others` page.
 
