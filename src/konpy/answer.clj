@@ -157,3 +157,9 @@
      [:div
       (for [a answers]
         [:span a " "])])))
+
+(defn recent-logins
+  [{{:keys [n]} :path-params}]
+  (t/log! :debug (str "recent-logins " n))
+  (render
+   [:div "under construction"]))

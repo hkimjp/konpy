@@ -10,6 +10,9 @@
 - systemctl start overwrites konpy.log
 - gather class definitions.
 
+## 0.7.6-SNAPSHOT
+
+- persistent log. (replaced `>` by `>>`).
 
 ## 0.7.5 (2025-05-08)
 
