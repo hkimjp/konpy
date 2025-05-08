@@ -12,8 +12,9 @@
 - redis.
 
 
-## 0.7.6-SNAPSHOT
+## 0.7.6 (2025-05-08)
 
+- recent-logins. analyzing "log/konpy.log".
 - persistent log. replaced `>` by `>>`.
 
 ## 0.7.5 (2025-05-08)
