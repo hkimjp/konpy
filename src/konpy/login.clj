@@ -14,7 +14,7 @@
 
 (defn login-page
   [request]
-  (t/log! :info (str "login-page flash: " (:flash request)))
+  ; (t/log! :info (str "login-page flash: " (:flash request)))
   (page
    [:div.mx-4
     [:div.font-bold.p-2 "LOGIN"]
@@ -23,10 +23,10 @@
     [:div.p-1
      [:form {:method "post"}
       (h/raw (anti-forgery-field))
-      [:input.border-1.border-solid.p-1 {:placeholder "your account" :name "login"}]
-      [:input.border-1.border-solid.p-1 {:type "password" :placeholder "password" :name "password"}]
+      [:input.border-1.border-solid.px-1 {:name "login" :placeholder "your account"}]
+      [:input.border-1.border-solid.px-1 {:name "password" :placeholder "password" :type "password"}]
       [:button
-       {:class "p-1 text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
+       {:class "mx-1 px-1 text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500"}
        "LOGIN"]]]]))
 
 (defn login!

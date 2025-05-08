@@ -7,10 +7,16 @@
 - validate if :type "python" found.
 - can see future issues from current `/tasks/all`.
 - keep log/konpy.log when `service stop konpy`.
+- systemctl start overwrites konpy.log
+- gather class definitions.
+
 
 ## 0.7.5-SNAPSHOT
 
+- confirm to send an answer.
 - removed unnecessary parts from pom.xml
+- order reversed `answer/:n/others`.
+- make login form size a little smaller.
 
 ## 0.7.4 (2025-05-07)
 

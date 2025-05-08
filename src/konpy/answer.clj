@@ -125,7 +125,8 @@
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-others (parse-long e))
-                     (sort-by :updated))]
+                     (sort-by :updated)
+                     reverse)]
     (page
      [:div {:class "mx-4 my-2"}
       [:div {:class "text-2xl"} "現在までの回答数(人数): "
@@ -155,7 +156,4 @@
     (render
      [:div
       (for [a answers]
-        [:span a ", "])])))
-
-
-
+        [:span a " "])])))
