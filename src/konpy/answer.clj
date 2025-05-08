@@ -158,8 +158,12 @@
       (for [a answers]
         [:span a " "])])))
 
+; find 'login success: <login>' in log/konpy.log
+; or
+; redis?
 (defn recent-logins
   [{{:keys [n]} :path-params}]
   (t/log! :debug (str "recent-logins " n))
+
   (render
    [:div "under construction"]))
