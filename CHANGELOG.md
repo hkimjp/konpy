@@ -12,7 +12,7 @@
 - redis.
 - just recipe to fetch db.sqlite and konpy.log.
 
-## 0.7.7-SNAPSHOT
+## 0.7.7 (2025-05-09)
 
 - forgot `[:div#logins]` and `[:div#answer]`.
 
