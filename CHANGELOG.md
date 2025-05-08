@@ -11,7 +11,7 @@
 - gather class definitions.
 
 
-## 0.7.5-SNAPSHOT
+## 0.7.5 (2025-05-08)
 
 - confirm to send an answer.
 - removed unnecessary parts from pom.xml
