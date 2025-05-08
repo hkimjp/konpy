@@ -1,5 +1,9 @@
 (ns konpy.answer
   (:require
+   ;
+   [clojure.java.io :as io]
+   [clojure.string :as str]
+   ;
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
@@ -157,3 +161,32 @@
      [:div
       (for [a answers]
         [:span a " "])])))
+
+; find 'login success: <login>' in log/konpy.log
+; will soon replaced by redis powered function.
+; this is a temporally one.
+(defn recent-logins
+  [{{:keys [n]} :path-params}]
+  (t/log! :debug (str "recent-logins " n))
+  (let [users (->> (slurp (io/file "log/konpy.log"))
+                   str/split-lines
+                   (filter #(re-find #"success: " %))
+                   (map #(re-find #"success: (.*)" %))
+                   (map second)
+                   reverse)]
+    (t/log! :debug (str users))
+    (render
+     [:div (str users)])))
+
+(comment
+  (let [s "2025-05-08T06:00:22.204853329Z INFO LOG nuc7 konpy.login[47,13] login success: hkimura"]
+    (re-find #"success: (.*)" s))
+
+  (->> (slurp (io/file "log/konpy.log"))
+       str/split-lines
+       (filter #(re-find #"success: " %))
+       (map #(re-find #"success: (.*)" %))
+       (map second)
+       reverse)
+
+  :rcf)
