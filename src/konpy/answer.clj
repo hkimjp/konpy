@@ -8,8 +8,8 @@
    [konpy.utils :refer [user remove-spaces sha1 now shorten]]
    [konpy.views :refer [page render]]))
 
-(def btn  "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
-(def lime "rounded-xl text-white p-1 bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+(def btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 (def te   "p-1 text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
 
 (defn find-answers
@@ -54,16 +54,16 @@
             "answer")
     (page
      [:div.mx-4
-      [:div "課題: " (:task task)]
-      [:form {:method "post"
-              ;:hx-confirm "回答を送信しますか？" :hx-post (str "/answer/" e)
-              }
+      [:div [:span {:class "font-bold"} "課題: "] (:task task)]
+      [:form {;:method "post"
+              :hx-confirm "ほんとに？"
+              :hx-post (str "/answer/" e)}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        [:div [:textarea {:class te :name "answer"}
               (:answer last-answer)]]
        (when-let [same (:identical last-answer)]
-         [:div "同一回答: " (print-str same)])
+         [:div [:span {:class "font-bold"} "同一回答: "] (print-str same)])
        [:div [:button {:class btn} "送信"]]]
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}
@@ -125,10 +125,11 @@
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-others (parse-long e))
-                     (sort-by :updated))]
+                     (sort-by :updated)
+                     reverse)]
     (page
      [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl underline"} "現在までの回答数(人数): "
+      [:div {:class "text-2xl"} "現在までの回答数(人数): "
        (count answers) " (" (-> (map :author answers) set count) ")"]
       (for [a answers]
         [:div {:class "py-2"}
@@ -155,7 +156,4 @@
     (render
      [:div
       (for [a answers]
-        [:span a ", "])])))
-
-
-
+        [:span a " "])])))

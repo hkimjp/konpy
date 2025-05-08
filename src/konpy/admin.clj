@@ -7,7 +7,7 @@
             [konpy.utils :refer [now]]
             [konpy.views :refer [page]]))
 
-(def btn "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def btn "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
 (def box "text-center size-10 shadow-lg outline outline-black/5")
 
@@ -31,7 +31,7 @@
       [:div
        (for [{:keys [e week num task]}
              (conj ret {:e -1 :week "" :num "" :task ""})]
-         [:div {:class "flex"}
+         [:div {:class "flex gap-2"}
           [:form {:class "mx-xl" :method "post"}
            (h/raw (anti-forgery-field))
            [:div {:class "flex items-center"}
@@ -39,7 +39,7 @@
             [:input {:class box :name "week" :value week}]
             " - "
             [:input {:class box :name "num" :value num}]
-            [:textarea {:class "w-120 outline outline-black/5 shadow-lg"
+            [:textarea {:class "w-160 h-10 p-2 outline outline-black/5 shadow-lg"
                         :name "task"}
              task]
             [:button {:class btn} "upsert"]]]])]])))
