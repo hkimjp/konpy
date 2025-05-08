@@ -27,7 +27,7 @@
           [?e :answer ?answer]
           [?e :identical ?identical]
           [?e :updated ?updated]]
-        author tid))
+    author tid))
 
 (defn last-answer
   "if no answer, returns nil."
@@ -42,8 +42,8 @@
                :where
                [?e :author ?author]
                [?e :sha1 ?sha1]]
-             sha1)
-       (mapv first)))
+         sha1)
+    (mapv first)))
 
 (defn answer
   [{{:keys [e]} :path-params :as request}]
@@ -55,28 +55,28 @@
              :data {:tid tid
                     :user user
                     :last-answer (shorten last-answer)}}
-            "answer")
+      "answer")
     (page
-     [:div.mx-4
-      [:div [:span {:class "font-bold"} "課題: "] (:task task)]
-      [:form {;:method "post"
-              :hx-confirm "ほんとに？"
-              :hx-post (str "/answer/" e)}
-       (h/raw (anti-forgery-field))
-       [:input {:type "hidden" :name "e" :value tid}]
-       [:div [:textarea {:class te :name "answer"}
-              (:answer last-answer)]]
-       (when-let [same (:identical last-answer)]
-         [:div [:span {:class "font-bold"} "同一回答: "] (print-str same)])
-       [:div [:button {:class btn} "送信"]]]
-      [:div {:class "flex gap-4 my-2"}
-       [:a {:class lime :href (str "/answer/" tid "/self")}
-        "自分の回答"]
-       (when (some? last-answer)
-         [:a {:class lime :href (str "/answer/" tid "/others")}
-          "他受講生の回答"])]
-      [:div {:class "flex gap-4 my-2"}
-       [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
+      [:div.mx-4
+       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
+       [:form {;:method "post"
+               :hx-confirm "ほんとに？"
+               :hx-post (str "/answer/" e)}
+        (h/raw (anti-forgery-field))
+        [:input {:type "hidden" :name "e" :value tid}]
+        [:div [:textarea {:class te :name "answer"}
+               (:answer last-answer)]]
+        (when-let [same (:identical last-answer)]
+          [:div [:span {:class "font-bold"} "同一回答: "] (print-str same)])
+        [:div [:button {:class btn} "送信"]]]
+       [:div {:class "flex gap-4 my-2"}
+        [:a {:class lime :href (str "/answer/" tid "/self")}
+         "自分の回答"]
+        (when (some? last-answer)
+          [:a {:class lime :href (str "/answer/" tid "/others")}
+           "他受講生の回答"])]
+       [:div {:class "flex gap-4 my-2"}
+        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
@@ -110,12 +110,12 @@
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
   (page
-   [:div {:class "mx-4"}
-    (for [a (->> (db/q q-self (parse-long e) (user request))
-                 (sort-by :updated))]
-      [:div
-       [:p "Date:" (str (:updated a))]
-       [:textarea {:class te} (:answer a)]])]))
+    [:div {:class "mx-4"}
+     (for [a (->> (db/q q-self (parse-long e) (user request))
+               (sort-by :updated))]
+       [:div
+        [:p "Date:" (str (:updated a))]
+        [:textarea {:class te} (:answer a)]])]))
 
 (def q-others '[:find ?answer ?updated ?author
                 :keys answer updated author
@@ -129,18 +129,18 @@
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-others (parse-long e))
-                     (sort-by :updated)
-                     reverse)]
+                  (sort-by :updated)
+                  reverse)]
     (page
-     [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl"} "現在までの回答数(人数): "
-       (count answers) " (" (-> (map :author answers) set count) ")"]
-      (for [a answers]
-        [:div {:class "py-2"}
-         [:p "From " [:span {:class "font-bold"} (:author a)]
-          ", "
-          (str (:updated a))]
-         [:textarea {:class te} (:answer a)]])])))
+      [:div {:class "mx-4 my-2"}
+       [:div {:class "text-2xl"} "現在までの回答数(人数): "
+        (count answers) " (" (-> (map :author answers) set count) ")"]
+       (for [a answers]
+         [:div {:class "py-2"}
+          [:p "From " [:span {:class "font-bold"} (:author a)]
+           ", "
+           (str (:updated a))]
+          [:textarea {:class te} (:answer a)]])])))
 
 (def ra-q '[:find ?author ?updated
             :keys author updated
@@ -153,14 +153,14 @@
   (t/log! :debug (str (class n)))
   (let [n (parse-long n)
         answers (->> (db/q ra-q)
-                     (sort-by :updated)
-                     reverse
-                     (take n)
-                     (mapv :author))]
+                  (sort-by :updated)
+                  reverse
+                  (take n)
+                  (mapv :author))]
     (render
-     [:div
-      (for [a answers]
-        [:span a " "])])))
+      [:div#answers
+       (for [a answers]
+         [:span a " "])])))
 
 ; find 'login success: <login>' in log/konpy.log
 ; will soon replaced by redis powered function.
@@ -169,24 +169,24 @@
   [{{:keys [n]} :path-params}]
   (t/log! :debug (str "recent-logins " n))
   (let [users (->> (slurp (io/file "log/konpy.log"))
-                   str/split-lines
-                   (filter #(re-find #"success: " %))
-                   (map #(re-find #"success: (.*)" %))
-                   (map second)
-                   reverse)]
+                str/split-lines
+                (filter #(re-find #"success: " %))
+                (map #(re-find #"success: (.*)" %))
+                (map second)
+                reverse)]
     (t/log! :debug (str users))
     (render
-     [:div (str users)])))
+      [:div#logins (str users)])))
 
 (comment
   (let [s "2025-05-08T06:00:22.204853329Z INFO LOG nuc7 konpy.login[47,13] login success: hkimura"]
     (re-find #"success: (.*)" s))
 
   (->> (slurp (io/file "log/konpy.log"))
-       str/split-lines
-       (filter #(re-find #"success: " %))
-       (map #(re-find #"success: (.*)" %))
-       (map second)
-       reverse)
+    str/split-lines
+    (filter #(re-find #"success: " %))
+    (map #(re-find #"success: (.*)" %))
+    (map second)
+    reverse)
 
   :rcf)
