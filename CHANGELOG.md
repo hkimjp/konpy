@@ -10,7 +10,13 @@
 - gather tailwindcss class definitions.
 - garbage collect datascript.
 - redis.
-- just recipe to fetch db.sqlite and konpy.log.
+- just recipe to fetch `db.sqlite` and `konpy.log` from app.melt.
+- compare (reverse (sort)) and (sort reverse-f)
+
+
+## 0.7.8 (2025-05-09)
+
+- show identicals in `answers-others` page.
 
 ## 0.7.7 (2025-05-09)
 
