@@ -8,6 +8,9 @@
 - can see future issues from current `/tasks/all`.
 - keep log/konpy.log when `service stop konpy`.
 
+## 0.7.5-SNAPSHOT
+
+- removed unnecessary parts from pom.xml
 
 ## 0.7.4 (2025-05-07)
 
