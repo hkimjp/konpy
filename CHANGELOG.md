@@ -10,7 +10,7 @@
 - gather tailwindcss class definitions.
 - garbage collect datascript.
 - redis.
-
+- just recipe to fetch db.sqlite and konpy.log.
 
 ## 0.7.6 (2025-05-08)
 
