@@ -34,7 +34,7 @@
     ["/others"  answer/answers-others]]
    ["/answers" {:middleware [[m/wrap-users]]}
     ["/recent/:n" answer/recent-answers]
-    ["/login" under-construction-page]]
+    ["/logins/:n" answer/recent-logins]]
    ["/admin" {:middleware [[m/wrap-admin]]}
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]]

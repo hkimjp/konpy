@@ -7,9 +7,14 @@
 - validate if :type "python" found.
 - can see future issues from current `/tasks/all`.
 - keep log/konpy.log when `service stop konpy`.
-- systemctl start overwrites konpy.log
-- gather class definitions.
+- gather tailwindcss class definitions.
+- garbage collect datascript.
+- redis.
 
+
+## 0.7.6-SNAPSHOT
+
+- persistent log. replaced `>` by `>>`.
 
 ## 0.7.5 (2025-05-08)
 

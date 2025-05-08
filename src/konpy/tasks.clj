@@ -6,7 +6,7 @@
 
 (def box-sky  "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
-(def box-lime "rounded-xl text-white p-1 bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+(def box-lime "my-1 p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
 (def box-red "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500")
 
@@ -38,10 +38,12 @@
                 :hx-swap "outerHTML"}
        "最近の回答者"]
       [:div#answers]
-      [:div {:class "py-2"}
-       [:a {:class box-lime
-            :href "/answers/login"}
-        "最近のログイン"]]
+      [:button {:class box-lime
+                :hx-get "/answers/logins/10"
+                :hx-target "#logins"
+                :hx-swap "outerHTML"}
+       "最近のログイン"]
+      [:div#logins]
       (when (admin? (user request))
         [:div {:class "py-2"}
          [:a {:class box-red
