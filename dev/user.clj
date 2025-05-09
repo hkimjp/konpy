@@ -41,6 +41,32 @@
       (upsert-task! -1 week @c s))))
 
 (comment
+
+  (db/gc)
+
+  (db/q '[:find ?sha1
+          :in $ ?author
+          :where
+          [?e :task/id 31]
+          [?e :author ?author]
+          [?e :sha1 ?sha1]]
+        "daisuke")
+
+  #{["66b1d23469ffbb00b32918a33a0ea097ab7a8560"] ["67084ea7526e2e1fce6699cad5bc9d4c06ba6be1"]}
+  (db/q '[:find ?sha1
+          :in $ ?author
+          :where
+          [?e :task/id 31]
+          [?e :author ?author]
+          [?e :sha1 ?sha1]]
+        "knt_07")
+  :rcf)
+
+(comment
+
+  :rcf)
+
+(comment
   (seeds-in 4 seeds-4)
   (seeds-in 5 seeds-5)
 
