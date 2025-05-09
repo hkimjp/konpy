@@ -14,6 +14,15 @@
 - compare (reverse (sort)) and (sort reverse-f)
 
 
+## 0.7.9-SNAPSHOT
+
+- reversed display order of `recent-answers` and `recent-logns`.
+- added `com.taoensso/carmine`.
+    - kp:login:<login> iso-datetime
+    - kp:answer:<login> tid
+- added `carmine/put-login`, `carmine/get-logins`.
+
+
 ## 0.7.8 (2025-05-09)
 
 - show identicals in `answers-others` page.

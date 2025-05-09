@@ -1,15 +1,15 @@
 (ns konpy.answer
   (:require
-   ;
-   [clojure.java.io :as io]
-   [clojure.string :as str]
-   ;
+   ; [clojure.java.io :as io]
+   ; [clojure.string :as str]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
    [taoensso.telemere :as t]
+   ;
+   [konpy.carmine :as c]
    [konpy.db :as db]
-   [konpy.utils :refer [user remove-spaces sha1 now shorten]]
+   [konpy.utils :refer [user remove-spaces sha1 now shorten develop?]]
    [konpy.views :refer [page render]]))
 
 (def ^:private btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
@@ -98,7 +98,8 @@
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form {;:method "post"
               :hx-confirm "ほんとに？"
-              :hx-post (str "/answer/" e)}
+              :hx-post (str "/answer/" e)
+              :hx-swap "none"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        [:div [:textarea {:class te :name "answer"}
@@ -132,13 +133,15 @@
                  :sha1 sha1
                  :updated (now)
                  :identical identical}])
+      (c/put-answer (user request) tid (if (develop?) 60 (* 24 60 60)))
       (resp/redirect "/tasks")
       (catch Exception e (.getMessage e)))))
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
   (let [answers (->> (db/q q-answers-self (parse-long e) (user request))
-                     (sort-by :updated))]
+                     (sort-by :updated)
+                     reverse)]
     (page
      [:div {:class "mx-4"}
       (for [a answers]
@@ -168,32 +171,17 @@
          [:div [:span {:class "font-bold"} "同じ回答: "]
           (print-str (:identical a))]])])))
 
+;------------------------------------------
 (defn recent-answers
-  [{{:keys [n]} :path-params}]
-  (t/log! :debug (str (class n)))
-  (let [n (parse-long n)
-        answers (->> (db/q q-recent-answers)
-                     (sort-by :updated)
-                     reverse
-                     (take n)
-                     (mapv :author))]
+  [_]
+  (let [answers (str (c/get-answers))]
+    (t/log! :debug (str "recent-answers " (str answers)))
     (render
-     [:div#answers
-      (for [a answers]
-        [:span a " "])])))
+     [:div#answers (str answers)])))
 
-; find 'login success: <login>' in log/konpy.log
-; will soon replaced by redis powered function.
-; this is a temporally one.
 (defn recent-logins
-  [{{:keys [n]} :path-params}]
-  (t/log! :debug (str "recent-logins " n))
-  (let [users (->> (slurp (io/file "log/konpy.log"))
-                   str/split-lines
-                   (filter #(re-find #"success: " %))
-                   (map #(re-find #"success: (.*)" %))
-                   (map second)
-                   reverse)]
-    (t/log! :debug (str users))
+  [_]
+  (let [users (str (c/get-logins))]
+    (t/log! :debug (str "recent-logins " users))
     (render
      [:div#logins (str users)])))

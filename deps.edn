@@ -34,7 +34,8 @@
   tonsky/datascript-storage-sql
   {:git/url "https://github.com/tonsky/datascript-storage-sql"
    :git/sha "63763085e05c7214d48106058ba58987535ab296"}
-  org.xerial/sqlite-jdbc         {:mvn/version "3.49.1.0"}}
+  org.xerial/sqlite-jdbc         {:mvn/version "3.49.1.0"}
+  com.taoensso/carmine           {:mvn/version "3.4.1"}}
 
  :aliases
  {:run-m  {:main-opts ["-m" "konpy.core"]}
