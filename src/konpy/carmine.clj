@@ -66,3 +66,7 @@
 
 (defn get-answers []
   (get-key "kp:answer:"))
+
+(comment
+  (get-answers)
+  :rcf)

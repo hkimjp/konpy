@@ -82,8 +82,8 @@
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "]]
-   [:div [:span.font-bold "WIL: "]]
+   [:div [:span.font-bold "Typing: "] "your typing score(under construction)"]
+   [:div [:span.font-bold "WIL: "] "your wil(under construction)"]
    [:textarea {:class te} (:answer a)]])
 
 (defn answer
@@ -166,14 +166,14 @@
 
 (defn recent-answers
   [_]
-  (let [answers (str (c/get-answers))]
-    (t/log! :debug (str "recent-answers " (str answers)))
+  (let [answers (c/get-answers)]
+    (t/log! :debug (str "recent-answers " (print-str answers)))
     (render
-     [:div#answers (str answers)])))
+     [:div#answers (print-str answers)])))
 
 (defn recent-logins
   [_]
-  (let [users (str (c/get-logins))]
-    (t/log! :debug (str "recent-logins " users))
+  (let [users (c/get-logins)]
+    (t/log! :debug (print-str "recent-logins " users))
     (render
-     [:div#logins (str users)])))
+     [:div#logins (print-str users)])))
