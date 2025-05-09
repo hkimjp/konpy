@@ -106,7 +106,7 @@
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        (when (some? last-answer)
-         [:div "自分の最新回答は、"])
+         [:div "自分の最新回答は(もっといいのができたら再送しよう)、"])
        [:div [:textarea {:class te :name "answer"}
               (:answer last-answer)]]
        [:div [:button {:class btn} "送信"]]]
