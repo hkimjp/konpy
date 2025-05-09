@@ -56,12 +56,12 @@
     [?e :updated ?updated]
     [?e :identical ?identical]])
 
-(def ^:private q-recent-answers
-  '[:find ?author ?updated
-    :keys author updated
-    :where
-    [?e :author ?author]
-    [?e :updated ?updated]])
+; (def ^:private q-recent-answers
+;   '[:find ?author ?updated
+;     :keys author updated
+;     :where
+;     [?e :author ?author]
+;     [?e :updated ?updated]])
 
 ;-------------------------
 
@@ -172,6 +172,7 @@
           (print-str (:identical a))]])])))
 
 ;------------------------------------------
+
 (defn recent-answers
   [_]
   (let [answers (str (c/get-answers))]

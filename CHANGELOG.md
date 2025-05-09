@@ -4,24 +4,26 @@
 - (set! *default-data-reader-fn* tagged-literal)
 - display, logins, submissions in admin page.
   check post /answers/:n
-- validate if :type "python" found.
+- validate. how about checking :type attribute given or not.
 - can see future issues from current `/tasks/all`.
 - keep log/konpy.log when `service stop konpy`.
 - gather tailwindcss class definitions.
-- garbage collect datascript.
-- redis.
+- auto exec datascript garbage collection.
 - just recipe to fetch `db.sqlite` and `konpy.log` from app.melt.
 - compare (reverse (sort)) and (sort reverse-f)
+- must remove comments from answers before calculating their SHA1.
+- ["user1" "user2"...] => [user1 user2 ...]
+
+## 0.8.1-SNAPSHOT
 
 
 ## 0.8.0 (2025-05-09)
 
 - reversed display order of `recent-answers` and `recent-logns`.
-- added `com.taoensso/carmine`.
+- use Redis by `com.taoensso/carmine`.
     - kp:login:<login> iso-datetime
     - kp:answer:<login> tid
 - added `carmine/put-login`, `carmine/get-logins`.
-
 
 ## 0.7.8 (2025-05-09)
 
