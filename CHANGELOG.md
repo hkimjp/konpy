@@ -6,16 +6,22 @@
   check post /answers/:n
 - validate. how about checking :type attribute given or not.
 - can see future issues from current `/tasks/all`.
-- keep log/konpy.log when `service stop konpy`.
 - gather tailwindcss class definitions.
-- auto exec datascript garbage collection.
-- just recipe to fetch `db.sqlite` and `konpy.log` from app.melt.
 - compare (reverse (sort)) and (sort reverse-f)
-- must remove comments from answers before calculating their SHA1.
-- ["user1" "user2"...] => [user1 user2 ...]
+    - (sort #(compare %2 %1) coll)
+    - (-> (sort coll) reverse)
+- display ["user1" "user2"...] as [user1 user2 ...].
+- the first 7 characters of SHA1 is sufficient.
+  sha1 (-> answer remove-spaces sha1)
+  must remove comments from answers before calculating their SHA1.
+- Enhance the functions of the admin's page.
+    - exec datascript garbage collection.
+    - stat.
+
 
 ## 0.8.1-SNAPSHOT
 
+- `just fetch` fetches `db.sqlite` and `konpy.log` from app.melt.
 
 ## 0.8.0 (2025-05-09)
 

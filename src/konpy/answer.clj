@@ -14,7 +14,7 @@
 
 (def ^:private btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 (def ^:private lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
-(def ^:private te   "p-1 text-md font-mono m-2 w-120 h-60 outline outline-black/5 shadow-lg")
+(def ^:private te   "p-1 text-md font-mono w-120 h-60 outline outline-black/5 shadow-lg")
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
@@ -35,8 +35,8 @@
     [?e :sha1 ?sha1]])
 
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical
-    :keys answer updated identical
+  '[:find ?answer ?updated ?identical ?author
+    :keys answer updated identical author
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
@@ -55,13 +55,6 @@
     [?e :answer ?answer]
     [?e :updated ?updated]
     [?e :identical ?identical]])
-
-; (def ^:private q-recent-answers
-;   '[:find ?author ?updated
-;     :keys author updated
-;     :where
-;     [?e :author ?author]
-;     [?e :updated ?updated]])
 
 ;-------------------------
 
@@ -82,6 +75,17 @@
              sha1)
        (mapv first)))
 
+(defn- show-answer
+  [a]
+  [:div.py-2
+   [:hr.my-2]
+   [:div [:span.font-bold "Author: "] (:author a)]
+   [:div [:span.font-bold "Date: "] (str (:updated a))]
+   [:div [:span.font-bold "Same: "] (print-str (:identical a))]
+   [:div [:span.font-bold "Typing: "]]
+   [:div [:span.font-bold "WIL: "]]
+   [:textarea {:class te} (:answer a)]])
+
 (defn answer
   [{{:keys [e]} :path-params :as request}]
   (let [tid (parse-long e)
@@ -96,16 +100,15 @@
     (page
      [:div.mx-4
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
-      [:form {;:method "post"
-              :hx-confirm "ほんとに？"
+      [:form {:hx-confirm "ほんとに？"
               :hx-post (str "/answer/" e)
               :hx-swap "none"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
+       (when (some? last-answer)
+         [:div "自分の最新回答は、"])
        [:div [:textarea {:class te :name "answer"}
               (:answer last-answer)]]
-       (when-let [same (:identical last-answer)]
-         [:div [:span {:class "font-bold"} "同じ回答: "] (print-str same)])
        [:div [:button {:class btn} "送信"]]]
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}
@@ -145,12 +148,7 @@
     (page
      [:div {:class "mx-4"}
       (for [a answers]
-        [:div.py-2
-         [:hr.my-2]
-         [:p "Date:" (str (:updated a))]
-         [:textarea {:class te} (:answer a)]
-         [:div [:span {:class "font-bold"} "同じ回答: "]
-          (print-str (:identical a))]])])))
+        (show-answer a))])))
 
 (defn answers-others
   [{{:keys [e]} :path-params}]
@@ -162,14 +160,7 @@
       [:div {:class "text-2xl"} "現在までの回答数(人数): "
        (count answers) " (" (-> (map :author answers) set count) ")"]
       (for [a answers]
-        [:div.py-2
-         [:hr.my-2]
-         [:p "From " [:span {:class "font-bold"} (:author a)]
-          ", "
-          (str (:updated a))]
-         [:textarea {:class te} (:answer a)]
-         [:div [:span {:class "font-bold"} "同じ回答: "]
-          (print-str (:identical a))]])])))
+        (show-answer a))])))
 
 ;------------------------------------------
 
