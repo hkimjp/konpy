@@ -82,8 +82,8 @@
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "] "your typing score(under construction)"]
-   [:div [:span.font-bold "WIL: "] "your wil(under construction)"]
+   [:div [:span.font-bold "Typing: "] "(under construction)"]
+   [:div [:span.font-bold "WIL: "] "(under construction)"]
    [:textarea {:class te} (:answer a)]])
 
 (defn answer
