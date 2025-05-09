@@ -14,7 +14,7 @@
     - exec datascript garbage collection.
     - stat.
 
-## 0.8.2-SNAPSHOT
+## 0.8.2 (2025-05-09)
 
 - display ["user1" "user2"...] as [user1 user2 ...].
 
