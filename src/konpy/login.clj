@@ -37,7 +37,7 @@
     (do
       (t/log! :info (str "develop mode"))
       (t/log! :info (str "login success: " login))
-      (c/put-login login)
+      (c/put-login login 60)
       (-> (resp/redirect "/tasks")
           (assoc-in [:session :identity] login)))
     (try
@@ -47,7 +47,7 @@
                  (hashers/check password (get-in resp [:body :password])))
           (do
             (t/log! :info (str "login success: " login))
-            (c/put-login login)
+            (c/put-login login (* 24 60 60))
             (-> (resp/redirect "/tasks")
                 (assoc-in [:session :identity] login)))
           (do

@@ -28,22 +28,39 @@
 
 ;-----------------------
 (defn put-login
-  "24hour, jt/local-date-time"
   ([user] (put-login user (* 24 60 60)))
-  ([user ex]
+  ([user seconds]
    ;; should str?
    (setex (str "kp:login:" user)
-          ex
+          seconds
           (jt/format "yyyy-MM-dd hh:mm:ss" (jt/local-date-time)))))
 
-(defn get-logins
-  []
-  (let [keys (keys "kp:login:*")]
+(defn put-answer
+  ([user tid] (put-answer user tid (* 24 60 60)))
+  ([user tid seconds]
+   (setex (str "kp:answer:" user)
+          seconds
+          tid)))
+
+(defn- get-key
+  [key]
+  (let [keys (keys (str key "*"))
+        pat (re-pattern key)]
     (->> (map (fn [k] [k (get k)]) keys)
          (sort-by second)
          reverse
          (map first)
-         (mapv #(str/replace % #"kp:login:" "")))))
+         (mapv #(str/replace % pat "")))))
+
+(comment
+  (get-key "kp:login:")
+  :rcf)
+
+(defn get-logins []
+  (get-key "kp:login:"))
+
+(defn get-answers []
+  (get-key "kp:answer:"))
 
 (comment
   (jt/format "yyyy-MM-dd hh:mm:ss" (jt/local-date-time))
