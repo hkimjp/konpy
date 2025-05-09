@@ -7,9 +7,6 @@
 - validate. how about checking :type attribute given or not.
 - can see future issues from current `/tasks/all`.
 - gather tailwindcss class definitions.
-- compare (reverse (sort)) and (sort reverse-f)
-    - (sort #(compare %2 %1) coll)
-    - (-> (sort coll) reverse)
 - display ["user1" "user2"...] as [user1 user2 ...].
 - the first 7 characters of SHA1 is sufficient.
   sha1 (-> answer remove-spaces sha1)
@@ -19,9 +16,11 @@
     - stat.
 
 
-## 0.8.1-SNAPSHOT
+## 0.8.1 (2025-05-09)
 
 - `just fetch` fetches `db.sqlite` and `konpy.log` from app.melt.
+- link wil and type?
+- refactor. introduced `answer/show-answer`.
 
 ## 0.8.0 (2025-05-09)
 
