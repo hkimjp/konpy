@@ -61,20 +61,8 @@
          (map first)
          (mapv #(str/replace % pat "")))))
 
-(comment
-  (get-key "kp:login:")
-  :rcf)
-
 (defn get-logins []
   (get-key "kp:login:"))
 
 (defn get-answers []
   (get-key "kp:answer:"))
-
-(comment
-  (jt/format "yyyy-MM-dd hh:mm:ss" (jt/local-date-time))
-  (put-login "hkimura")
-  (put-login "hkim")
-  (get "kp:login:hkimura")
-  (get-logins)
-  :rcf)

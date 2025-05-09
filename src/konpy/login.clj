@@ -15,7 +15,6 @@
 
 (defn login-page
   [request]
-  ; (t/log! :info (str "login-page flash: " (:flash request)))
   (page
    [:div.mx-4
     [:div.font-bold.p-2 "LOGIN"]
@@ -32,10 +31,8 @@
 
 (defn login!
   [{{:keys [login password]} :params}]
-  ; (t/log! :debug (str "login " login " password *"))
   (if (env :develop)
     (do
-      (t/log! :info (str "develop mode"))
       (t/log! :info (str "login success: " login))
       (c/put-login login 60)
       (-> (resp/redirect "/tasks")
