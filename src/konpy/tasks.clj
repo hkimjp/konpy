@@ -34,13 +34,13 @@
                :href (str "/answer/" e)}
            "回答"]]])
       [:button {:class box-lime
-                :hx-get "/answers/logins/24"
+                :hx-get "/answers/logins"
                 :hx-target "#logins"
                 :hx-swap "outerHTML"}
        "ログイン(24h)"]
       [:div#logins]
       [:button {:class box-lime
-                :hx-get "/answers/recent/24"
+                :hx-get "/answers/recent"
                 :hx-target "#answers"
                 :hx-swap "outerHTML"}
        "回答(24h)"]

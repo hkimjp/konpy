@@ -2,8 +2,9 @@
   (:refer-clojure :exclude [set get keys])
   (:require
    [clojure.string :as str]
+   [java-time.api :as jt]
    [taoensso.carmine :as car]
-   [java-time.api :as jt]))
+   [taoensso.telemere :as t]))
 
 (defonce my-conn-pool (car/connection-pool {}))
 (def     my-conn-spec {:uri "redis://localhost:6379"})
@@ -30,14 +31,22 @@
 (defn put-login
   ([user] (put-login user (* 24 60 60)))
   ([user seconds]
-   ;; should str?
-   (setex (str "kp:login:" user)
-          seconds
-          (jt/format "yyyy-MM-dd hh:mm:ss" (jt/local-date-time)))))
+   (let [now (jt/format "yyyy-MM-dd hh:mm:ss" (jt/local-date-time))]
+     (t/log! {:level :debug
+              :data {:user user
+                     :seconds seconds
+                     :now now}}
+             "put-login")
+     (setex (str "kp:login:" user) seconds now))))
 
 (defn put-answer
   ([user tid] (put-answer user tid (* 24 60 60)))
   ([user tid seconds]
+   (t/log! {:level :debug
+            :data {:user user
+                   :seconds seconds
+                   :tid tid}}
+           "put-answer")
    (setex (str "kp:answer:" user)
           seconds
           tid)))
