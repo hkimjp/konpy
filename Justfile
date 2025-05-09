@@ -10,6 +10,10 @@ watch:
 minify:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --minify
 
+fetch:
+  scp ${DEST}:konpy/storage/db.sqlite storage/
+  scp ${DEST}:konpy/log/konpy.log log/
+
 repl:
   clojure -M:dev -m nrepl.cmdline
 
@@ -36,7 +40,7 @@ build:
   clojure -T:build ci
 
 deploy:
-  just deploy-to 'ubuntu@app.melt.kyutech.ac.jp' konpy
+  just deploy-to ${DEST} konpy
 
 deploy-to host app: build
   ssh {{host}} mkdir -p {{app}}/log

@@ -82,6 +82,10 @@
              sha1)
        (mapv first)))
 
+; (identical "66b1d23469ffbb00b32918a33a0ea097ab7a8560")
+; (count "66b1d23469ffbb00b32918a33a0ea097ab7a8560")
+; => 40
+
 (defn answer
   [{{:keys [e]} :path-params :as request}]
   (let [tid (parse-long e)
