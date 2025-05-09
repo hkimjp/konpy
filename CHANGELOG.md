@@ -7,7 +7,6 @@
 - validate. how about checking :type attribute given or not.
 - can see future issues from current `/tasks/all`.
 - gather tailwindcss class definitions.
-- display ["user1" "user2"...] as [user1 user2 ...].
 - the first 7 characters of SHA1 is sufficient.
   sha1 (-> answer remove-spaces sha1)
   must remove comments from answers before calculating their SHA1.
@@ -15,6 +14,9 @@
     - exec datascript garbage collection.
     - stat.
 
+## 0.8.2 (2025-05-09)
+
+- display ["user1" "user2"...] as [user1 user2 ...].
 
 ## 0.8.1 (2025-05-09)
 

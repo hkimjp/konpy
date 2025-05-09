@@ -10,7 +10,6 @@
    [konpy.answer :as answer]
    [konpy.login :refer [login-page login! logout!]]
    [konpy.middleware :as m]
-   [konpy.views :refer [under-construction-page]]
    ;
    [konpy.example :as example]))
 
@@ -25,7 +24,6 @@
    ["/tasks" {:middleware [[m/wrap-users]]}
     ["" tasks/tasks-this-week]
     ["/all" tasks/tasks-all]]
-   ; coerce?
    ["/answer/:e" {:middleware [[m/wrap-users]]}
     [""
      {:get  {:handler answer/answer}

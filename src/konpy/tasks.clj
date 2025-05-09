@@ -1,6 +1,6 @@
 (ns konpy.tasks
   (:require
-   [konpy.carmine :as c]
+   ; [konpy.carmine :as c]
    [konpy.db :refer [q]]
    [konpy.utils :refer [user weeks admin?]]
    [konpy.views :refer [page]]))

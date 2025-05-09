@@ -6,9 +6,6 @@
    [datascript.storage.sql.core :as storage-sql]
    [taoensso.telemere :as t]))
 
-; how to use this?
-; (alter-var-root #'*default-data-reader-fn* (constantly tagged-literal))
-
 (defonce storage (atom nil))
 
 (def conn nil)
