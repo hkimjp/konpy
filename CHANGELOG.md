@@ -14,7 +14,7 @@
 - compare (reverse (sort)) and (sort reverse-f)
 
 
-## 0.7.9-SNAPSHOT
+## 0.8.0 (2025-05-09)
 
 - reversed display order of `recent-answers` and `recent-logns`.
 - added `com.taoensso/carmine`.
