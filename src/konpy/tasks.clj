@@ -1,8 +1,9 @@
 (ns konpy.tasks
   (:require
+   [konpy.carmine :as c]
+   [konpy.db :refer [q]]
    [konpy.utils :refer [user weeks admin?]]
-   [konpy.views :refer [page]]
-   [konpy.db :refer [q]]))
+   [konpy.views :refer [page]]))
 
 (def box-sky  "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
@@ -33,17 +34,17 @@
                :href (str "/answer/" e)}
            "回答"]]])
       [:button {:class box-lime
-                :hx-get "/answers/recent/10"
-                :hx-target "#answers"
-                :hx-swap "outerHTML"}
-       "最近の回答者"]
-      [:div#answers]
-      [:button {:class box-lime
-                :hx-get "/answers/logins/10"
+                :hx-get "/answers/logins/24"
                 :hx-target "#logins"
                 :hx-swap "outerHTML"}
-       "最近のログイン"]
+       "ログイン(24h)"]
       [:div#logins]
+      [:button {:class box-lime
+                :hx-get "/answers/recent/24"
+                :hx-target "#answers"
+                :hx-swap "outerHTML"}
+       "回答(24h)"]
+      [:div#answers]
       (when (admin? (user request))
         [:div {:class "py-2"}
          [:a {:class box-red

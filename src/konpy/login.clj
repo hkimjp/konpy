@@ -7,6 +7,7 @@
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
    [taoensso.telemere :as t]
+   [konpy.carmine :as c]
    [konpy.views :refer [page]]))
 
 ; for a while. need replace.
@@ -36,6 +37,7 @@
     (do
       (t/log! :info (str "develop mode"))
       (t/log! :info (str "login success: " login))
+      (c/put-login login)
       (-> (resp/redirect "/tasks")
           (assoc-in [:session :identity] login)))
     (try
@@ -45,6 +47,7 @@
                  (hashers/check password (get-in resp [:body :password])))
           (do
             (t/log! :info (str "login success: " login))
+            (c/put-login login)
             (-> (resp/redirect "/tasks")
                 (assoc-in [:session :identity] login)))
           (do

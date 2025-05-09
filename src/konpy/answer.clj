@@ -8,6 +8,7 @@
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
    [taoensso.telemere :as t]
+   [konpy.carmine :as c]
    [konpy.db :as db]
    [konpy.utils :refer [user remove-spaces sha1 now shorten]]
    [konpy.views :refer [page render]]))
@@ -188,12 +189,7 @@
 (defn recent-logins
   [{{:keys [n]} :path-params}]
   (t/log! :debug (str "recent-logins " n))
-  (let [users (->> (slurp (io/file "log/konpy.log"))
-                   str/split-lines
-                   (filter #(re-find #"success: " %))
-                   (map #(re-find #"success: (.*)" %))
-                   (map second)
-                   reverse)]
+  (let [users (c/get-logins)]
     (t/log! :debug (str users))
     (render
      [:div#logins (str users)])))
