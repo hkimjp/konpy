@@ -17,7 +17,7 @@
                           :where
                           [?e :db/id 31]])
 
-## 0.8.3-SNAPSHOT
+## 0.8.3 (2025-05-10)
 
 - fixed carmine.clj `(jt/format "yyyy-MM-dd HH:mm:ss" (jt/local-date-time))`.
   must use HH for 24hour time format.
