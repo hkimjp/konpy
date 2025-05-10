@@ -56,6 +56,16 @@
     [?e :updated ?updated]
     [?e :identical ?identical]])
 
+;; can not [?e :db/id ?tid]
+(def q-week-num
+  '[:find ?week ?num
+    :keys week num
+    :in $ ?tid
+    :where
+    [?e :db/id ?tid]
+    [?e :week ?week]
+    [?e :num ?num]])
+
 ;-------------------------
 
 (defn find-answers
@@ -136,7 +146,7 @@
                  :sha1 sha1
                  :updated (now)
                  :identical identical}])
-      (c/put-answer (user request) tid (if (develop?) 60 (* 24 60 60)))
+      (c/put-answer (user request) (if (develop?) 10 (* 24 60 60)))
       (resp/redirect "/tasks")
       (catch Exception e (.getMessage e)))))
 
@@ -167,13 +177,15 @@
 (defn recent-answers
   [_]
   (let [answers (c/get-answers)]
-    (t/log! :debug (str "recent-answers " (print-str answers)))
+    (t/log! :debug (str "recent-answers" (print-str answers)))
     (render
      [:div#answers (print-str answers)])))
 
 (defn recent-logins
   [_]
-  (let [users (c/get-logins)]
-    (t/log! :debug (print-str "recent-logins " users))
+  (let [logins (c/get-logins)]
+    (t/log! :debug (str "recent-logins" (print-str logins)))
     (render
-     [:div#logins (print-str users)])))
+     [:div#login (print-str logins)])))
+
+

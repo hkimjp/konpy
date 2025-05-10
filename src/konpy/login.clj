@@ -1,13 +1,14 @@
 (ns konpy.login
   (:require
    [buddy.hashers :as hashers]
-   [environ.core :refer [env]]
+   ; [environ.core :refer [env]]
    [hato.client :as hc]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
    [taoensso.telemere :as t]
    [konpy.carmine :as c]
+   [konpy.utils :refer [develop?]]
    [konpy.views :refer [page]]))
 
 ; for a while. need replace.
@@ -31,10 +32,10 @@
 
 (defn login!
   [{{:keys [login password]} :params}]
-  (if (env :develop)
+  (if (develop?)
     (do
       (t/log! :info (str "login success: " login))
-      (c/put-login login 60)
+      (c/put-login login 10)
       (-> (resp/redirect "/tasks")
           (assoc-in [:session :identity] login)))
     (try

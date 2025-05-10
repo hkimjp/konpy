@@ -28,28 +28,24 @@
   (wcar* (car/ttl key)))
 
 ;-----------------------
+(defn- put-key
+  [key user ttl]
+  (let [now (jt/format "yyyy-MM-dd HH:mm:ss" (jt/local-date-time))]
+    (t/log! {:level :debug
+             :data {:key key
+                    :user user
+                    :ttl ttl
+                    :now now}}
+            "put-key")
+    (setex (str key user) ttl now)))
+
 (defn put-login
-  ([user] (put-login user (* 24 60 60)))
-  ([user seconds]
-   (let [now (jt/format "yyyy-MM-dd hh:mm:ss" (jt/local-date-time))]
-     (t/log! {:level :debug
-              :data {:user user
-                     :seconds seconds
-                     :now now}}
-             "put-login")
-     (setex (str "kp:login:" user) seconds now))))
+  [user ttl]
+  (put-key "kp:login:" user ttl))
 
 (defn put-answer
-  ([user tid] (put-answer user tid (* 24 60 60)))
-  ([user tid seconds]
-   (t/log! {:level :debug
-            :data {:user user
-                   :seconds seconds
-                   :tid tid}}
-           "put-answer")
-   (setex (str "kp:answer:" user)
-          seconds
-          tid)))
+  [user ttl]
+  (put-key "kp:answer:" user ttl))
 
 (defn- get-key
   [key]
@@ -66,7 +62,3 @@
 
 (defn get-answers []
   (get-key "kp:answer:"))
-
-(comment
-  (get-answers)
-  :rcf)

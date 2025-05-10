@@ -13,6 +13,15 @@
 - Enhance the functions of the admin's page.
     - exec datascript garbage collection.
     - stat.
+- nothing returns (db/q '[:find ?e
+                          :where
+                          [?e :db/id 31]])
+
+## 0.8.3-SNAPSHOT
+
+- fixed carmine.clj `(jt/format "yyyy-MM-dd HH:mm:ss" (jt/local-date-time))`.
+  must use HH for 24hour time format.
+- added `utils/remove-python-comments`.
 
 ## 0.8.2 (2025-05-09)
 

@@ -40,10 +40,28 @@
        (java.math.BigInteger. 1)
        (format "%x")))
 
+(defn- remove-line-comment
+  [line]
+  (str/replace line #"#.*" ""))
+
+(defn- remove-docstrings
+  [line]
+  (let [comments (re-pattern "\"\"\".*?\"\"\"")]
+    (str/replace line comments "")))
+
+(defn remove-python-comments
+  [s]
+  (->> s
+       str/split-lines
+       (map remove-line-comment)
+       (apply str)
+       remove-docstrings))
+
 (defn remove-spaces [s]
   (-> s
       (str/replace #" " "")
-      (str/replace #"\r\n" "")))
+      (str/replace #"\r" "")
+      (str/replace #"\r" "")))
 
 (defn shorten
   ([s] (shorten s 40))
