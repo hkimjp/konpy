@@ -40,10 +40,10 @@
        "ログイン(24h)"]
       [:div#logins]
       [:button {:class box-lime
-                :hx-get "/answers/recent"
+                :hx-get "/answers/answers"
                 :hx-target "#answers"
                 :hx-swap "outerHTML"}
-       "回答(24h)"]
+       "回答(12h)"]
       [:div#answers]
       (when (admin? (user request))
         [:div {:class "py-2"}
