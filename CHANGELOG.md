@@ -16,6 +16,14 @@
 - nothing returns (db/q '[:find ?e
                           :where
                           [?e :db/id 31]])
+- download button.
+- transducer.
+
+
+## 0.8.4 (2025-05-10)
+
+- fixed htmx:target error.
+- fixed answer.clj: arity of t/log! is two.
 
 ## 0.8.3 (2025-05-10)
 
