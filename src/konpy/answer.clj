@@ -9,7 +9,7 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
-   [konpy.utils :refer [user remove-spaces sha1 now shorten develop?]]
+   [konpy.utils :refer [user kp-sha1 now shorten develop?]]
    [konpy.views :refer [page render]]))
 
 (def ^:private btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
@@ -132,12 +132,14 @@
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
   (let [tid (parse-long e)
-        sha1 (-> answer remove-spaces sha1)
+        ; sha1 (-> answer remove-spaces sha1) ; changed
+        sha1 (kp-sha1 answer)
         identical (identical sha1)]
     (t/log! {:level :debug
              :data {:tid tid
-                    :sha1 (shorten 20 sha1)
-                    :identical (shorten 20 (str identical))}})
+                    :sha1 sha1
+                    :identical (shorten 20 (str identical))}}
+            "answer!")
     (try
       (db/put! [{:db/add -1
                  :task/id tid
@@ -186,6 +188,4 @@
   (let [logins (c/get-logins)]
     (t/log! :debug (str "recent-logins" (print-str logins)))
     (render
-     [:div#login (print-str logins)])))
-
-
+     [:div#logins (print-str logins)])))
