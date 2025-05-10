@@ -4,6 +4,11 @@
    [environ.core :refer [env]]
    [java-time.api :as jt]))
 
+(defn shorten
+  ([s] (shorten s 40))
+  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
+           (str/replace-first s pat "$1..."))))
+
 (defn develop?
   []
   (= (env :develop) "true"))
@@ -33,13 +38,6 @@
   (= 5 (weeks (jt/local-date 2025 5 7)))
   :rcf)
 
-; https://groups.google.com/g/clojure/c/Kpf01CX_ClM
-(defn sha1 [s]
-  (->> (.getBytes s "UTF-8")
-       (.digest (java.security.MessageDigest/getInstance "SHA1"))
-       (java.math.BigInteger. 1)
-       (format "%x")))
-
 (defn- remove-line-comment
   [line]
   (str/replace line #"#.*" ""))
@@ -49,6 +47,7 @@
   (let [comments (re-pattern "\"\"\".*?\"\"\"")]
     (str/replace line comments "")))
 
+; transducer?
 (defn remove-python-comments
   [s]
   (->> s
@@ -60,10 +59,35 @@
 (defn remove-spaces [s]
   (-> s
       (str/replace #" " "")
+      (str/replace #"\t" "")
       (str/replace #"\r" "")
-      (str/replace #"\r" "")))
+      (str/replace #"\n" "")))
 
-(defn shorten
-  ([s] (shorten s 40))
-  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
-           (str/replace-first s pat "$1..."))))
+; https://groups.google.com/g/clojure/c/Kpf01CX_ClM
+; (defn sha1 [s]
+;   (->> s
+;        remove-python-comments
+;        remove-spaces
+;        (.getBytes "UTF-8")
+;        (.digest (java.security.MessageDigest/getInstance "SHA1"))
+;        (java.math.BigInteger. 1)
+;        (format "%x")
+;        (subs 0 7)))
+
+; (subs (->> (.digest (java.security.MessageDigest/getInstance "SHA1")
+;                     (let [s "0 1 2 3 4 5 6 7"]
+;                       (.getBytes  (remove-spaces (remove-python-comments s)) "UTF-8")))
+;            (java.math.BigInteger. 1)
+;            (format "%x")) 0 7)
+
+(defn kp-sha1 [s]
+  (as-> s $
+    (remove-python-comments $)
+    (remove-spaces $)
+    (.getBytes $ "UTF-8")
+    (.digest (java.security.MessageDigest/getInstance "SHA1") $)
+    (java.math.BigInteger. 1 $)
+    (format "%x" $)
+    (subs $ 0 7)))
+
+(kp-sha1 "hello")
