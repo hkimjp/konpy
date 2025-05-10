@@ -20,7 +20,7 @@
 - transducer.
 
 
-## 0.8.4-SNAPSHOT (2025-05-10)
+## 0.8.4 (2025-05-10)
 
 - fixed htmx:target error.
 - fixed answer.clj: arity of t/log! is two.
