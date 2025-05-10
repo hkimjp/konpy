@@ -17,7 +17,7 @@
                           :where
                           [?e :db/id 31]])
 
-## 0.8.4-SNAPSHOT
+## 0.8.4-SNAPSHOT (2025-05-10)
 
 - fixed htmx:target error.
 
