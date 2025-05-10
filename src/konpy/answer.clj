@@ -186,6 +186,4 @@
   (let [logins (c/get-logins)]
     (t/log! :debug (str "recent-logins" (print-str logins)))
     (render
-     [:div#login (print-str logins)])))
-
-
+     [:div#logins (print-str logins)])))
