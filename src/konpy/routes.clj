@@ -35,7 +35,8 @@
     ["/logins"  answer/recent-logins]]
    ["/admin" {:middleware [[m/wrap-admin]]}
     ["" {:get  {:handler admin/tasks}
-         :post {:handler admin/upsert!}}]]
+         :post {:handler admin/upsert!}}]
+    ["/gc" {:post {:handler admin/gc}}]]
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]

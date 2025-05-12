@@ -64,30 +64,21 @@
       (str/replace #"\n" "")))
 
 ; https://groups.google.com/g/clojure/c/Kpf01CX_ClM
-; (defn sha1 [s]
-;   (->> s
-;        remove-python-comments
-;        remove-spaces
-;        (.getBytes "UTF-8")
-;        (.digest (java.security.MessageDigest/getInstance "SHA1"))
-;        (java.math.BigInteger. 1)
-;        (format "%x")
-;        (subs 0 7)))
-
-; (subs (->> (.digest (java.security.MessageDigest/getInstance "SHA1")
-;                     (let [s "0 1 2 3 4 5 6 7"]
-;                       (.getBytes  (remove-spaces (remove-python-comments s)) "UTF-8")))
-;            (java.math.BigInteger. 1)
-;            (format "%x")) 0 7)
+(defn sha1 [s]
+  (->>  (.getBytes s "UTF-8")
+        (.digest (java.security.MessageDigest/getInstance "SHA1"))
+        (java.math.BigInteger. 1)
+        (format "%x")))
 
 (defn kp-sha1 [s]
-  (as-> s $
-    (remove-python-comments $)
-    (remove-spaces $)
-    (.getBytes $ "UTF-8")
-    (.digest (java.security.MessageDigest/getInstance "SHA1") $)
-    (java.math.BigInteger. 1 $)
-    (format "%x" $)
-    (subs $ 0 7)))
+  (-> s
+      remove-python-comments
+      remove-spaces
+      sha1
+      (subs 0 7)))
 
-(kp-sha1 "hello")
+(comment
+  (= (kp-sha1 "a b c") (kp-sha1 "abc") (kp-sha1 "a
+                                                 b
+                                                 c"))
+  :rcf)
