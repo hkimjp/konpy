@@ -14,6 +14,7 @@
 - compile routes in production.
 - download button.
 - transducer.
+- pull typing scores and wil documents.
 
 ## 0.9.0 (2025-05-12)
 

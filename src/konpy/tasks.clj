@@ -30,7 +30,7 @@
         [:div {:class "flex my-2 gap-x-2"}
          [:span (str week "-" num " ")]
          [:div {:class "flex items-end"}
-          [:pre {:class "mx-4"} task]
+          [:pre {:class ""} task]
           [:a {:class box-sky
                :href (str "/answer/" e)}
            "回答"]]])
