@@ -15,7 +15,7 @@
 - download button.
 - transducer.
 
-## SNAPSHOT
+## 0.9.0 (2025-05-12)
 
 - /admin/gc
 
