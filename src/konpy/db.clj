@@ -47,6 +47,7 @@
   )
 
 (defn gc []
+  (t/log! :info "db/gc")
   (d/collect-garbage @storage))
 
 (comment
