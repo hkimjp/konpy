@@ -3,30 +3,35 @@
             [hiccup2.core :as h]
             [ring.util.response :as resp]
             [ring.util.anti-forgery :refer [anti-forgery-field]]
-            [konpy.db :refer [put! q]]
+            [konpy.db :as d]
             [konpy.utils :refer [now]]
             [konpy.views :refer [page]]))
 
 (def btn "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+
+(def btn-admin "p-1 rounded-xl text-white bg-red-500 hover:bg-red-700 active:bg-red-900")
 
 (def box "text-center size-10 shadow-lg outline outline-black/5")
 
 (defn tasks
   "list all the tasks with upsert buttons."
   [_]
-  (let [ret (->> (q '[:find ?e ?week ?num ?task ?issued
-                      :keys e week num task issued
-                      :where
-                      [?e :week ?week]
-                      [?e :num ?num]
-                      [?e :task ?task]
-                      [?e :issued ?issued]])
+  (let [ret (->> (d/q '[:find ?e ?week ?num ?task ?issued
+                        :keys e week num task issued
+                        :where
+                        [?e :week ?week]
+                        [?e :num ?num]
+                        [?e :task ?task]
+                        [?e :issued ?issued]])
                  (sort-by (juxt :week :num))
                  vec)]
     (page
      [:div {:class "mx-4"}
       [:div {:class "flex gap-4 my-2"}
        [:a {:href "/tasks" :class btn}  "tasks"]
+       [:form {:hx-post "/admin/gc" :hx-swap "none"}
+        (h/raw (anti-forgery-field))
+        [:button {:class btn-admin} "GC"]]
        [:a {:href "/logout" :class btn} "logout"]]
       [:div
        (for [{:keys [e week num task]}
@@ -44,19 +49,28 @@
              task]
             [:button {:class btn} "upsert"]]]])]])))
 
-(defn upsert-task! [^long e ^long week ^long num ^String task]
-  (put! [{:db/id e
-          :week week
-          :num  num
-          :task task
-          :issued (now)}]))
+; using this as seed function from dev/user.clj
+(defn upsert-task!
+  [^long e ^long week ^long num ^String task]
+  (d/put! [{:db/id e
+            :week week
+            :num  num
+            :task task
+            :issued (now)}]))
 
-(defn upsert! [{{:keys [e week num task]} :params}]
+(defn upsert!
+  [{{:keys [e week num task]} :params}]
   (t/log! {:level :info
-           :data {:e e
+           :data {:e    e
                   :week week
-                  :num num
+                  :num  num
                   :task task}}
           "upsert!")
   (upsert-task! (parse-long e) (parse-long week) (parse-long num) task)
   (resp/redirect "/admin"))
+
+(defn gc
+  [_]
+  (t/log! :info "gc")
+  (d/gc)
+  (resp/response "OK"))
