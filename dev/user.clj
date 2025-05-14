@@ -34,6 +34,26 @@
    "Python でベートーベン「運命」の出だしを演奏する。"
    "Python できらきら星を演奏する。"])
 
+(def seeds-6
+  ["授業中に作成した calc.py ファイルを提出しなさい。"
+   "授業中に作成した ruff.py ファイルを提出しなさい。"
+   "自分の VScode はフォーカスアウトで自動セーブになってるか？どうやって確認したか？"
+   "半径 r の円を底面とする高さ h の円錐の表面積を Python で求める手順と、その答え。"
+   "\"I am 20 years old.\" をプリントする Python のコード。"
+   "He Says, \"I can do it.\" をプリントするために問題となることは？その問題を回避するために必要な工夫は？その工夫を使ってプリントする。"
+   "print(\"1, 2, 3\") と print(\"1\",\"2\",\"3\") の違いはなんですか？"
+   "果物の名前３つを引数に取り、それらを横一列にした表のマークダウンをプリントする関数。"
+   "f(x)=2x に相当する Python の関数を定義するに注意すべきことは？"
+   "整数二つを引数に取り、その平均値を返す関数。"
+   "def f(x):
+   return 10 + x
+と
+def g(x):
+   print(10 + x)
+の関数 f, g の違いについて説明しなさい。"
+   "上で定義した f, g を使って f(g(3)) および g(f(4)) を実行し、その結果を説明しなさい。"
+   "return と print() の違いはなんですか？"])
+
 (defn seeds-in [week seeds]
   (let [c (atom 0)]
     (doseq [s seeds]
@@ -41,6 +61,7 @@
       (upsert-task! -1 week @c s))))
 
 (comment
+  (seeds-in 6 seeds-6)
 
   (db/gc)
 
@@ -50,7 +71,7 @@
           [?e :task/id 31]
           [?e :author ?author]
           [?e :sha1 ?sha1]]
-        "daisuke")
+    "daisuke")
 
   #{["66b1d23469ffbb00b32918a33a0ea097ab7a8560"] ["67084ea7526e2e1fce6699cad5bc9d4c06ba6be1"]}
   (db/q '[:find ?sha1
@@ -59,7 +80,7 @@
           [?e :task/id 31]
           [?e :author ?author]
           [?e :sha1 ?sha1]]
-        "knt_07")
+    "knt_07")
   :rcf)
 
 (comment
@@ -83,7 +104,7 @@
           :where
           [?e :author ?author]
           [?e :sha1 ?to]]
-        -6652132719765422345036288287526973911102942116N)
+    -6652132719765422345036288287526973911102942116N)
 
   (db/q '[:find ?author
           :in $ ?x
@@ -92,7 +113,7 @@
           [?e :author ?author]
           [?e :sha1 ?sha1]
           [(= ?sha1 ?x)]]
-        "356a192b7913b04c54574d18c28d46e6395428ab")
+    "356a192b7913b04c54574d18c28d46e6395428ab")
 
   :rcf)
 
@@ -115,7 +136,7 @@
           [?e :num ?num]
           [?e :task ?task]
           [?e :issued ?issued]]
-        5)
+    5)
 
   (u/weeks)
 
@@ -180,7 +201,7 @@
           :where
           [?e :name ?name]
           [?e :age ?age]]
-        "akari")
+    "akari")
 
   (db/pull ['*] 1)
   (db/pull  [:work] 1)
