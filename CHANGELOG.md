@@ -19,6 +19,11 @@
 - backup db.sqlite
 - upload db.sqlite
 
+## 0.9.2-SNAPSHOT
+
+- resend-btton
+- my-2 around answers.
+
 ## 0.9.1 (2025-05-14)
 
 - forgot to bump up view/version.
