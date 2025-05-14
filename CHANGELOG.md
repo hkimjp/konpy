@@ -19,6 +19,9 @@
 - backup db.sqlite
 - upload db.sqlite
 
+## 0.9.1 (2025-05-14)
+
+- return to /tasks after submit one's answer.
 
 ## 0.9.0 (2025-05-12)
 
