@@ -10,6 +10,14 @@
    [konpy.system :as system]
    konpy.core-test))
 
+(def q '[:find ?e ?week ?num
+         :where
+         [?e :week ?week]
+         [?e :num ?num]])
+
+(db/q q)
+(db/pull 322)
+
 (t/set-min-level! :debug)
 
 (system/restart-system)
@@ -41,7 +49,6 @@
       (upsert-task! -1 week @c s))))
 
 (comment
-
   (db/gc)
 
   (db/q '[:find ?sha1
