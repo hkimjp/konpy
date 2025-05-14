@@ -18,6 +18,8 @@
 - link wil documents.
 - backup db.sqlite
 - upload db.sqlite
+- 回答ボタンのつき方。div の内側に入れちゃえばいいか。
+
 
 ## 0.9.2 (2025-05-15)
 

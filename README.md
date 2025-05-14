@@ -1,6 +1,6 @@
 # hkimjp/konpy
 
-This week's assignment for 2025 programming python class.
+This week's assignments for 2025 introduction to programming python class.
 
 Under construction.
 
@@ -8,59 +8,34 @@ Under construction.
 
 Download from https://github.com/hkimjp/konpy
 
+Require Redis.
+
 ## Usage
 
-FIXME: explanation
+In development, run tailwindcss watcher in the background,
 
-Run the project directly, via `:exec-fn`:
+    $ just watch
 
-    $ clojure -X:run-x
-    Hello, Clojure!
+trhen start Clojure REPL.
 
-Run the project, overriding the name to be greeted:
+    $ just repl
 
-    $ clojure -X:run-x :name '"Someone"'
-    Hello, Someone!
+Redis is required to work.
 
-Run the project directly, via `:main-opts` (`-m hkimjp.konpy`):
+will make persistent storage at `storage/db.sqlite`.
 
-    $ clojure -M:run-m
-    Hello, World!
+In production,
 
-Run the project, overriding the name to be greeted:
+    $ just run
 
-    $ clojure -M:run-m Via-Main
-    Hello, Via-Main!
+or, build uberjar by,
 
-Run the project's tests (they'll fail until you edit them):
+    $ just build
 
-    $ clojure -T:build test
+then,
 
-Run the project's CI pipeline and build an uberjar (this will fail until you edit the tests to pass):
+    $ java -jar target/io.github.hkimjp/konpy-VERSION.jar
 
-    $ clojure -T:build ci
-
-This will produce an updated `pom.xml` file with synchronized dependencies inside the `META-INF`
-directory inside `target/classes` and the uberjar in `target`. You can update the version (and SCM tag)
-information in generated `pom.xml` by updating `build.clj`.
-
-If you don't want the `pom.xml` file in your project, you can remove it. The `ci` task will
-still generate a minimal `pom.xml` as part of the `uber` task, unless you remove `version`
-from `build.clj`.
-
-Run that uberjar:
-
-    $ java -jar target/net.clojars.hkimjp/konpy-0.1.0-SNAPSHOT.jar
-
-## Options
-
-## Examples
-
-### Bugs
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
