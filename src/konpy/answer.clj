@@ -112,7 +112,8 @@
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form {:hx-confirm "ほんとに？"
               :hx-post (str "/answer/" e)
-              :hx-swap "none"}
+              :hx-target "#body"
+              :hx-swap "outerHTML"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        (when (some? last-answer)
