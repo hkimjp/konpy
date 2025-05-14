@@ -5,9 +5,9 @@
    [konpy.utils :refer [user weeks admin?]]
    [konpy.views :refer [page]]))
 
-(def box-sky  "rounded-xl text-white p-1 bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def box-sky  "px-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
-(def box-lime "my-1 p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+(def box-lime "my-2 px-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
 (def box-red "rounded-xl text-white p-1 bg-red-500 hover:bg-red-700 active:bg-red-500")
 
@@ -27,9 +27,10 @@
     (page
      [:div.mx-4
       (for [{:keys [e week num task]} ret]
-        [:div {:class "flex my-2"}
-         [:span (str week "-" num " " task)]
-         [:span
+        [:div {:class "flex my-2 gap-x-2"}
+         [:span (str week "-" num " ")]
+         [:div {:class "flex items-end"}
+          [:pre {:class ""} task]
           [:a {:class box-sky
                :href (str "/answer/" e)}
            "回答"]]])

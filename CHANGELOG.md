@@ -1,27 +1,37 @@
 ## Unreleased
 
-- compile routes in production.
+- nothing returns (db/q '[:find ?e
+                          :where
+                          [?e :db/id 31]])
 - (set! *default-data-reader-fn* tagged-literal)
 - display, logins, submissions in admin page.
   check post /answers/:n
 - validate. how about checking :type attribute given or not.
 - can see future issues from current `/tasks/all`.
 - gather tailwindcss class definitions.
-- the first 7 characters of SHA1 is sufficient.
-  sha1 (-> answer remove-spaces sha1)
-  must remove comments from answers before calculating their SHA1.
-- Enhance the functions of the admin's page.
     - exec datascript garbage collection.
     - stat.
-- nothing returns (db/q '[:find ?e
-                          :where
-                          [?e :db/id 31]])
+- compile routes in production.
 - download button.
 - transducer.
+- pull typing scores.
+- link wil documents.
+- backup db.sqlite
+- upload db.sqlite
 
+## 0.9.1 (2025-05-14)
+
+- return to /tasks after submit one's answer.
+
+## 0.9.0 (2025-05-12)
+
+- /admin/gc
 
 ## 0.8.4 (2025-05-10)
 
+- the first 7 characters of SHA1 is sufficient(?).
+  sha1 (-> answer remove-spaces sha1)
+  removed comments from answers before calculating their SHA1.
 - fixed htmx:target error.
 - fixed answer.clj: arity of t/log! is two.
 
