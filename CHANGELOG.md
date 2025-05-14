@@ -19,7 +19,7 @@
 - backup db.sqlite
 - upload db.sqlite
 
-## 0.9.2-SNAPSHOT
+## 0.9.2 (2025-05-15)
 
 - resend-btton
 - my-2 around answers.
