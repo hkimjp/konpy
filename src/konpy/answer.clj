@@ -9,7 +9,7 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
-   [konpy.typing-ex :refer [average]]
+   [konpy.typing-ex :as typing-ex]
    [konpy.utils :refer [user kp-sha1 now shorten develop?]]
    [konpy.views :refer [page render]]))
 
@@ -36,26 +36,28 @@
     [?e :sha1 ?sha1]])
 
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author
-    :keys answer updated identical author
+  '[:find ?answer ?updated ?identical ?author ?typing-ex
+    :keys answer updated identical author typing-ex
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
     [?e :author ?author]
     [?e :answer ?answer]
     [?e :updated ?updated]
-    [?e :identical ?identical]])
+    [?e :identical ?identical]
+    [?e :typing-ex ?typing-ex]])
 
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical
-    :keys answer updated author identical
+  '[:find ?answer ?updated ?author ?identical ?typing-ex
+    :keys answer updated author identical typing-ex
     :in $ ?tid
     :where
     [?e :task/id ?tid]
     [?e :author ?author]
     [?e :answer ?answer]
     [?e :updated ?updated]
-    [?e :identical ?identical]])
+    [?e :identical ?identical]
+    [?e :typing-ex ?typing-ex]])
 
 ;; can not [?e :db/id ?tid]
 (def q-week-num
@@ -128,12 +130,13 @@
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
   (let [tid (parse-long e)
-        ; sha1 (-> answer remove-spaces sha1) ; changed
         sha1 (kp-sha1 answer)
         identical (identical sha1)
-        user (user request)]
-    (t/log! {:level :debug
+        user (user request)
+        avg (typing-ex/average user 10)]
+    (t/log! {:level :info
              :data {:user user
+                    :typing-ex avg
                     :tid tid
                     :sha1 sha1
                     :identical identical}}
@@ -146,7 +149,7 @@
                  :sha1 sha1
                  :updated (now)
                  :identical identical
-                 :typing-ex (average user 10)}])
+                 :typing-ex avg}])
       (c/put-answer user (if (develop?) 10 (* 24 60 60)))
       (resp/redirect "/tasks")
       (catch Exception e
@@ -154,6 +157,7 @@
 
 (defn- show-answer
   [a]
+  (t/log! :debug a)
   [:div.py-2
    [:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
