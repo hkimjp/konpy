@@ -14,24 +14,23 @@
 - compile routes in production.
 - download button.
 - transducer.
-- pull typing scores.
 - link wil documents.
 - backup db.sqlite
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
 
+
 ## 0.10.0 (2025-05-16)
+pull typing scores.
 
 - fixed bug:
 
-```bad
-  (catch Exception e (.getMssaage e))
-```
+    ; bad
+    (catch Exception e (.getMssaage e))
 
-```good
-  (catch Exception e
+    ; good
+    (catch Exception e
         (t/log! :error (.getMessage e)))))
-```
 
 - added typing-ex namespace. insert avarage of last typing 10 times.
 

@@ -13,6 +13,9 @@
 (t/set-min-level! :debug)
 (system/restart-system)
 
+(db/q '[:find (count ?e)
+        :where
+        [?e]])
 (comment
   (db/q '[:find ?eid ?author
           :in $ ?author
