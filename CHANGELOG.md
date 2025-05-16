@@ -20,6 +20,28 @@
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
 
+## 0.10.0-SNAPSHOT
+
+- fixed bug:
+
+```bad
+  (catch Exception e (.getMssaage e))
+```
+
+```good
+  (catch Exception e
+        (t/log! :error (.getMessage e)))))
+```
+
+- added typing-ex namespace. insert avarage of last typing 10 times.
+
+- update libraries
+
+```sh
+❯ neil dep upgrade
+:action "upgrading" :lib io.github.tonsky/clj-reload :current-version 0.9.5 :version 0.9.6
+:action "upgrading" :alias :dev :lib io.github.tonsky/clj-reload :current-version 0.9.5 :version 0.9.6
+```
 
 ## 0.9.2 (2025-05-15)
 

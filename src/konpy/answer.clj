@@ -9,6 +9,7 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
+   [konpy.typing-ex :refer [average]]
    [konpy.utils :refer [user kp-sha1 now shorten develop?]]
    [konpy.views :refer [page render]]))
 
@@ -99,17 +100,19 @@
     (page
      [:div.mx-4
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
-      [:form {:hx-confirm "ほんとに？"
-              :hx-post (str "/answer/" e)
-              :hx-target "#body"
-              :hx-swap "outerHTML"}
+      [:form
+       #_{:method "post" :action (str "/answer/" e)}
+       {:hx-confirm "ほんとに？"
+        :hx-post (str "/answer/" e)
+        :hx-target "#body"
+        :hx-swap "outerHTML"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        (when (some? last-answer)
          [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
        [:div [:textarea {:class te :name "answer"}
               (:answer last-answer)]]
-       [:div [:button {:class btn}
+       [:div [:button {:class btn :type "submit"}
               (if (some? last-answer)
                 "再送"
                 "送信")]]]
@@ -127,23 +130,27 @@
   (let [tid (parse-long e)
         ; sha1 (-> answer remove-spaces sha1) ; changed
         sha1 (kp-sha1 answer)
-        identical (identical sha1)]
+        identical (identical sha1)
+        user (user request)]
     (t/log! {:level :debug
-             :data {:tid tid
+             :data {:user user
+                    :tid tid
                     :sha1 sha1
                     :identical identical}}
             "answer!")
     (try
       (db/put! [{:db/add -1
                  :task/id tid
-                 :author (user request)
+                 :author user
                  :answer answer
                  :sha1 sha1
                  :updated (now)
-                 :identical identical}])
-      (c/put-answer (user request) (if (develop?) 10 (* 24 60 60)))
+                 :identical identical
+                 :typing-ex (average user 10)}])
+      (c/put-answer user (if (develop?) 10 (* 24 60 60)))
       (resp/redirect "/tasks")
-      (catch Exception e (.getMessage e)))))
+      (catch Exception e
+        (t/log! :error (.getMessage e))))))
 
 (defn- show-answer
   [a]
@@ -152,7 +159,7 @@
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "] "(under construction)"]
+   [:div [:span.font-bold "Typing: "] (:typing-ex a)]
    [:div [:span.font-bold "WIL: "] "(under construction)"]
    [:textarea {:class te} (:answer a)]])
 
