@@ -9,6 +9,7 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
+   [konpy.typing-ex :as typing-ex]
    [konpy.utils :refer [user kp-sha1 now shorten develop?]]
    [konpy.views :refer [page render]]))
 
@@ -35,26 +36,28 @@
     [?e :sha1 ?sha1]])
 
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author
-    :keys answer updated identical author
+  '[:find ?answer ?updated ?identical ?author ?typing-ex
+    :keys answer updated identical author typing-ex
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
     [?e :author ?author]
     [?e :answer ?answer]
     [?e :updated ?updated]
-    [?e :identical ?identical]])
+    [?e :identical ?identical]
+    [?e :typing-ex ?typing-ex]])
 
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical
-    :keys answer updated author identical
+  '[:find ?answer ?updated ?author ?identical ?typing-ex
+    :keys answer updated author identical typing-ex
     :in $ ?tid
     :where
     [?e :task/id ?tid]
     [?e :author ?author]
     [?e :answer ?answer]
     [?e :updated ?updated]
-    [?e :identical ?identical]])
+    [?e :identical ?identical]
+    [?e :typing-ex ?typing-ex]])
 
 ;; can not [?e :db/id ?tid]
 (def q-week-num
@@ -71,7 +74,7 @@
 (defn find-answers
   [author tid]
   (db/q q-find-answers
-    author tid))
+        author tid))
 
 (defn last-answer
   "if no answer, returns nil."
@@ -82,9 +85,8 @@
   "returns a list of author's login whose answer's sha1　is equal to `sha1`."
   [sha1]
   (->> (db/q q-find-author
-         sha1)
-    (mapv first)))
-
+             sha1)
+       (mapv first)))
 
 (defn answer
   [{{:keys [e]} :path-params :as request}]
@@ -96,88 +98,96 @@
              :data {:tid tid
                     :user user
                     :last-answer (shorten last-answer)}}
-      "answer")
+            "answer")
     (page
-      [:div.mx-4
-       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
-       [:form {:hx-confirm "ほんとに？"
-               :hx-post (str "/answer/" e)
-               :hx-target "#body"
-               :hx-swap "outerHTML"}
-        (h/raw (anti-forgery-field))
-        [:input {:type "hidden" :name "e" :value tid}]
-        (when (some? last-answer)
-          [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
-        [:div [:textarea {:class te :name "answer"}
-               (:answer last-answer)]]
-        [:div [:button {:class btn}
-               (if (some? last-answer)
-                 "再送"
-                 "送信")]]]
-       [:div {:class "flex gap-4 my-2"}
-        [:a {:class lime :href (str "/answer/" tid "/self")}
-         "自分の回答"]
-        (when (some? last-answer)
-          [:a {:class lime :href (str "/answer/" tid "/others")}
-           "他受講生の回答"])]
-       [:div {:class "flex gap-4 my-2"}
-        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
+     [:div.mx-4
+      [:div [:span {:class "font-bold"} "課題: "] (:task task)]
+      [:form
+       #_{:method "post" :action (str "/answer/" e)}
+       {:hx-confirm "ほんとに？"
+        :hx-post (str "/answer/" e)
+        :hx-target "#body"
+        :hx-swap "outerHTML"}
+       (h/raw (anti-forgery-field))
+       [:input {:type "hidden" :name "e" :value tid}]
+       (when (some? last-answer)
+         [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
+       [:div [:textarea {:class te :name "answer"}
+              (:answer last-answer)]]
+       [:div [:button {:class btn :type "submit"}
+              (if (some? last-answer)
+                "再送"
+                "送信")]]]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class lime :href (str "/answer/" tid "/self")}
+        "自分の回答"]
+       (when (some? last-answer)
+         [:a {:class lime :href (str "/answer/" tid "/others")}
+          "他受講生の回答"])]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
   (let [tid (parse-long e)
-        ; sha1 (-> answer remove-spaces sha1) ; changed
         sha1 (kp-sha1 answer)
-        identical (identical sha1)]
-    (t/log! {:level :debug
-             :data {:tid tid
+        identical (identical sha1)
+        user (user request)
+        avg (typing-ex/average user 10)]
+    (t/log! {:level :info
+             :data {:user user
+                    :typing-ex avg
+                    :tid tid
                     :sha1 sha1
-                    :identical (shorten 20 (str identical))}}
-      "answer!")
+                    :identical identical}}
+            "answer!")
     (try
       (db/put! [{:db/add -1
                  :task/id tid
-                 :author (user request)
+                 :author user
                  :answer answer
                  :sha1 sha1
                  :updated (now)
-                 :identical identical}])
-      (c/put-answer (user request) (if (develop?) 10 (* 24 60 60)))
+                 :identical identical
+                 :typing-ex avg}])
+      (c/put-answer user (if (develop?) 10 (* 24 60 60)))
       (resp/redirect "/tasks")
-      (catch Exception e (.getMessage e)))))
+      (catch Exception e
+        (t/log! :error (.getMessage e))))))
 
 (defn- show-answer
   [a]
+  (t/log! :debug a)
   [:div.py-2
    [:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "] "(under construction)"]
+   [:div [:span.font-bold "Typing: "] (:typing-ex a)]
    [:div [:span.font-bold "WIL: "] "(under construction)"]
    [:textarea {:class te} (:answer a)]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
   (let [answers (->> (db/q q-answers-self (parse-long e) (user request))
-                  (sort-by :updated)
-                  reverse)]
+                     (sort-by :updated)
+                     reverse)]
     (page
-      [:div {:class "mx-4"}
-       (for [a answers]
-         (show-answer a))])))
+     [:div {:class "mx-4"}
+      (for [a answers]
+        (show-answer a))])))
 
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-answers-others (parse-long e))
-                  (sort-by :updated)
-                  reverse)]
+                     (sort-by :updated)
+                     reverse)]
     (page
-      [:div {:class "mx-4 my-2"}
-       [:div {:class "text-2xl"} "現在までの回答数(人数): "
-        (count answers) " (" (-> (map :author answers) set count) ")"]
-       (for [a answers]
-         (show-answer a))])))
+     [:div {:class "mx-4 my-2"}
+      [:div {:class "text-2xl"} "現在までの回答数(人数): "
+       (count answers) " (" (-> (map :author answers) set count) ")"]
+      (for [a answers]
+        (show-answer a))])))
 
 ;------------------------------------------
 
@@ -186,11 +196,11 @@
   (let [answers (c/get-answers)]
     (t/log! :debug (str "recent-answers" (print-str answers)))
     (render
-      [:div#answers (print-str answers)])))
+     [:div#answers (print-str answers)])))
 
 (defn recent-logins
   [_]
   (let [logins (c/get-logins)]
     (t/log! :debug (str "recent-logins" (print-str logins)))
     (render
-      [:div#logins (print-str logins)])))
+     [:div#logins (print-str logins)])))
