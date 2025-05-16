@@ -20,7 +20,7 @@
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
 
-## 0.10.0-SNAPSHOT
+## 0.10.0 (2025-05-16)
 
 - fixed bug:
 
