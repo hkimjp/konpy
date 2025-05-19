@@ -14,12 +14,11 @@
   (pg/connect config))
 
 (defn average
-  [user n]
+  [user]
   (let [q "select avg(pt)::numeric(4,1) from (select pt from results
            where login=$1
-           order by id desc
-           limit $2)"
-        ret (pg/execute conn q {:params [user n]})]
+           and timestamp > now() - interval '1 week')"
+        ret (pg/execute conn q {:params [user]})]
     (t/log! :debug (str "average user: " user " ret " ret))
     (-> ret
         first

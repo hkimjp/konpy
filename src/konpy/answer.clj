@@ -139,7 +139,7 @@
         sha1 (kp-sha1 answer)
         identical (identical sha1)
         user (user request)
-        avg (typing-ex/average user 10)]
+        avg (typing-ex/average user)]
     (t/log! {:level :debug
              :data {:user user
                     :typing-ex avg
