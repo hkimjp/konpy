@@ -4,14 +4,39 @@
    [environ.core :refer [env]]
    [java-time.api :as jt]
    [taoensso.telemere :as t]
+   ;
    [konpy.admin :refer [upsert-task!]]
    [konpy.db :as db]
+   [konpy.typing-ex :as typing-ex]
    [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
 
 (t/set-min-level! :debug)
 (system/restart-system)
+
+(db/q '[:find ?e ?author
+        :where
+        [?e :author ?author]
+        [?e :task/id 377]])
+
+(:typing-ex (db/pull 377))
+
+(comment
+  ;
+  (defn add-current-typing-to-answer []
+    (let [answers (db/q '[:find ?e ?author ?tid
+                          :where
+                          [?e :author ?author]
+                          [?e :task/id ?tid]])]
+      (doseq [[e author] answers]
+        (let [average (or (typing-ex/average author 10) 0)
+              answer (db/pull e)]
+          (db/put! [(update answer :typing-ex (fn [_] average))])))))
+
+  (add-current-typing-to-answer)
+  (:typing-ex (db/pull 20))
+  :rcf)
 
 (comment
   (db/q '[:find ?eid ?author

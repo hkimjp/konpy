@@ -20,7 +20,7 @@
            order by id desc
            limit $2)"
         ret (pg/execute conn q {:params [user n]})]
-    (t/log! :info (str "average user: " user " ret " ret))
+    (t/log! :debug (str "average user: " user " ret " ret))
     (-> ret
         first
         :avg)))

@@ -12,29 +12,27 @@ Require Redis.
 
 ## Usage
 
+Postgresql and Redis are required.
+
 In development, run tailwindcss watcher in the background,
 
     $ just watch
 
-trhen start Clojure REPL.
+then start Clojure REPL.
 
     $ just repl
 
-Redis is required to work.
 
-will make persistent storage at `storage/db.sqlite`.
+Persistent storage is at `storage/db.sqlite`.
 
 In production,
 
     $ just run
 
-or, build uberjar by,
+or,
 
     $ just build
-
-then,
-
-    $ java -jar target/io.github.hkimjp/konpy-VERSION.jar
+    $ java -jar target/io.github.hkimjp/konpy-<VERSION>.jar
 
 
 ## License

@@ -35,9 +35,10 @@
     [?e :author ?author]
     [?e :sha1 ?sha1]])
 
+; typing-ex
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author ?typing-ex
-    :keys answer updated identical author typing-ex
+  '[:find ?answer ?updated ?identical ?author  ?typing-ex
+    :keys answer updated identical author  typing-ex
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
@@ -47,6 +48,7 @@
     [?e :identical ?identical]
     [?e :typing-ex ?typing-ex]])
 
+; typing-ex
 (def ^:private q-answers-others
   '[:find ?answer ?updated ?author ?identical ?typing-ex
     :keys answer updated author identical typing-ex
@@ -103,7 +105,6 @@
      [:div.mx-4
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form
-       #_{:method "post" :action (str "/answer/" e)}
        {:hx-confirm "ほんとに？"
         :hx-post (str "/answer/" e)
         :hx-target "#body"
@@ -134,7 +135,7 @@
         identical (identical sha1)
         user (user request)
         avg (typing-ex/average user 10)]
-    (t/log! {:level :info
+    (t/log! {:level :debug
              :data {:user user
                     :typing-ex avg
                     :tid tid
@@ -157,7 +158,7 @@
 
 (defn- show-answer
   [a]
-  (t/log! :debug a)
+  (t/log! :debug (str "show-answer :typing-ex " a))
   [:div.py-2
    [:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
@@ -193,14 +194,14 @@
 
 (defn recent-answers
   [_]
-  (let [answers (c/get-answers)]
-    (t/log! :debug (str "recent-answers" (print-str answers)))
+  (let [answers (-> (c/get-answers) print-str)]
+    (t/log! :debug answers)
     (render
-     [:div#answers (print-str answers)])))
+     [:div#answers answers])))
 
 (defn recent-logins
   [_]
-  (let [logins (c/get-logins)]
-    (t/log! :debug (str "recent-logins" (print-str logins)))
+  (let [logins (-> (c/get-logins) print-str)]
+    (t/log! :debug logins)
     (render
-     [:div#logins (print-str logins)])))
+     [:div#logins logins])))

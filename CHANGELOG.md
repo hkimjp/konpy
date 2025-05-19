@@ -14,24 +14,33 @@
 - compile routes in production.
 - download button.
 - transducer.
-- pull typing scores.
 - link wil documents.
 - backup db.sqlite
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
+- 回答した問題番号(w-n)を最近の回答に表示する。
+
+## 0.10.2 (2025-05-19)
+
+- fixed typing-ex bug.
+
+## 0.10.1-bug
+
+- answers which does not have :typing-ex.
+- added app.melt:/etc/default/konpy.env
 
 ## 0.10.0 (2025-05-16)
 
+pull typing scores.
+
 - fixed bug:
 
-```bad
-  (catch Exception e (.getMssaage e))
-```
+    ; bad
+    (catch Exception e (.getMssaage e))
 
-```good
-  (catch Exception e
+    ; good
+    (catch Exception e
         (t/log! :error (.getMessage e)))))
-```
 
 - added typing-ex namespace. insert avarage of last typing 10 times.
 
