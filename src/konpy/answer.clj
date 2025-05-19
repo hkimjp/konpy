@@ -35,9 +35,10 @@
     [?e :author ?author]
     [?e :sha1 ?sha1]])
 
+; typing-ex
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author
-    :keys answer updated identical author
+  '[:find ?answer ?updated ?identical ?author  ?typing-ex
+    :keys answer updated identical author  typing-ex
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
@@ -45,11 +46,12 @@
     [?e :answer ?answer]
     [?e :updated ?updated]
     [?e :identical ?identical]
-    #_[?e :typing-ex ?typing-ex]])
+    [?e :typing-ex ?typing-ex]])
 
+; typing-ex
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical
-    :keys answer updated author identical
+  '[:find ?answer ?updated ?author ?identical ?typing-ex
+    :keys answer updated author identical typing-ex
     :in $ ?tid
     :where
     [?e :task/id ?tid]
@@ -57,7 +59,7 @@
     [?e :answer ?answer]
     [?e :updated ?updated]
     [?e :identical ?identical]
-    #_[?e :typing-ex ?typing-ex]])
+    [?e :typing-ex ?typing-ex]])
 
 ;; can not [?e :db/id ?tid]
 (def q-week-num
@@ -156,7 +158,7 @@
 
 (defn- show-answer
   [a]
-  (t/log! :debug a)
+  (t/log! :debug (str "show-answer :typing-ex " a))
   [:div.py-2
    [:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
@@ -192,14 +194,14 @@
 
 (defn recent-answers
   [_]
-  (let [answers (c/get-answers)]
-    (t/log! :debug (str "recent-answers" (str answers)))
+  (let [answers (-> (c/get-answers) print-str)]
+    (t/log! :debug answers)
     (render
-     [:div#answers (print-str answers)])))
+     [:div#answers answers])))
 
 (defn recent-logins
   [_]
-  (let [logins (c/get-logins)]
-    (t/log! :debug (str "recent-logins" (str logins)))
+  (let [logins (-> (c/get-logins) print-str)]
+    (t/log! :debug logins)
     (render
-     [:div#logins (print-str logins)])))
+     [:div#logins logins])))

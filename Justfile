@@ -47,8 +47,9 @@ deploy-to host app: build
   ssh {{host}} mkdir -p {{app}}/storage
   scp target/io.github.hkimjp/{{app}}-*.jar {{host}}:{{app}}/{{app}}.jar
   scp systemd/{konpy.service,start.sh,stop.sh} {{host}}:{{app}}/
-  ssh {{host}} sudo cp {{app}}/{{app}}.service /lib/systemd/system
-  ssh {{host}} sudo systemctl daemon-reload
+#   scp systemd/konpy.env {{host}}:/etc/default/
+#   ssh {{host}} sudo cp {{app}}/{{app}}.service /lib/systemd/system
+#   ssh {{host}} sudo systemctl daemon-reload
   ssh {{host}} sudo systemctl restart {{app}}.service
   ssh {{host}} systemctl status {{app}}.service
 
