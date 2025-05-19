@@ -2,6 +2,7 @@
   (:require
    ; [clojure.java.io :as io]
    ; [clojure.string :as str]
+   [environ.core :refer [env]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
@@ -14,7 +15,11 @@
    [konpy.views :refer [page render]]))
 
 (def ^:private btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+
 (def ^:private lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+
+(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
+
 (def ^:private te   "my-2 p-1 text-md font-mono w-160 h-60 outline outline-black/5 shadow-lg")
 
 (def ^:private q-find-answers
@@ -165,7 +170,9 @@
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
    [:div [:span.font-bold "Typing: "] (:typing-ex a)]
-   [:div [:span.font-bold "WIL: "] "(under construction)"]
+   [:div [:span.font-bold "WIL: "]
+    [:a {:class btn
+         :href (str (env :wil) "/last/" (:author a))} "look"]]
    [:textarea {:class te} (:answer a)]])
 
 (defn answers-self
