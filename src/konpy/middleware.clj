@@ -2,9 +2,8 @@
   (:require [environ.core :refer [env]]
             [ring.util.response :as resp]
             [taoensso.telemere :as t]))
-;
+
 ; FIXME: compile
-;
 
 (defn- user [request]
   (get-in request [:session :identity]))
@@ -14,7 +13,7 @@
   ; (t/log! :debug "wrap-users")
   (fn [request]
     (let [user (user request)]
-      (t/log! :info (str "wrap-users " user))
+      (t/log! :debug (str "wrap-users " user))
       (if (some? user)
         (handler request)
         (-> (resp/redirect "/")
@@ -24,7 +23,7 @@
   ;(t/log! :debug "wrap-admin")
   (fn [request]
     (let [user (user request)]
-      (t/log! :info (str "wrap-admin " user))
+      (t/log! :debug (str "wrap-admin " user))
       (if (= (env :admin) user)
         (handler request)
         (-> (resp/redirect "/")

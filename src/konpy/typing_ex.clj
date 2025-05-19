@@ -26,6 +26,3 @@
         :avg)))
 
 ; (average "hkimura" 10)
-
-
-

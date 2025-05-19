@@ -15,13 +15,6 @@
 (t/set-min-level! :debug)
 (system/restart-system)
 
-(db/q '[:find ?e ?author
-        :where
-        [?e :author ?author]
-        [?e :task/id 377]])
-
-(:typing-ex (db/pull 377))
-
 (comment
   ;
   (defn add-current-typing-to-answer []

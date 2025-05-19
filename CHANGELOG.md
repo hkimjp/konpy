@@ -19,6 +19,11 @@
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
 - 回答した問題番号(w-n)を最近の回答に表示する。
+- `db.sqlite` must be `konpy.sqlite`.
+
+## 0.11-SNAPSHOT
+
+- fixed `just deply` bug.
 
 ## 0.10.2 (2025-05-19)
 
