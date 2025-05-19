@@ -20,7 +20,7 @@
 
 (def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
 
-(def ^:private te   "my-2 p-1 text-md font-mono w-160 h-60 outline outline-black/5 shadow-lg")
+(def ^:private te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
@@ -118,8 +118,9 @@
        [:input {:type "hidden" :name "e" :value tid}]
        (when (some? last-answer)
          [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
-       [:div [:textarea {:class te :name "answer"}
-              (:answer last-answer)]]
+       [:div.flex
+        [:textarea {:class te :name "answer"}
+         (:answer last-answer)]]
        [:div [:button {:class btn :type "submit"}
               (if (some? last-answer)
                 "再送"
@@ -164,8 +165,8 @@
 (defn- show-answer
   [a]
   (t/log! :debug (str "show-answer :typing-ex " a))
-  [:div.py-2
-   [:hr.my-2]
+  [:div.my-8
+   ;[:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
@@ -173,7 +174,8 @@
    [:div [:span.font-bold "WIL: "]
     [:a {:class btn
          :href (str (env :wil) "/last/" (:author a))} "look"]]
-   [:textarea {:class te} (:answer a)]])
+   [:div.flex
+    [:textarea {:class te} (:answer a)]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
