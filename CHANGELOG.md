@@ -21,7 +21,7 @@
 - 回答した問題番号(w-n)を最近の回答に表示する。
 - `db.sqlite` must be `konpy.sqlite`.
 
-## 0.11.0-SNAPSHOT (2025-05-19)
+## 0.11.0 (2025-05-19)
 
 - fixed `just deply` bug.
 
