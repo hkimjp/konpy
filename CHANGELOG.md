@@ -18,6 +18,9 @@
 - 回答した問題番号(w-n)を最近の回答に表示する。
 - `db.sqlite` must be `konpy.sqlite`.
 
+## 0.12.0-SNAPSHOT
+
+- links to `/answer/e` from admin page.
 
 ## 0.11.1 (2025-05-19)
 
