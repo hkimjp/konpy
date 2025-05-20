@@ -1,25 +1,26 @@
 ## Unreleased
 
-- nothing returns (db/q '[:find ?e
-                          :where
-                          [?e :db/id 31]])
+- nothing returns by (db/q '[:find ?e
+                             :where
+                             [?e :db/id 31]])
 - (set! *default-data-reader-fn* tagged-literal)
-- display, logins, submissions in admin page.
-  check post /answers/:n
+- admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
-- can see future issues from current `/tasks/all`.
 - gather tailwindcss class definitions.
     - exec datascript garbage collection.
     - stat.
 - compile routes in production.
 - download button.
 - transducer.
-- link wil documents.
 - backup db.sqlite
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
 - 回答した問題番号(w-n)を最近の回答に表示する。
 - `db.sqlite` must be `konpy.sqlite`.
+
+## 0.12.0-SNAPSHOT
+
+- links to `/answer/e` from admin page.
 
 ## 0.11.1 (2025-05-19)
 
@@ -27,6 +28,7 @@
 
 ## 0.11.0 (2025-05-19)
 
+- linked wil documents.
 - fixed `just deply` bug.
 
 ## 0.10.2 (2025-05-19)
