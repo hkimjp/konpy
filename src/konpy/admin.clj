@@ -13,6 +13,8 @@
 
 (def box "text-center size-10 shadow-lg outline outline-black/5")
 
+(def te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
+
 (defn tasks
   "list all the tasks with upsert buttons."
   [_]
@@ -36,18 +38,20 @@
       [:div
        (for [{:keys [e week num task]}
              (conj ret {:e -1 :week "" :num "" :task ""})]
-         [:div {:class "flex gap-2"}
-          [:form {:class "mx-xl" :method "post"}
+         [:div {:class "flex gap-2 items-center"}
+          [:form {:method "post"}
            (h/raw (anti-forgery-field))
            [:div {:class "flex items-center"}
             [:input {:type "hidden" :name "e" :value e}]
             [:input {:class box :name "week" :value week}]
             " - "
             [:input {:class box :name "num" :value num}]
-            [:textarea {:class "w-160 h-10 p-2 outline outline-black/5 shadow-lg"
+            [:textarea {:class "w-180 h-10 p-2 outline outline-black/5 shadow-lg"
                         :name "task"}
              task]
-            [:button {:class btn} "upsert"]]]])]])))
+            [:button {:class btn-admin} "upsert"]]]
+          [:div [:a {:href (str "/answer/" e)}
+                 [:buttn {:class btn} "answers"]]]])]])))
 
 ; using this as seed function from dev/user.clj
 (defn upsert-task!
