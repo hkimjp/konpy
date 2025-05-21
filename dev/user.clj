@@ -16,6 +16,21 @@
 (system/restart-system)
 
 (comment
+  (db/q '[:find ?e
+          :where
+          [?e :db/add -1]])
+
+  (db/pull 1164)
+  (db/pull 100)
+  (db/pull 14)
+  (db/q '[:find ?week ?num
+          :where
+          [?e :db 14]
+          [?e :week ?week]
+          [?e :num ?num]])
+  :rcf)
+
+(comment
   ;
   (defn add-current-typing-to-answer []
     (let [answers (db/q '[:find ?e ?author ?tid
