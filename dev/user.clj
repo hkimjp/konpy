@@ -21,6 +21,21 @@
       (upsert-task! -1 week @c s))))
 
 (comment
+  (db/q '[:find ?e
+          :where
+          [?e :author "sum-lov_13"]])
+
+  (db/pull 879)
+  (db/q '[:find ?e
+          :where
+          [?e :week 6]
+          [?e :num 3]])
+  ;=> 375
+  (db/pull 375)
+  (:num (db/pull 375))
+  ;
+  (system/stop-system)
+  (system/start-system)
   (seeds-in 7 seeds-7)
   :rcf)
 

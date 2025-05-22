@@ -18,7 +18,15 @@
 - 回答した問題番号(w-n)を最近の回答に表示する。
 - `db.sqlite` must be `konpy.sqlite`.
 
-## 0.12.0-SNAPSHOT
+
+## 0.13.0-SNAPSHOT
+
+- improve recent-answers - append problem number to login name.
+- fixed - `(shorten nil)` failed. returns "" now.
+- sqlite vacuum - 7.6MB db.sqlite -> 2.4MB.
+
+
+## 0.12.0
 
 - links to `/answer/e` from admin page.
 

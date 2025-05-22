@@ -6,8 +6,11 @@
 
 (defn shorten
   ([s] (shorten s 40))
-  ([s n] (let [pat (re-pattern (str "(^.{" n "}).*"))]
-           (str/replace-first s pat "$1..."))))
+  ([s n]
+   (if (some? s)
+     (let [pat (re-pattern (str "(^.{" n "}).*"))]
+       (str/replace-first s pat "$1..."))
+     "")))
 
 (defn develop?
   []
