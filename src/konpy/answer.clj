@@ -18,9 +18,9 @@
 
 (def ^:private lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
-
 (def ^:private te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
+
+(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
