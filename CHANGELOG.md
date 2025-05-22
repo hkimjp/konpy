@@ -19,6 +19,17 @@
 - `db.sqlite` must be `konpy.sqlite`.
 
 
+## 0.13.0 (2025-05-22)
+
+- improve recent-answers - append problem number to login name.
+- fixed - `(shorten nil)` failed. returns "" now.
+- sqlite vacuum - 7.6MB db.sqlite -> 2.4MB.
+
+
+## 0.12.0
+
+- links to `/answer/e` from admin page.
+
 ## 0.11.1 (2025-05-19)
 
 - changed Typing: average last week's scores.

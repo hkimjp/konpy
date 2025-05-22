@@ -18,9 +18,9 @@
 
 (def ^:private lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
-
 (def ^:private te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
+
+(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
@@ -101,6 +101,7 @@
         task (db/pull tid)
         user (user request)
         last-answer (last-answer user tid)]
+    ; if last-answer is nil, exception occurs.
     (t/log! {:level :debug
              :data {:tid tid
                     :user user
@@ -140,7 +141,8 @@
         sha1 (kp-sha1 answer)
         identical (identical sha1)
         user (user request)
-        avg (typing-ex/average user)]
+        avg (typing-ex/average user)
+        num (:num (db/pull tid))]
     (t/log! {:level :debug
              :data {:user user
                     :typing-ex avg
@@ -157,7 +159,7 @@
                  :updated (now)
                  :identical identical
                  :typing-ex avg}])
-      (c/put-answer user (if (develop?) 10 (* 24 60 60)))
+      (c/put-answer (str user "-" num) (if (develop?) 10 (* 24 60 60)))
       (resp/redirect "/tasks")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
@@ -201,16 +203,16 @@
 
 ;------------------------------------------
 
-(defn recent-answers
-  [_]
-  (let [answers (-> (c/get-answers) print-str)]
-    (t/log! :debug answers)
-    (render
-     [:div#answers answers])))
-
 (defn recent-logins
   [_]
   (let [logins (-> (c/get-logins) print-str)]
     (t/log! :debug logins)
     (render
      [:div#logins logins])))
+
+(defn recent-answers
+  [_]
+  (let [answers (-> (c/get-answers) print-str)]
+    (t/log! :debug answers)
+    (render
+     [:div#answers answers])))
