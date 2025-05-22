@@ -37,7 +37,7 @@
           :where
           [?eid :task/id 374]
           [?eid :author ?author]]
-        "hkimura")
+    "hkimura")
 
   (db/pull 377)
 
@@ -99,7 +99,7 @@ def g(x):
           [?e :task/id 31]
           [?e :author ?author]
           [?e :sha1 ?sha1]]
-        "daisuke")
+    "daisuke")
 
   #{["66b1d23469ffbb00b32918a33a0ea097ab7a8560"] ["67084ea7526e2e1fce6699cad5bc9d4c06ba6be1"]}
   (db/q '[:find ?sha1
@@ -108,7 +108,7 @@ def g(x):
           [?e :task/id 31]
           [?e :author ?author]
           [?e :sha1 ?sha1]]
-        "knt_07")
+    "knt_07")
   :rcf)
 
 (comment
@@ -132,7 +132,7 @@ def g(x):
           :where
           [?e :author ?author]
           [?e :sha1 ?to]]
-        -6652132719765422345036288287526973911102942116N)
+    -6652132719765422345036288287526973911102942116N)
 
   (db/q '[:find ?author
           :in $ ?x
@@ -141,7 +141,7 @@ def g(x):
           [?e :author ?author]
           [?e :sha1 ?sha1]
           [(= ?sha1 ?x)]]
-        "356a192b7913b04c54574d18c28d46e6395428ab")
+    "356a192b7913b04c54574d18c28d46e6395428ab")
 
   :rcf)
 
@@ -164,7 +164,7 @@ def g(x):
           [?e :num ?num]
           [?e :task ?task]
           [?e :issued ?issued]]
-        5)
+    5)
 
   (u/weeks)
 
@@ -229,7 +229,7 @@ def g(x):
           :where
           [?e :name ?name]
           [?e :age ?age]]
-        "akari")
+    "akari")
 
   (db/pull ['*] 1)
   (db/pull  [:work] 1)
@@ -243,3 +243,7 @@ def g(x):
   (db/conn?)
 
   :rcf)
+
+abc    ; def
+ghi    ; def
+xyz    ; def
