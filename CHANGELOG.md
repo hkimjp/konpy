@@ -19,7 +19,7 @@
 - `db.sqlite` must be `konpy.sqlite`.
 
 
-## 0.13.0-SNAPSHOT
+## 0.13.0 (2025-05-22)
 
 - improve recent-answers - append problem number to login name.
 - fixed - `(shorten nil)` failed. returns "" now.
