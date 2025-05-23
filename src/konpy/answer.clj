@@ -166,18 +166,24 @@
 
 (defn- show-answer
   [a]
-  (t/log! :debug (str "show-answer :typing-ex " a))
+  ; (t/log! :debug (str "show-answer :typing-ex " a))
   [:div.my-8
-   ;[:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
    [:div [:span.font-bold "Typing: "] (:typing-ex a)]
    [:div [:span.font-bold "WIL: "]
     [:a {:class btn
-         :href (str (env :wil) "/last/" (:author a))} "look"]]
-   [:div.flex
-    [:textarea {:class te} (:answer a)]]])
+         :href (str (env :wil) "/last/" (:author a))} "Look"]]
+   [:div
+    [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
+     (:answer a)]]
+   [:div
+    [:form {:method "post" :action "/download"}
+     (h/raw (anti-forgery-field))
+     [:input {:type "hidden" :name "answer" :value (:answer a)}]
+     #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
+     [:input {:type "submit" :value "download⇣"}]]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -216,3 +222,13 @@
     (t/log! :debug answers)
     (render
      [:div#answers answers])))
+;------------------------------------------
+
+(defn download
+  [{{:keys [answer]} :params :as request}]
+  (t/log! {:level :info
+           :data {:user (user request)}} "download")
+  {:status 200
+   :headers {"Content-disposition" "attachment; filename=download.py"}
+   :body answer})
+

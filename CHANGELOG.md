@@ -10,21 +10,24 @@
     - exec datascript garbage collection.
     - stat.
 - compile routes in production.
-- download button.
 - transducer.
 - backup db.sqlite
 - upload db.sqlite
 - 回答ボタンのつき方。div の内側に入れちゃえばいいか。
 - 回答した問題番号(w-n)を最近の回答に表示する。
 - `db.sqlite` must be `konpy.sqlite`.
+- htmx 思ったようにできない。hx-post, hx-swap, parameters.
 
+## 0.14.0 (2025-05-22)
 
-## 0.13.0 (2025-05-22)
+- adaptive pre(h を回答の長さに合わせる)
+- download button.
+
+## 0.13.1 (2025-05-22)
 
 - improve recent-answers - append problem number to login name.
 - fixed - `(shorten nil)` failed. returns "" now.
 - sqlite vacuum - 7.6MB db.sqlite -> 2.4MB.
-
 
 ## 0.12.0
 
