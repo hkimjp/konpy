@@ -159,7 +159,7 @@
                  :updated (now)
                  :identical identical
                  :typing-ex avg}])
-      (c/put-answer (str user "-" num) (if (develop?) 10 (* 24 60 60)))
+      (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
       (resp/redirect "/tasks")
       (catch Exception e
         (t/log! :error (.getMessage e))))))

@@ -18,6 +18,10 @@
 - `db.sqlite` must be `konpy.sqlite`.
 - htmx 思ったようにできない。hx-post, hx-swap, parameters.
 
+## 0.14.2 (2025-05-24)
+
+- changed format of recent ansswers from `user🍅num` to `num🍅user`.
+
 ## 0.14.0 (2025-05-22)
 
 - adaptive pre(h を回答の長さに合わせる)
