@@ -18,9 +18,9 @@
 
 (def ^:private lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
-
 (def ^:private te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
+
+(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
@@ -159,25 +159,31 @@
                  :updated (now)
                  :identical identical
                  :typing-ex avg}])
-      (c/put-answer (str user "🍅" num) (if (develop?) 10 (* 24 60 60)))
+      (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
       (resp/redirect "/tasks")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
 (defn- show-answer
   [a]
-  (t/log! :debug (str "show-answer :typing-ex " a))
+  ; (t/log! :debug (str "show-answer :typing-ex " a))
   [:div.my-8
-   ;[:hr.my-2]
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
    [:div [:span.font-bold "Typing: "] (:typing-ex a)]
    [:div [:span.font-bold "WIL: "]
     [:a {:class btn
-         :href (str (env :wil) "/last/" (:author a))} "look"]]
-   [:div.flex
-    [:textarea {:class te} (:answer a)]]])
+         :href (str (env :wil) "/last/" (:author a))} "Look"]]
+   [:div
+    [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
+     (:answer a)]]
+   [:div
+    [:form {:method "post" :action "/download"}
+     (h/raw (anti-forgery-field))
+     [:input {:type "hidden" :name "answer" :value (:answer a)}]
+     #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
+     [:input {:type "submit" :value "download⇣"}]]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -216,3 +222,13 @@
     (t/log! :debug answers)
     (render
      [:div#answers answers])))
+;------------------------------------------
+
+(defn download
+  [{{:keys [answer]} :params :as request}]
+  (t/log! {:level :info
+           :data {:user (user request)}} "download")
+  {:status 200
+   :headers {"Content-disposition" "attachment; filename=download.py"}
+   :body answer})
+
