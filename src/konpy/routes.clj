@@ -37,6 +37,7 @@
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]
     ["/gc" {:post {:handler admin/gc}}]]
+   ["/download" {:post {:handler answer/download}}]
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
