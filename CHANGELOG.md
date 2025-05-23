@@ -20,7 +20,7 @@
 
 ## 0.14.2 (2025-05-24)
 
-- changed format of recent ansswers from `user🍅num` to `num🍅user`.
+- changed format of recent answers from `user🍅num` to `num🍅user`.
 
 ## 0.14.0 (2025-05-22)
 
