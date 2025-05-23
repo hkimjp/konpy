@@ -3,7 +3,6 @@
             [ring.util.response :as response]))
 
 (def ^:private version "0.14.2")
-
 (defn base
   [content]
   [:html {:lang "en"}
