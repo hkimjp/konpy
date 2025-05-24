@@ -81,7 +81,7 @@
 (defn find-answers
   [author tid]
   (db/q q-find-answers
-        author tid))
+    author tid))
 
 (defn last-answer
   "if no answer, returns nil."
@@ -92,8 +92,8 @@
   "returns a list of author's login whose answer's sha1　is equal to `sha1`."
   [sha1]
   (->> (db/q q-find-author
-             sha1)
-       (mapv first)))
+         sha1)
+    (mapv first)))
 
 (defn answer
   [{{:keys [e]} :path-params :as request}]
@@ -106,34 +106,34 @@
              :data {:tid tid
                     :user user
                     :last-answer (shorten last-answer)}}
-            "answer")
+      "answer")
     (page
-     [:div.mx-4
-      [:div [:span {:class "font-bold"} "課題: "] (:task task)]
-      [:form
-       {:hx-confirm "ほんとに？"
-        :hx-post (str "/answer/" e)
-        :hx-target "#body"
-        :hx-swap "outerHTML"}
-       (h/raw (anti-forgery-field))
-       [:input {:type "hidden" :name "e" :value tid}]
-       (when (some? last-answer)
-         [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
-       [:div.flex
-        [:textarea {:class te :name "answer"}
-         (:answer last-answer)]]
-       [:div [:button {:class btn :type "submit"}
-              (if (some? last-answer)
-                "再送"
-                "送信")]]]
-      [:div {:class "flex gap-4 my-2"}
-       [:a {:class lime :href (str "/answer/" tid "/self")}
-        "自分の回答"]
-       (when (some? last-answer)
-         [:a {:class lime :href (str "/answer/" tid "/others")}
-          "他受講生の回答"])]
-      [:div {:class "flex gap-4 my-2"}
-       [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
+      [:div.mx-4
+       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
+       [:form
+        {:hx-confirm "ほんとに？"
+         :hx-post (str "/answer/" e)
+         :hx-target "#body"
+         :hx-swap "outerHTML"}
+        (h/raw (anti-forgery-field))
+        [:input {:type "hidden" :name "e" :value tid}]
+        (when (some? last-answer)
+          [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
+        [:div.flex
+         [:textarea {:class te :name "answer"}
+          (:answer last-answer)]]
+        [:div [:button {:class btn :type "submit"}
+               (if (some? last-answer)
+                 "再送"
+                 "送信")]]]
+       [:div {:class "flex gap-4 my-2"}
+        [:a {:class lime :href (str "/answer/" tid "/self")}
+         "自分の回答"]
+        (when (some? last-answer)
+          [:a {:class lime :href (str "/answer/" tid "/others")}
+           "他受講生の回答"])]
+       [:div {:class "flex gap-4 my-2"}
+        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
@@ -149,7 +149,7 @@
                     :tid tid
                     :sha1 sha1
                     :identical identical}}
-            "answer!")
+      "answer!")
     (try
       (db/put! [{:db/add -1
                  :task/id tid
@@ -160,7 +160,7 @@
                  :identical identical
                  :typing-ex avg}])
       (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
-      (resp/redirect "/tasks")
+      (resp/redirect (str "/answer/" e "/others"))
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
@@ -188,24 +188,24 @@
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
   (let [answers (->> (db/q q-answers-self (parse-long e) (user request))
-                     (sort-by :updated)
-                     reverse)]
+                  (sort-by :updated)
+                  reverse)]
     (page
-     [:div {:class "mx-4"}
-      (for [a answers]
-        (show-answer a))])))
+      [:div {:class "mx-4"}
+       (for [a answers]
+         (show-answer a))])))
 
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-answers-others (parse-long e))
-                     (sort-by :updated)
-                     reverse)]
+                  (sort-by :updated)
+                  reverse)]
     (page
-     [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl"} "現在までの回答数(人数): "
-       (count answers) " (" (-> (map :author answers) set count) ")"]
-      (for [a answers]
-        (show-answer a))])))
+      [:div {:class "mx-4 my-2"}
+       [:div {:class "text-2xl"} "現在までの回答数(人数): "
+        (count answers) " (" (-> (map :author answers) set count) ")"]
+       (for [a answers]
+         (show-answer a))])))
 
 ;------------------------------------------
 
@@ -214,14 +214,14 @@
   (let [logins (-> (c/get-logins) print-str)]
     (t/log! :debug logins)
     (render
-     [:div#logins logins])))
+      [:div#logins logins])))
 
 (defn recent-answers
   [_]
   (let [answers (-> (c/get-answers) print-str)]
     (t/log! :debug answers)
     (render
-     [:div#answers answers])))
+      [:div#answers answers])))
 ;------------------------------------------
 
 (defn download

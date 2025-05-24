@@ -1,8 +1,9 @@
 (ns konpy.views
   (:require [hiccup2.core :as h]
-            [ring.util.response :as response]))
+   [ring.util.response :as response]))
 
-(def ^:private version "0.14.2")
+(def ^:private version "0.14.3")
+
 (defn base
   [content]
   [:html {:lang "en"}
@@ -29,20 +30,20 @@
 (defn render
   [content]
   (-> content
-      h/html
-      str
-      (response/response)
-      (response/header "Content-Type" "text/html")))
+    h/html
+    str
+    (response/response)
+    (response/header "Content-Type" "text/html")))
 
 (defn page
   [content]
   (-> content
-      base
-      render))
+    base
+    render))
 
 (defn under-construction-page [_]
   (page
-   [:div {:class "text-2xl text-red-500"} "Sorry, Under Construction."]))
+    [:div {:class "text-2xl text-red-500"} "Sorry, Under Construction."]))
 
 (defn yet [_]
   (render [:div "再読み込みで戻るはず。"]))
