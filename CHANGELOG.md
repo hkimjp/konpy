@@ -18,7 +18,7 @@
 - `db.sqlite` must be `konpy.sqlite`.
 - htmx 思ったようにできない。hx-post, hx-swap, parameters.
 
-## 0.14.3-SNAPSHOT
+## 0.14.3 (2025-05-24)
 
 - redirect to /answer/e/others after sending one's answer.
 - return 0 as typing-ex score if development mode.

@@ -160,7 +160,6 @@
                  :identical identical
                  :typing-ex avg}])
       (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
-      ;(resp/redirect "/tasks")
       (resp/redirect (str "/answer/" e "/others"))
       (catch Exception e
         (t/log! :error (.getMessage e))))))
