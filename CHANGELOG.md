@@ -18,6 +18,11 @@
 - `db.sqlite` must be `konpy.sqlite`.
 - htmx 思ったようにできない。hx-post, hx-swap, parameters.
 
+## 0.14.3-SNAPSHOT
+
+- redirect to /answer/e/others after sending one's answer.
+- return 0 as typing-ex score if development mode.
+
 ## 0.14.2 (2025-05-24)
 
 - changed format of recent answers from `user🍅num` to `num🍅user`.
