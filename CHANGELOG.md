@@ -18,7 +18,7 @@
 - must learn htmx about hx-post, hx-swap, parameters
 - display time of most recent login and submit.
 
-## 0.14.4-SNAPSHOT
+## 0.14.4 (2025-05-24)
 
 - embed link to "/task" in "今週のPython"
 - num🍅user, num🍅user, ...
