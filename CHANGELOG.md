@@ -13,10 +13,11 @@
 - transducer.
 - backup db.sqlite
 - upload db.sqlite
-- 回答ボタンのつき方。div の内側に入れちゃえばいいか。
-- 回答した問題番号(w-n)を最近の回答に表示する。
+- sumit button inside div?
 - `db.sqlite` must be `konpy.sqlite`.
-- htmx 思ったようにできない。hx-post, hx-swap, parameters.
+- must learn htmx about hx-post, hx-swap, parameters
+- display time of most recent login and submit.
+
 
 ## 0.14.3 (2025-05-24)
 
@@ -29,7 +30,7 @@
 
 ## 0.14.0 (2025-05-22)
 
-- adaptive pre(h を回答の長さに合わせる)
+- adaptive pre(simply `pre` is suffice)
 - download button.
 
 ## 0.13.1 (2025-05-22)
