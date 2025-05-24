@@ -160,7 +160,7 @@
                  :identical identical
                  :typing-ex avg}])
       (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
-      (resp/redirect "/tasks")
+      (resp/redirect (str "/answer/" e "/others"))
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
@@ -211,17 +211,22 @@
 
 (defn recent-logins
   [_]
-  (let [logins (-> (c/get-logins) print-str)]
+  (let [logins (apply str (interpose ", " (c/get-logins)))]
     (t/log! :debug logins)
     (render
      [:div#logins logins])))
 
 (defn recent-answers
   [_]
-  (let [answers (-> (c/get-answers) print-str)]
+  (let [answers (apply str (interpose ", " (c/get-answers)))]
     (t/log! :debug answers)
     (render
      [:div#answers answers])))
+
+(comment
+  (apply str (interpose ", " ["abc" "def" "012"]))
+  :rcf)
+
 ;------------------------------------------
 
 (defn download
