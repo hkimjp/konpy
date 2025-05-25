@@ -18,6 +18,10 @@
 - must learn htmx about hx-post, hx-swap, parameters
 - display time of most recent login and submit.
 
+## 0.14.5 (2025-05-25)
+
+- append typing-ex trainig count to answers.
+
 ## 0.14.4 (2025-05-24)
 
 - embed link to "/task" in "今週のPython"
