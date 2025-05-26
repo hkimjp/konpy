@@ -171,7 +171,10 @@
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "] (:typing-ex a)]
+   [:div [:span.font-bold "Typing: "]
+    (str (get-in a [:typing-ex :avg] (:typing-ex a))
+         "/"
+         (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
     [:a {:class btn
          :href (str (env :wil) "/last/" (:author a))} "Look"]]

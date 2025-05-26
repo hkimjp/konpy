@@ -24,7 +24,4 @@
           ret (pg/execute conn q {:params [user]})]
       (t/log! :debug (str "average user: " user " ret " ret))
       (-> ret
-          first
-          :avg))))
-
-(average "hkimura")
+          first))))

@@ -19,6 +19,10 @@
 - display time of the most recent login and submission.
 - name of the downloaded file.
 
+## 0.14.6-SNAPSHOT
+
+- show typing-avg/typing-count in answers.
+
 ## 0.14.5 (2025-05-25)
 
 - append typing-ex trainig count to answers.
