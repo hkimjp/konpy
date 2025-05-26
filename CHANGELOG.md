@@ -4,19 +4,20 @@
                              :where
                              [?e :db/id 31]])
 - (set! *default-data-reader-fn* tagged-literal)
-- admin can check who logined, submitted.
+- let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
 - gather tailwindcss class definitions.
     - exec datascript garbage collection.
     - stat.
 - compile routes in production.
 - transducer.
-- backup db.sqlite
-- upload db.sqlite
+- just recipe to backup db.sqlite
+- just recipe to upload db.sqlite
 - sumit button inside div?
 - `db.sqlite` must be `konpy.sqlite`.
-- must learn htmx about hx-post, hx-swap, parameters
-- display time of most recent login and submit.
+- (I) must learn htmx about hx-post, hx-swap, parameters
+- display time of the most recent login and submission.
+- name of the downloaded file.
 
 ## 0.14.5 (2025-05-25)
 
