@@ -23,6 +23,10 @@
 - read version from `pom.xml`.
 
 
+## 0.14.7-SNAPSHOT
+
+- answer.clj: (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
+
 ## 0.14.6 (2025-05-26)
 
 - show typing-avg/typing-count in answers.
