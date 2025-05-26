@@ -15,13 +15,13 @@
 
 (defn average
   [user]
-  (let [q "select avg(pt)::numeric(4,1) from (select pt from results
-           where login=$1
-           and timestamp > now() - interval '1 week')"
-        ret (pg/execute conn q {:params [user]})]
-    (t/log! :debug (str "average user: " user " ret " ret))
-    (-> ret
-        first
-        :avg)))
-
-; (average "hkimura" 10)
+  (if false ; (env :develop)
+    0
+    (let [q "select avg(pt)::numeric(4,1), count(pt)
+             from (select pt from results
+             where login=$1
+             and timestamp > now() - interval '1 week')"
+          ret (pg/execute conn q {:params [user]})]
+      (t/log! :debug (str "average user: " user " ret " ret))
+      (-> ret
+          first))))

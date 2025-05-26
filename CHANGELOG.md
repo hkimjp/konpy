@@ -4,19 +4,38 @@
                              :where
                              [?e :db/id 31]])
 - (set! *default-data-reader-fn* tagged-literal)
-- admin can check who logined, submitted.
+- let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
 - gather tailwindcss class definitions.
     - exec datascript garbage collection.
     - stat.
 - compile routes in production.
 - transducer.
-- backup db.sqlite
-- upload db.sqlite
-- 回答ボタンのつき方。div の内側に入れちゃえばいいか。
-- 回答した問題番号(w-n)を最近の回答に表示する。
+- just recipe to backup db.sqlite
+- just recipe to upload db.sqlite
+- sumit button inside div?
 - `db.sqlite` must be `konpy.sqlite`.
-- htmx 思ったようにできない。hx-post, hx-swap, parameters.
+- (I) must learn htmx about hx-post, hx-swap, parameters
+- display time of the most recent login and submission.
+- name of the downloaded file.
+
+## 0.14.6 (2025-05-26)
+
+- show typing-avg/typing-count in answers.
+
+## 0.14.5 (2025-05-25)
+
+- append typing-ex trainig count to answers.
+
+## 0.14.4 (2025-05-24)
+
+- embed link to "/task" in "今週のPython"
+- num🍅user, num🍅user, ...
+
+## 0.14.3 (2025-05-24)
+
+- redirect to /answer/e/others after sending one's answer.
+- return 0 as typing-ex score if development mode.
 
 ## 0.14.2 (2025-05-24)
 
@@ -24,7 +43,7 @@
 
 ## 0.14.0 (2025-05-22)
 
-- adaptive pre(h を回答の長さに合わせる)
+- adaptive pre(simply `pre` is suffice)
 - download button.
 
 ## 0.13.1 (2025-05-22)

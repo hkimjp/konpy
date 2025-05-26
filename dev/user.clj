@@ -21,6 +21,10 @@
       (upsert-task! -1 week @c s))))
 
 (comment
+
+  (db/q '[:find (count ?e)
+          :where
+          [?e :author "taiga228"]])
   (db/q '[:find ?e
           :where
           [?e :author "sum-lov_13"]])

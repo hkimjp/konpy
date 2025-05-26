@@ -2,7 +2,8 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.14.2")
+(def ^:private version "0.14.5")
+
 (defn base
   [content]
   [:html {:lang "en"}
@@ -17,7 +18,7 @@
    [:body#body
     [:div {:class "mx-auto"}
      [:div {:class "font-meduim text-4xl text-white bg-sky-700"}
-      "今週の Python"]
+      [:a {:href "/tasks"} "今週の Python"]]
      content
      [:hr]
      "hkimura "

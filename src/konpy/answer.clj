@@ -160,7 +160,7 @@
                  :identical identical
                  :typing-ex avg}])
       (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
-      (resp/redirect "/tasks")
+      (resp/redirect (str "/answer/" e "/others"))
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
@@ -171,7 +171,10 @@
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "] (:typing-ex a)]
+   [:div [:span.font-bold "Typing: "]
+    (str (get-in a [:typing-ex :avg] (:typing-ex a))
+         "/"
+         (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
     [:a {:class btn
          :href (str (env :wil) "/last/" (:author a))} "Look"]]
@@ -211,17 +214,22 @@
 
 (defn recent-logins
   [_]
-  (let [logins (-> (c/get-logins) print-str)]
+  (let [logins (apply str (interpose ", " (c/get-logins)))]
     (t/log! :debug logins)
     (render
      [:div#logins logins])))
 
 (defn recent-answers
   [_]
-  (let [answers (-> (c/get-answers) print-str)]
+  (let [answers (apply str (interpose ", " (c/get-answers)))]
     (t/log! :debug answers)
     (render
      [:div#answers answers])))
+
+(comment
+  (apply str (interpose ", " ["abc" "def" "012"]))
+  :rcf)
+
 ;------------------------------------------
 
 (defn download
