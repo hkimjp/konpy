@@ -80,8 +80,5 @@
       sha1
       (subs 0 7)))
 
-(comment
-  (= (kp-sha1 "a b c") (kp-sha1 "abc") (kp-sha1 "a
-                                                 b
-                                                 c"))
-  :rcf)
+(def version
+  [])
