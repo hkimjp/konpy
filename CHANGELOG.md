@@ -17,6 +17,10 @@
 - `db.sqlite` must be `konpy.sqlite`.
 - must learn htmx about hx-post, hx-swap, parameters
 - display time of most recent login and submit.
+- how about? [:p "some text" (h/raw <pre> ~ </pre>) "some text"]
+  ["p (h/raw "some text <pre>some function with indentations</pre> some text")]
+
+
 
 ## 0.14.5 (2025-05-25)
 
