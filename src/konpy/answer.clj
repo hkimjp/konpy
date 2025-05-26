@@ -89,7 +89,7 @@
   (last (sort-by :updated (find-answers author tid))))
 
 (defn identical
-  "returns a list of author's login whose answer's sha1　is equal to `sha1`."
+  "returns a list of author's login whose answer's sha1 is equal to `sha1`."
   [sha1]
   (->> (db/q q-find-author
              sha1)
