@@ -19,7 +19,7 @@
 - display time of the most recent login and submission.
 - name of the downloaded file.
 
-## 0.14.6-SNAPSHOT
+## 0.14.6 (2025-05-26)
 
 - show typing-avg/typing-count in answers.
 
