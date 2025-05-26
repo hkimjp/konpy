@@ -79,6 +79,3 @@
       remove-spaces
       sha1
       (subs 0 7)))
-
-(def version
-  [])
