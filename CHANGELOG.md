@@ -4,23 +4,37 @@
                              :where
                              [?e :db/id 31]])
 - (set! *default-data-reader-fn* tagged-literal)
-- admin can check who logined, submitted.
+- let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
 - gather tailwindcss class definitions.
     - exec datascript garbage collection.
     - stat.
 - compile routes in production.
 - transducer.
-- backup db.sqlite
-- upload db.sqlite
+- just recipe to backup db.sqlite
+- just recipe to upload db.sqlite
 - sumit button inside div?
 - `db.sqlite` must be `konpy.sqlite`.
-- must learn htmx about hx-post, hx-swap, parameters
 - display time of most recent login and submit.
+- (I) must learn htmx about hx-post, hx-swap, parameters
+- how about? [:p "some text" (h/raw <pre> ~ </pre>) "some text"]
+  ["p (h/raw "some text <pre>some function with indentations</pre> some text")]
+- name of the downloaded file.
+- read version from `pom.xml`.
+
+
+## 0.14.7 (2025-05-30)
+
+- answer.clj: (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
+
+## 0.14.6 (2025-05-26)
+
+- show typing-avg/typing-count in answers.
 
 ## 0.14.5 (2025-05-25)
 
 - append typing-ex trainig count to answers.
+
 
 ## 0.14.4 (2025-05-24)
 

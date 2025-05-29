@@ -11,7 +11,7 @@
    [konpy.carmine :as c]
    [konpy.db :as db]
    [konpy.typing-ex :as typing-ex]
-   [konpy.utils :refer [user kp-sha1 now shorten develop?]]
+   [konpy.utils :refer [user kp-sha1 now weeks shorten develop?]]
    [konpy.views :refer [page render]]))
 
 (def ^:private btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
@@ -89,7 +89,7 @@
   (last (sort-by :updated (find-answers author tid))))
 
 (defn identical
-  "returns a list of author's login whose answer's sha1　is equal to `sha1`."
+  "returns a list of author's login whose answer's sha1 is equal to `sha1`."
   [sha1]
   (->> (db/q q-find-author
              sha1)
@@ -135,6 +135,10 @@
       [:div {:class "flex gap-4 my-2"}
        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
+(def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
+
+; (get sep (mod (weeks) (count sep)))
+
 (defn answer!
   [{{:keys [e answer]} :params :as request}]
   (let [tid (parse-long e)
@@ -159,7 +163,8 @@
                  :updated (now)
                  :identical identical
                  :typing-ex avg}])
-      (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
+      (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
+                    (if (develop?) 60 (* 24 60 60)))
       (resp/redirect (str "/answer/" e "/others"))
       (catch Exception e
         (t/log! :error (.getMessage e))))))
@@ -171,7 +176,10 @@
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
-   [:div [:span.font-bold "Typing: "] (:typing-ex a)]
+   [:div [:span.font-bold "Typing: "]
+    (str (get-in a [:typing-ex :avg] (:typing-ex a))
+         "/"
+         (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
     [:a {:class btn
          :href (str (env :wil) "/last/" (:author a))} "Look"]]

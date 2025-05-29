@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.14.4")
+(def ^:private version "0.14.7")
 
 (defn base
   [content]
