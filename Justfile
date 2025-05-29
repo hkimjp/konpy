@@ -13,6 +13,10 @@ minify:
 fetch:
   scp ${DEST}:konpy/storage/db.sqlite storage/
   scp ${DEST}:konpy/log/konpy.log log/
+  # brew redis is 8.*.
+  scp ${DEST}:/var/lib/redis/dump.rdb /opt/homebrew/var/db/redis/
+  # if use orbstack redis@7, choose here.
+  scp ${DEST}:/var/lib/redis/dump.rdb ~/docker/redis@7/data/
 
 repl:
   clojure -M:dev -m nrepl.cmdline
