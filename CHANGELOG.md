@@ -23,7 +23,7 @@
 - read version from `pom.xml`.
 
 
-## 0.14.7-SNAPSHOT
+## 0.14.7 (2025-05-30)
 
 - answer.clj: (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
