@@ -22,8 +22,21 @@
 - name of the downloaded file.
 - read version from `pom.xml`.
 
+## 0.15.0-SNAPSHOT
 
-## 0.14.7-SNAPSHOT
+- pruned unused deps using `unused-deps`.
+- app.melt# usermod -G redis ubuntu
+- Justfile: fetch redis db to homebrew redis.
+
+    scp ${DEST}:/var/lib/redis/dump.rdb /opt/homebrew/var/db/redis/
+
+    - ubuntu redis 7.0.15
+    - homebrew redis 8.0.2
+
+  use orbstack redis ~/docker/redis@7/data/dump.rb?
+
+
+## 0.14.7 (2025-05-30)
 
 - answer.clj: (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
