@@ -23,8 +23,9 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 
-## 0.15.0-SNAPSHOT
+## 0.15.0 (2025-06-07)
 
+- stop no-use-upload-update systemd files.
 - display last answer's login and answered time.
 - display last login, who logined at when.
 - pruned unused deps using `unused-deps`.
