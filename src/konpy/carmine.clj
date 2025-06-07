@@ -62,3 +62,9 @@
 
 (defn get-answers []
   (get-key "kp:answer:"))
+
+(defn answered-time [key]
+  (get (str "kp:answer:" key)))
+
+(defn logined-time [key]
+  (get (str "kp:login:" key)))

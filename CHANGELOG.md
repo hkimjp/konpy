@@ -25,6 +25,8 @@
 
 ## 0.15.0-SNAPSHOT
 
+- display last answer's login and answered time.
+- display last login, who logined at when.
 - pruned unused deps using `unused-deps`.
 - app.melt# usermod -G redis ubuntu
 - Justfile: fetch redis db to homebrew redis.
