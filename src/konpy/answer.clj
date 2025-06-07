@@ -181,7 +181,7 @@
          "/"
          (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
-    [:a {:class btn
+    [:a {:class lime
          :href (str (env :wil) "/last/" (:author a))} "Look"]]
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
