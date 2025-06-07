@@ -35,17 +35,17 @@
                :href (str "/answer/" e)}
            "回答"]]])
       [:button {:class box-lime
-                :hx-get "/answers/logins"
-                :hx-target "#logins"
-                :hx-swap "outerHTML"}
-       "ログイン(24h)"]
-      [:div#logins]
-      [:button {:class box-lime
                 :hx-get "/answers/answers"
                 :hx-target "#answers"
                 :hx-swap "outerHTML"}
        "回答(12h)"]
       [:div#answers]
+      [:button {:class box-lime
+                :hx-get "/answers/logins"
+                :hx-target "#logins"
+                :hx-swap "outerHTML"}
+       "ログイン(24h)"]
+      [:div#logins]
       (when (admin? (user request))
         [:div {:class "py-2"}
          [:a {:class box-red

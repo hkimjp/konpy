@@ -219,20 +219,24 @@
 
 (defn recent-logins
   [_]
-  (let [logins (apply str (interpose ", " (c/get-logins)))]
-    (t/log! :debug logins)
+  (let [[fst & rst] (c/get-logins)]
+    ; (t/log! :debug logins)
     (render
-     [:div#logins logins])))
+     [:div#logins "last login: " fst ", " (c/logined-time fst) "."
+      [:p (apply str (interpose ", " rst))]])))
 
 (defn recent-answers
   [_]
-  (let [answers (apply str (interpose ", " (c/get-answers)))]
-    (t/log! :debug answers)
+  (let [[fst & rst] (c/get-answers)]
+    ; (t/log! :debug answers)
     (render
-     [:div#answers answers])))
+     [:div#answers "last answer: "  fst ", " (c/answered-time fst) "."
+      [:p (apply str (interpose ", " rst))]])))
 
 (comment
-  (apply str (interpose ", " ["abc" "def" "012"]))
+  (let [[fst & rst] []]
+    (println fst)
+    (println rst))
   :rcf)
 
 ;------------------------------------------

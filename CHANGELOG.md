@@ -21,6 +21,23 @@
   ["p (h/raw "some text <pre>some function with indentations</pre> some text")]
 - name of the downloaded file.
 - read version from `pom.xml`.
+- color self in answers and logins list.
+
+## 0.15.0 (2025-06-07)
+
+- stop no-use-upload-update systemd files.
+- display last answer's login and answered time.
+- display last login, who logined at when.
+- pruned unused deps using `unused-deps`.
+- app.melt# usermod -G redis ubuntu
+- Justfile: fetch redis db to homebrew redis.
+
+    scp ${DEST}:/var/lib/redis/dump.rdb /opt/homebrew/var/db/redis/
+
+    - ubuntu redis 7.0.15
+    - homebrew redis 8.0.2
+
+  use orbstack redis ~/docker/redis@7/data/dump.rb?
 
 
 ## 0.14.7 (2025-05-30)
