@@ -222,7 +222,7 @@
   (let [[fst & rst] (c/get-logins)]
     ; (t/log! :debug logins)
     (render
-     [:div#logins "last login: " fst "," (c/logined-time fst)
+     [:div#logins "last login: " fst ", " (c/logined-time fst) "."
       [:p (apply str (interpose ", " rst))]])))
 
 (defn recent-answers
@@ -230,7 +230,7 @@
   (let [[fst & rst] (c/get-answers)]
     ; (t/log! :debug answers)
     (render
-     [:div#answers "last answer: "  fst " at " (c/answered-time fst) ","
+     [:div#answers "last answer: "  fst ", " (c/answered-time fst) "."
       [:p (apply str (interpose ", " rst))]])))
 
 (comment
