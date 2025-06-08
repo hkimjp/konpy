@@ -25,8 +25,9 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 
-## 0.16.0-SNAPSHOT
+## 0.16.0-SNAPSHOT (2025-06-08)
 
+- black button
 - java 24.0.1 came to macos.
 - updated libraries.
 
