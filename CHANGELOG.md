@@ -1,8 +1,12 @@
 ## Unreleased
 
-- nothing returns by (db/q '[:find ?e
+- nothing returns by
+
+```
+(db/q '[:find ?e
                              :where
                              [?e :db/id 31]])
+```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
@@ -17,13 +21,14 @@
 - `db.sqlite` must be `konpy.sqlite`.
 - display time of most recent login and submit.
 - (I) must learn htmx about hx-post, hx-swap, parameters
-- how about? [:p "some text" (h/raw <pre> ~ </pre>) "some text"]
-  ["p (h/raw "some text <pre>some function with indentations</pre> some text")]
 - name of the downloaded file.
 - read version from `pom.xml`.
 - color self in answers and logins list.
 
 ## 0.16.0-SNAPSHOT
+
+- java 24.0.1 came to macos.
+- updated libraries.
 
 | :file    | :name                         | :current   | :latest    |
 |--------- | ----------------------------- | ---------- | -----------|
