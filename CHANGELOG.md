@@ -23,6 +23,20 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 
+## 0.16.0-SNAPSHOT
+
+| :file    | :name                         | :current   | :latest    |
+|--------- | ----------------------------- | ---------- | -----------|
+| deps.edn | clj-kondo/clj-kondo           | 2025.04.07 | 2025.06.05 |
+|          | com.github.igrishaev/pg2-core | 0.1.39     | 0.1.40     |
+|          | com.taoensso/telemere         | 1.0.0      | 1.0.1      |
+|          | io.github.clojure/tools.build | v0.10.8    | v0.10.9    |
+|          | io.github.tonsky/clj-reload   | 0.9.6      | 0.9.7      |
+|          | metosin/reitit-ring           | 0.8.0      | 0.9.1      |
+|          | org.clojure/clojure           | 1.12.0     | 1.12.1     |
+
+
+
 ## 0.15.0 (2025-06-07)
 
 - stop no-use-upload-update systemd files.
