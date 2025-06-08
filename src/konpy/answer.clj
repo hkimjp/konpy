@@ -241,19 +241,15 @@
        (str fst "(" (c/answered-time fst) "), ")]
       (apply str (interpose ", " rst))])))
 
-(comment
-  (let [[fst & rst] []]
-    (println fst)
-    (println rst))
-  (c/get-last-answer)
-  :rcf)
+(defn- wormed [s]
+  s)
 
 (defn this-weeks-last-answer
   [_]
   (page
    [:div
     [:div "last answer"]
-    [:pre (c/get-last-answer)]]))
+    [:pre (-> (c/get-last-answer) wormed)]]))
 
 ;------------------------------------------
 
@@ -264,4 +260,3 @@
   {:status 200
    :headers {"Content-disposition" "attachment; filename=download.py"}
    :body answer})
-
