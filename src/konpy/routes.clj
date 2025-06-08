@@ -38,6 +38,7 @@
          :post {:handler admin/upsert!}}]
     ["/gc" {:post {:handler admin/gc}}]]
    ["/download" {:post {:handler answer/download}}]
+   ["/last-answer" {:get {:handler answer/this-weeks-last-answer}}]
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]

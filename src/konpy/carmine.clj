@@ -56,10 +56,6 @@
   []
   (get "kp:last-answer"))
 
-(comment
-  (put-last-answer "abc def")
-  (get-last-answer))
-
 (defn- get-key
   [key]
   (let [keys (keys (str key "*"))

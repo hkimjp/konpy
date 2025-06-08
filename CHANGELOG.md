@@ -25,6 +25,13 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 
+## 0.16.2-SNAPSHOT
+
+- renamed newer `last-answer` to `this-weeks-last-answer` because batting.
+- /last-answer
+- changed /aswer/recent-{answers,logins}
+- added carmine/{put,get}-last-answer
+
 ## 0.16.1 (2025-06-08)
 
 - black button

@@ -24,6 +24,8 @@
 
 (def look "p-1 text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
+(def la "underline text-blue-500 hover:bg-blue-900")
+
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
     :keys answer updated identical e
@@ -226,22 +228,32 @@
   (let [[fst & rst] (c/get-logins)]
     ; (t/log! :debug logins)
     (render
-     [:div#logins "last login: " fst ", " (c/logined-time fst) "."
-      [:p (apply str (interpose ", " rst))]])))
+     [:div#logins fst "(" (c/logined-time fst) "), "
+      (apply str (interpose ", " rst))])))
 
 (defn recent-answers
   [_]
   (let [[fst & rst] (c/get-answers)]
     ; (t/log! :debug answers)
     (render
-     [:div#answers "last answer: "  fst ", " (c/answered-time fst) "."
-      [:p (apply str (interpose ", " rst))]])))
+     [:div#answers
+      [:a {:class la :href "/last-answer"}
+       (str fst "(" (c/answered-time fst) "), ")]
+      (apply str (interpose ", " rst))])))
 
 (comment
   (let [[fst & rst] []]
     (println fst)
     (println rst))
+  (c/get-last-answer)
   :rcf)
+
+(defn this-weeks-last-answer
+  [_]
+  (page
+   [:div
+    [:div "last answer"]
+    [:pre (c/get-last-answer)]]))
 
 ;------------------------------------------
 
