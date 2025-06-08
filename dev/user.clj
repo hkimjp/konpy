@@ -22,6 +22,12 @@
       (upsert-task! -1 week @c s))))
 
 (comment
+  ;2025-06-08 14:58:48
+
+  (db/q '[:find ?e
+          :where
+          [?e :updated (u/now)]])
+
   (def seeds-10
     [])
 
