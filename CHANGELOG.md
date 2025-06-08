@@ -1,8 +1,12 @@
 ## Unreleased
 
-- nothing returns by (db/q '[:find ?e
+- nothing returns by
+
+```
+(db/q '[:find ?e
                              :where
                              [?e :db/id 31]])
+```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
@@ -17,11 +21,27 @@
 - `db.sqlite` must be `konpy.sqlite`.
 - display time of most recent login and submit.
 - (I) must learn htmx about hx-post, hx-swap, parameters
-- how about? [:p "some text" (h/raw <pre> ~ </pre>) "some text"]
-  ["p (h/raw "some text <pre>some function with indentations</pre> some text")]
 - name of the downloaded file.
 - read version from `pom.xml`.
 - color self in answers and logins list.
+
+## 0.16.1 (2025-06-08)
+
+- black button
+- java 24.0.1 came to macos.
+- updated libraries.
+
+| :file    | :name                         | :current   | :latest    |
+|--------- | ----------------------------- | ---------- | -----------|
+| deps.edn | clj-kondo/clj-kondo           | 2025.04.07 | 2025.06.05 |
+|          | com.github.igrishaev/pg2-core | 0.1.39     | 0.1.40     |
+|          | com.taoensso/telemere         | 1.0.0      | 1.0.1      |
+|          | io.github.clojure/tools.build | v0.10.8    | v0.10.9    |
+|          | io.github.tonsky/clj-reload   | 0.9.6      | 0.9.7      |
+|          | metosin/reitit-ring           | 0.8.0      | 0.9.1      |
+|          | org.clojure/clojure           | 1.12.0     | 1.12.1     |
+
+
 
 ## 0.15.0 (2025-06-07)
 
