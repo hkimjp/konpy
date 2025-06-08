@@ -167,6 +167,7 @@
                  :typing-ex avg}])
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 24 60 60)))
+      (c/put-last-answer answer)
       (resp/redirect (str "/answer/" e "/others"))
       (catch Exception e
         (t/log! :error (.getMessage e))))))
