@@ -12,7 +12,6 @@
    konpy.core-test))
 
 (t/set-min-level! :debug)
-
 (system/restart-system)
 
 (defn seeds-in [week seeds]

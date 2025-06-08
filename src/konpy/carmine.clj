@@ -47,6 +47,15 @@
   [user ttl]
   (put-key "kp:answer:" user ttl))
 
+(defn put-last-answer
+  [answer]
+  (t/log! :debug (str "put-last-answer: " answer))
+  (set "kp:last-answer" answer))
+
+(defn get-last-answer
+  []
+  (get "kp:last-answer"))
+
 (defn- get-key
   [key]
   (let [keys (keys (str key "*"))
