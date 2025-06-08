@@ -18,11 +18,11 @@
 
 (def lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def black "px-1 text-white bg-stone-500 hover:bg-stone-700 active:bg-stone-900")
+(def black "px-1 text-white bg-stone-400 hover:bg-stone-500 active:bg-stone-900")
 
 (def te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
 
-(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
+(def look "p-1 text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
@@ -183,8 +183,8 @@
          "/"
          (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
-    [:a {:class lime
-         :href (str (env :wil) "/last/" (:author a))} "Look"]]
+    [:a {:class look
+         :href (str (env :wil) "/last/" (:author a))} "look"]]
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
