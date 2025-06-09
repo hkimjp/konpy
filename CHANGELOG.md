@@ -27,6 +27,7 @@
 
 ## 0.16.2-SNAPSHOT
 
+- TTL was wrong 24 hours. corrected it to 12 hours in `answer.clj`.
 - renamed newer `last-answer` to `this-weeks-last-answer` because batting.
 - /last-answer
 - changed /aswer/recent-{answers,logins}
