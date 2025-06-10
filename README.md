@@ -8,7 +8,13 @@ Under construction.
 
 Download from https://github.com/hkimjp/konpy
 
-Require Redis.
+## Require
+
+I'm using,
+
+* java  24.0.1
+* Clojure 1.12.1
+* Redis redis:7(docker)
 
 ## Usage
 

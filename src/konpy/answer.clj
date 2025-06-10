@@ -11,16 +11,24 @@
    [konpy.carmine :as c]
    [konpy.db :as db]
    [konpy.typing-ex :as typing-ex]
-   [konpy.utils :refer [user kp-sha1 now shorten develop?]]
+   [konpy.utils :refer [user kp-sha1 now weeks shorten develop?]]
    [konpy.views :refer [page render]]))
 
-(def ^:private btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
+(def btn  "p-1 rounded-xl text-white bg-sky-500 hover:bg-sky-700 active:bg-red-500")
 
-(def ^:private lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+(def lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def ^:private te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
+(def black "px-1 text-white bg-stone-400 hover:bg-stone-500 active:bg-stone-900")
 
-(def look "p-1 text-white bg-blue-500 hover:bg-blue-700 active:bg-red-500")
+(def te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
+
+(def look "p-1 text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
+
+(def la "underline text-blue-500 hover:bg-blue-900")
+
+(def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
+
+; (get sep (mod (weeks) (count sep)))
 
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
@@ -89,7 +97,7 @@
   (last (sort-by :updated (find-answers author tid))))
 
 (defn identical
-  "returns a list of author's login whose answer's sha1　is equal to `sha1`."
+  "returns a list of author's login whose answer's sha1 is equal to `sha1`."
   [sha1]
   (->> (db/q q-find-author
              sha1)
@@ -111,33 +119,36 @@
      [:div.mx-4
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form
-       {:hx-confirm "ほんとに？"
-        :hx-post (str "/answer/" e)
-        :hx-target "#body"
-        :hx-swap "outerHTML"}
+       {:hx-confirm   "自分でやれたか？"
+        :hx-encoding  "multipart/form-data"
+        :hx-post      (str "/answer/" e)
+        :hx-target    "#out"
+        :hx-swap      "outerHTML"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
-       (when (some? last-answer)
-         [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
-       [:div.flex
-        [:textarea {:class te :name "answer"}
-         (:answer last-answer)]]
-       [:div [:button {:class btn :type "submit"}
-              (if (some? last-answer)
-                "再送"
-                "送信")]]]
+       [:input
+        {:class  "outline"
+         :type   "file"
+         :accept ".py, .md"
+         :name   "file"}]
+       [:button {:class btn} "回答"]]
+      [:div#out ""]
+      #_(when (some? last-answer)
+          [:div "自分の最新回答。もっといい答えができたら再送しよう。"]
+          [:pre {:class te :name "answer"} (:answer last-answer)])
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}
         "自分の回答"]
        (when (some? last-answer)
          [:a {:class lime :href (str "/answer/" tid "/others")}
-          "他受講生の回答"])]
+          "受講生の回答"])]
       [:div {:class "flex gap-4 my-2"}
        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
-  [{{:keys [e answer]} :params :as request}]
+  [{{:keys [e]} :params :as request}]
   (let [tid (parse-long e)
+        answer (slurp (get-in request [:params :file :tempfile]))
         sha1 (kp-sha1 answer)
         identical (identical sha1)
         user (user request)
@@ -159,8 +170,11 @@
                  :updated (now)
                  :identical identical
                  :typing-ex avg}])
-      (c/put-answer (str num "🍅" user) (if (develop?) 60 (* 24 60 60)))
-      (resp/redirect (str "/answer/" e "/others"))
+      (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
+                    (if (develop?) 60 (* 12 60 60)))
+      (c/put-last-answer answer)
+      ; (resp/redirect (str "/answer/" e "/others"))
+      (resp/response "他の人の回答も読もう。")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
@@ -176,17 +190,18 @@
          "/"
          (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
-    [:a {:class btn
-         :href (str (env :wil) "/last/" (:author a))} "Look"]]
+    [:a {:class look
+         :href (str (env :wil) "/last/" (:author a))} "look"]]
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   [:div
+   [:div {:class "flex gap-4 items-center"}
     [:form {:method "post" :action "/download"}
      (h/raw (anti-forgery-field))
      [:input {:type "hidden" :name "answer" :value (:answer a)}]
      #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
-     [:input {:type "submit" :value "download⇣"}]]]])
+     [:input {:type "submit" :value "download⇣"}]]
+    [:button {:class black} "black"]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -214,21 +229,31 @@
 
 (defn recent-logins
   [_]
-  (let [logins (apply str (interpose ", " (c/get-logins)))]
-    (t/log! :debug logins)
+  (let [[fst & rst] (c/get-logins)]
+    ; (t/log! :debug logins)
     (render
-     [:div#logins logins])))
+     [:div#logins fst "(" (c/logined-time fst) "), "
+      (apply str (interpose ", " rst))])))
 
 (defn recent-answers
   [_]
-  (let [answers (apply str (interpose ", " (c/get-answers)))]
-    (t/log! :debug answers)
+  (let [[fst & rst] (c/get-answers)]
+    ; (t/log! :debug answers)
     (render
-     [:div#answers answers])))
+     [:div#answers
+      [:a {:class la :href "/last-answer"}
+       (str fst "(" (c/answered-time fst) "), ")]
+      (apply str (interpose ", " rst))])))
 
-(comment
-  (apply str (interpose ", " ["abc" "def" "012"]))
-  :rcf)
+(defn- wormed [s]
+  s)
+
+(defn this-weeks-last-answer
+  [_]
+  (page
+   [:div
+    [:div "last answer"]
+    [:pre (-> (c/get-last-answer) wormed)]]))
 
 ;------------------------------------------
 
@@ -239,4 +264,3 @@
   {:status 200
    :headers {"Content-disposition" "attachment; filename=download.py"}
    :body answer})
-

@@ -1,8 +1,12 @@
 ## Unreleased
 
-- nothing returns by (db/q '[:find ?e
+- nothing returns by
+
+```
+(db/q '[:find ?e
                              :where
                              [?e :db/id 31]])
+```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
@@ -15,9 +19,59 @@
 - just recipe to upload db.sqlite
 - sumit button inside div?
 - `db.sqlite` must be `konpy.sqlite`.
+- display time of most recent login and submit.
 - (I) must learn htmx about hx-post, hx-swap, parameters
-- display time of the most recent login and submission.
 - name of the downloaded file.
+- read version from `pom.xml`.
+- color self in answers and logins list.
+
+## 0.16.3
+
+- changed the method uploading answers from copy-paste to upload-files.
+- TTL was wrong 24 hours. corrected it to 12 hours in `answer.clj`.
+- renamed newer `last-answer` to `this-weeks-last-answer` because batting.
+- /last-answer
+- changed /aswer/recent-{answers,logins}
+- added carmine/{put,get}-last-answer
+
+## 0.16.1 (2025-06-08)
+
+- black button
+- java 24.0.1 came to macos.
+- updated libraries.
+
+| :file    | :name                         | :current   | :latest    |
+|--------- | ----------------------------- | ---------- | -----------|
+| deps.edn | clj-kondo/clj-kondo           | 2025.04.07 | 2025.06.05 |
+|          | com.github.igrishaev/pg2-core | 0.1.39     | 0.1.40     |
+|          | com.taoensso/telemere         | 1.0.0      | 1.0.1      |
+|          | io.github.clojure/tools.build | v0.10.8    | v0.10.9    |
+|          | io.github.tonsky/clj-reload   | 0.9.6      | 0.9.7      |
+|          | metosin/reitit-ring           | 0.8.0      | 0.9.1      |
+|          | org.clojure/clojure           | 1.12.0     | 1.12.1     |
+
+
+
+## 0.15.0 (2025-06-07)
+
+- stop no-use-upload-update systemd files.
+- display last answer's login and answered time.
+- display last login, who logined at when.
+- pruned unused deps using `unused-deps`.
+- app.melt# usermod -G redis ubuntu
+- Justfile: fetch redis db to homebrew redis.
+
+    scp ${DEST}:/var/lib/redis/dump.rdb /opt/homebrew/var/db/redis/
+
+    - ubuntu redis 7.0.15
+    - homebrew redis 8.0.2
+
+  use orbstack redis ~/docker/redis@7/data/dump.rb?
+
+
+## 0.14.7 (2025-05-30)
+
+- answer.clj: (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
 ## 0.14.6 (2025-05-26)
 
@@ -26,6 +80,7 @@
 ## 0.14.5 (2025-05-25)
 
 - append typing-ex trainig count to answers.
+
 
 ## 0.14.4 (2025-05-24)
 

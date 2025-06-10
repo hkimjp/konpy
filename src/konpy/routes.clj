@@ -1,7 +1,7 @@
 (ns konpy.routes
   (:require
    [clojure.java.io :as io]
-   [reitit.ring :as reitit-ring]
+   [reitit.ring :as rr]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    [taoensso.telemere :as t]
    ;
@@ -15,9 +15,9 @@
 
 (defn routes
   []
-  [["/assets/*" (reitit-ring/create-resource-handler
+  [["/assets/*" (rr/create-resource-handler
                  {:path "/" :root "public"})]
-   ["/favicon.ico" (constantly (slurp (io/resource "public/favicon.ico")))]
+   #_["/favicon.ico" (constantly (slurp (io/resource "public/favicon.ico")))]
    ["/" {:get  {:handler login-page}
          :post {:handler login!}}]
    ["/logout" logout!]
@@ -38,6 +38,7 @@
          :post {:handler admin/upsert!}}]
     ["/gc" {:post {:handler admin/gc}}]]
    ["/download" {:post {:handler answer/download}}]
+   ["/last-answer" {:get {:handler answer/this-weeks-last-answer}}]
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
@@ -52,8 +53,8 @@
 (defn root-handler
   [request]
   (t/log! :info (str (:request-method request) " - " (:uri request)))
-  (let [handler (reitit-ring/ring-handler
-                 (reitit-ring/router (routes))
+  (let [handler (rr/ring-handler
+                 (rr/router (routes))
                  #'not-found-handler
                  {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))
