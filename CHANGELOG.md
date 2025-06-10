@@ -24,6 +24,10 @@
 - name of the downloaded file.
 - read version from `pom.xml`.
 - color self in answers and logins list.
+- check uploaded files.
+- blacken (worm-eaten) last-answer.
+
+## 0.17.0-SNAPSHOT
 
 ## 0.16.3
 

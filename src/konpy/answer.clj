@@ -251,9 +251,10 @@
 (defn this-weeks-last-answer
   [_]
   (page
-   [:div
-    [:div "last answer"]
-    [:pre (-> (c/get-last-answer) wormed)]]))
+   [:div {:class "mx-4"}
+    [:div {:class "text-2xl"} "Last Answer:"]
+    [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
+     (-> (c/get-last-answer) wormed)]]))
 
 ;------------------------------------------
 
