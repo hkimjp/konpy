@@ -115,18 +115,19 @@
      [:div.mx-4
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form
-       {:hx-confirm "ほんとに？"
-        :hx-encodng "multipart/form-data"
-        :hx-post (str "/answer/" e)
-        :hx-target "#out"
-        :hx-swap "outerHTML"}
+       {:hx-confirm   "ほんとに？"
+        :hx-encoding  "multipart/form-data"
+        :hx-post      (str "/answer/" e)
+        :hx-target    "#out"
+        :hx-swap      "outerHTML"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        [:input
         {:type   "file"
-         :accect ".py"
+         :accept ".py"
          :name   "file"}]
        [:button {:class btn} "回答"]]
+      [:div#out "out, dummy"]
       #_(when (some? last-answer)
           [:div "自分の最新回答。もっといい答えができたら再送しよう。"]
           [:pre {:class te :name "answer"} (:answer last-answer)])
