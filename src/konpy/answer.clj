@@ -245,8 +245,13 @@
        (str fst "(" (c/answered-time fst) "), ")]
       (apply str (interpose ", " rst))])))
 
-(defn- wormed [s]
-  s)
+(defn- hide-chars [s]
+  (apply str (for [c s]
+               (if (Character/isWhitespace c)
+                 c
+                 (if (zero? (rand-int 3))
+                   "⚫"
+                   c)))))
 
 (defn this-weeks-last-answer
   [_]
@@ -254,7 +259,7 @@
    [:div {:class "mx-4"}
     [:div {:class "text-2xl"} "Last Answer:"]
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
-     (-> (c/get-last-answer) wormed)]]))
+     (-> (c/get-last-answer) hide-chars)]]))
 
 ;------------------------------------------
 

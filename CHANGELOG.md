@@ -29,6 +29,11 @@
 
 ## 0.17.0-SNAPSHOT (2025-06-10)
 
+- added `answer/worm-eaten`.
+- changed `answer/worm-eaten` to use `Character/isWhitespace`
+  intead of #(= \space %)
+- renamed `worm-eaten` to `hide-chars`.
+
 ## 0.16.3
 
 - changed the method uploading answers from copy-paste to upload-files.
