@@ -26,6 +26,10 @@
 
 (def la "underline text-blue-500 hover:bg-blue-900")
 
+(def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
+
+; (get sep (mod (weeks) (count sep)))
+
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
     :keys answer updated identical e
@@ -115,7 +119,7 @@
      [:div.mx-4
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form
-       {:hx-confirm   "ほんとに？"
+       {:hx-confirm   "自分でやれたか？"
         :hx-encoding  "multipart/form-data"
         :hx-post      (str "/answer/" e)
         :hx-target    "#out"
@@ -123,11 +127,12 @@
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
        [:input
-        {:type   "file"
-         :accept ".py"
+        {:class  "outline"
+         :type   "file"
+         :accept ".py, .md"
          :name   "file"}]
        [:button {:class btn} "回答"]]
-      [:div#out "out, dummy"]
+      [:div#out ""]
       #_(when (some? last-answer)
           [:div "自分の最新回答。もっといい答えができたら再送しよう。"]
           [:pre {:class te :name "answer"} (:answer last-answer)])
@@ -136,13 +141,9 @@
         "自分の回答"]
        (when (some? last-answer)
          [:a {:class lime :href (str "/answer/" tid "/others")}
-          "他受講生の回答"])]
+          "受講生の回答"])]
       [:div {:class "flex gap-4 my-2"}
        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
-
-(def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
-
-; (get sep (mod (weeks) (count sep)))
 
 (defn answer!
   [{{:keys [e]} :params :as request}]
@@ -172,7 +173,8 @@
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
-      (resp/redirect (str "/answer/" e "/others"))
+      ; (resp/redirect (str "/answer/" e "/others"))
+      (resp/response "他の人の回答も読もう。")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
