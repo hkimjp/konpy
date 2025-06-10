@@ -116,20 +116,20 @@
       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
       [:form
        {:hx-confirm "ほんとに？"
+        :hx-encodng "multipart/form-data"
         :hx-post (str "/answer/" e)
-        :hx-target "#body"
+        :hx-target "#out"
         :hx-swap "outerHTML"}
        (h/raw (anti-forgery-field))
        [:input {:type "hidden" :name "e" :value tid}]
-       (when (some? last-answer)
-         [:div "自分の最新回答。もっといい答えができたら再送しよう。"])
-       [:div.flex
-        [:textarea {:class te :name "answer"}
-         (:answer last-answer)]]
-       [:div [:button {:class btn :type "submit"}
-              (if (some? last-answer)
-                "再送"
-                "送信")]]]
+       [:input
+        {:type   "file"
+         :accect ".py"
+         :name   "file"}]
+       [:button {:class btn} "回答"]]
+      #_(when (some? last-answer)
+          [:div "自分の最新回答。もっといい答えができたら再送しよう。"]
+          [:pre {:class te :name "answer"} (:answer last-answer)])
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}
         "自分の回答"]
@@ -144,8 +144,9 @@
 ; (get sep (mod (weeks) (count sep)))
 
 (defn answer!
-  [{{:keys [e answer]} :params :as request}]
+  [{{:keys [e]} :params :as request}]
   (let [tid (parse-long e)
+        answer (slurp (get-in request [:params :file :tempfile]))
         sha1 (kp-sha1 answer)
         identical (identical sha1)
         user (user request)
