@@ -287,6 +287,6 @@
       (-> (resp/response (str user " is black listed."))
           (resp/header "Content-Type" "text/html"))
       (do
-        (c/setex user-key 10 "black")
+        (c/setex user-key 300 "black")
         (-> (resp/response "black listed!")
             (resp/header "Content-Type" "text/html"))))))
