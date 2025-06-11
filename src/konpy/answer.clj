@@ -18,7 +18,7 @@
 
 (def lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def black "px-1 text-white bg-stone-400 hover:bg-stone-500 active:bg-stone-900")
+(def btn-black "px-1 text-white bg-stone-400 hover:bg-stone-500 active:bg-stone-900")
 
 (def te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
 
@@ -201,7 +201,13 @@
      [:input {:type "hidden" :name "answer" :value (:answer a)}]
      #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
      [:input {:type "submit" :value "download⇣"}]]
-    [:button {:class black} "black"]]])
+    [:button
+     {:class btn-black
+      :hx-get    "/black"
+      :hx-target "#black"
+      :hx-swap   "innerHTML"}
+     "black"]
+    [:div#black]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -270,3 +276,17 @@
   {:status 200
    :headers {"Content-disposition" "attachment; filename=download.py"}
    :body answer})
+;------------------------------------------
+
+(defn black
+  [request]
+  (t/log! :debug (get-in request [:session :identity]))
+  (let [user (get-in request [:session :identity])
+        user-key (str "kp:black:" user)]
+    (if (c/get user-key)
+      (-> (resp/response (str user " is black listed."))
+          (resp/header "Content-Type" "text/html"))
+      (do
+        (c/setex user-key 300 "black")
+        (-> (resp/response "black listed!")
+            (resp/header "Content-Type" "text/html"))))))
