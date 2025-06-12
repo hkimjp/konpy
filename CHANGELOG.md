@@ -27,7 +27,7 @@
 - java24 warning
 
 
-## 0.17.1-SNAPSHOT
+## 0.17.1 (2025-06-12)
 
 - added `answer/worm-eaten`.
 - changed `answer/worm-eaten` to use `Character/isWhitespace`
