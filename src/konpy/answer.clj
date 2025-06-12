@@ -50,8 +50,8 @@
 
 ; typing-ex
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author  ?typing-ex
-    :keys answer updated identical author  typing-ex
+  '[:find ?answer ?updated ?identical ?author  ?typing-ex ?e
+    :keys answer updated identical author  typing-ex e
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
@@ -63,8 +63,8 @@
 
 ; typing-ex
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical ?typing-ex
-    :keys answer updated author identical typing-ex
+  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e
+    :keys answer updated author identical typing-ex e
     :in $ ?tid
     :where
     [?e :task/id ?tid]
@@ -180,7 +180,7 @@
 
 (defn- show-answer
   [a]
-  ; (t/log! :debug (str "show-answer :typing-ex " a))
+  (t/log! :debug (str "show-answer" a))
   [:div.my-8
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
@@ -204,10 +204,10 @@
     [:button
      {:class btn-black
       :hx-get    "/black"
-      :hx-target "#black"
+      :hx-target (str "#black" (:e a))
       :hx-swap   "innerHTML"}
      "black"]
-    [:div#black]]])
+    [:div {:id (str "black" (:e a))}]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -284,7 +284,7 @@
   (let [user (get-in request [:session :identity])
         user-key (str "kp:black:" user)]
     (if (c/get user-key)
-      (-> (resp/response (str user " is black listed."))
+      (-> (resp/response (str user " (you) is black listed."))
           (resp/header "Content-Type" "text/html"))
       (do
         (c/setex user-key 300 "black")
