@@ -17,13 +17,23 @@
 - transducer.
 - just recipe to backup db.sqlite
 - just recipe to upload db.sqlite
-- sumit button inside div?
 - `db.sqlite` must be `konpy.sqlite`.
 - display time of most recent login and submit.
 - (I) must learn htmx about hx-post, hx-swap, parameters
 - name of the downloaded file.
 - read version from `pom.xml`.
 - color self in answers and logins list.
+- check uploaded files.
+- java24 warning
+
+
+## 0.17.1 (2025-06-12)
+
+- added `answer/worm-eaten`.
+- changed `answer/worm-eaten` to use `Character/isWhitespace`
+  intead of #(= \space %)
+- renamed `worm-eaten` to `hide-chars`.
+- blacklist (fake)
 
 ## 0.16.3
 

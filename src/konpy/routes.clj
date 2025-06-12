@@ -39,6 +39,7 @@
     ["/gc" {:post {:handler admin/gc}}]]
    ["/download" {:post {:handler answer/download}}]
    ["/last-answer" {:get {:handler answer/this-weeks-last-answer}}]
+   ["/black" {:get {:handler answer/black}}]
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]

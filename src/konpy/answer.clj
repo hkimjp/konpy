@@ -18,7 +18,7 @@
 
 (def lime "p-1 rounded-xl text-white bg-lime-500 hover:bg-lime-700 active:bg-red-500")
 
-(def black "px-1 text-white bg-stone-400 hover:bg-stone-500 active:bg-stone-900")
+(def btn-black "px-1 text-white bg-stone-400 hover:bg-stone-500 active:bg-stone-900")
 
 (def te "my-2 p-2 text-md font-mono grow h-60 outline outline-black")
 
@@ -50,8 +50,8 @@
 
 ; typing-ex
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author  ?typing-ex
-    :keys answer updated identical author  typing-ex
+  '[:find ?answer ?updated ?identical ?author  ?typing-ex ?e
+    :keys answer updated identical author  typing-ex e
     :in $ ?tid ?author
     :where
     [?e :task/id ?tid]
@@ -63,8 +63,8 @@
 
 ; typing-ex
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical ?typing-ex
-    :keys answer updated author identical typing-ex
+  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e
+    :keys answer updated author identical typing-ex e
     :in $ ?tid
     :where
     [?e :task/id ?tid]
@@ -180,7 +180,7 @@
 
 (defn- show-answer
   [a]
-  ; (t/log! :debug (str "show-answer :typing-ex " a))
+  (t/log! :debug (str "show-answer" a))
   [:div.my-8
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
@@ -201,7 +201,13 @@
      [:input {:type "hidden" :name "answer" :value (:answer a)}]
      #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
      [:input {:type "submit" :value "download⇣"}]]
-    [:button {:class black} "black"]]])
+    [:button
+     {:class btn-black
+      :hx-get    "/black"
+      :hx-target (str "#black" (:e a))
+      :hx-swap   "innerHTML"}
+     "black"]
+    [:div {:id (str "black" (:e a))}]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -245,15 +251,21 @@
        (str fst "(" (c/answered-time fst) "), ")]
       (apply str (interpose ", " rst))])))
 
-(defn- wormed [s]
-  s)
+(defn- hide-chars [s]
+  (apply str (for [c s]
+               (if (Character/isWhitespace c)
+                 c
+                 (if (zero? (rand-int 3))
+                   "⚫"
+                   c)))))
 
 (defn this-weeks-last-answer
   [_]
   (page
-   [:div
-    [:div "last answer"]
-    [:pre (-> (c/get-last-answer) wormed)]]))
+   [:div {:class "mx-4"}
+    [:div {:class "text-2xl"} "Last Answer:"]
+    [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
+     (-> (c/get-last-answer) hide-chars)]]))
 
 ;------------------------------------------
 
@@ -264,3 +276,17 @@
   {:status 200
    :headers {"Content-disposition" "attachment; filename=download.py"}
    :body answer})
+;------------------------------------------
+
+(defn black
+  [request]
+  (t/log! :debug (get-in request [:session :identity]))
+  (let [user (get-in request [:session :identity])
+        user-key (str "kp:black:" user)]
+    (if (c/get user-key)
+      (-> (resp/response (str user " (you) is black listed."))
+          (resp/header "Content-Type" "text/html"))
+      (do
+        (c/setex user-key 300 "black")
+        (-> (resp/response "black listed!")
+            (resp/header "Content-Type" "text/html"))))))
