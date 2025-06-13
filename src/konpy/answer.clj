@@ -206,20 +206,12 @@
      [:div {:id (str "good-" (:e a))} "accounts"]]
 
     [:div {:class "flex gap-2"}
-     [:form {:hx-post   "/answer-good"
+     [:form {:hx-post   "/answer-bad"
              :hx-target (str "#bad-" (:e a))
              :hx-swap   "innerHTML"}
       (h/raw (anti-forgery-field))
       [:button "👎 "]]
      [:div {:id (str "bad-" (:e a))} "count"]]
-
-    #_[:div {:class "flex"}
-       [:button {:class     btn
-                 :hx-post   "/answer-bad"
-                 :hx-target (str "#bad-" (:e a))
-                 :hx-swap   "innerHTML"}
-        "bad"]
-       [:div {:id (str "bad-" (:e a))} "bad count"]]
 
     [:form {:class "flex gap-2 my-2" :method "post" :action "/q-a"}
      (h/raw (anti-forgery-field))
