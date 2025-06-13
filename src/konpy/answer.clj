@@ -315,3 +315,20 @@
         (c/setex user-key 300 "black")
         (-> (resp/response "black listed!")
             (resp/header "Content-Type" "text/html"))))))
+
+;------------------------------------------
+
+(defn good
+  [request]
+  (t/log! :info "answer/good")
+  (resp/response "OK"))
+
+(defn bad
+  [request]
+  (t/log! :info "answer/bad")
+  (resp/response "OK"))
+
+(defn q-a
+  [request]
+  (t/log! :info "answer/q-a")
+  (resp/response "OK"))
