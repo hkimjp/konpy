@@ -335,4 +335,4 @@
 (defn q-a
   [{{:keys [q]} :params :as request}]
   (t/log! :info (str "answer/q-a, from " (user request) "," q))
-  (resp/response "OK"))
+  (resp/response "sent."))
