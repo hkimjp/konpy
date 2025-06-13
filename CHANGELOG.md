@@ -4,28 +4,28 @@
 
 ```
 (db/q '[:find ?e
-                             :where
-                             [?e :db/id 31]])
+        :where
+        [?e :db/id 31]])
 ```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
-- gather tailwindcss class definitions.
-    - exec datascript garbage collection.
-    - stat.
-- compile routes in production.
 - transducer.
 - just recipe to backup db.sqlite
 - just recipe to upload db.sqlite
 - `db.sqlite` must be `konpy.sqlite`.
-- display time of most recent login and submit.
 - (I) must learn htmx about hx-post, hx-swap, parameters
 - name of the downloaded file.
 - read version from `pom.xml`.
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
+- initial values of good/bad.
+- qa interface.
 
+## 0.18.0
+
+- arranged good, bad buttn and qa input field.
 
 ## 0.17.1 (2025-06-12)
 

@@ -195,19 +195,42 @@
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   [:div {:class "flex gap-4 items-center"}
+   [:div
+
+    [:div {:class "flex gap-2"}
+     [:form {:hx-post   "/answer-good"
+             :hx-target (str "#good-" (:e a))
+             :hx-swap   "innerHTML"}
+      (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "eid" :value (:e a)}]
+      [:button "👍 "]]
+     [:div {:id (str "good-" (:e a))} "accounts"]]
+
+    [:div {:class "flex gap-2"}
+     [:form {:hx-post   "/answer-bad"
+             :hx-target (str "#bad-" (:e a))
+             :hx-swap   "innerHTML"}
+      (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "eid" :value (:e a)}]
+      [:button "👎 "]]
+     [:div {:id (str "bad-" (:e a))} "count"]]
+
+    [:div
+     [:form {:class "flex gap-2"
+             :hx-post "/q-a"
+             :hx-target (str "#qa-" (:e a))
+             :hx-swap "innterHTML"}
+      (h/raw (anti-forgery-field))
+      [:input {:class "outline grow"
+               :placeholder "質問とアドバイス。"
+               :name "q"}]
+      [:button {:class btn} "Q-A"]]
+     [:div {:id (str "qa-" (:e a))} ""]]
+
     [:form {:method "post" :action "/download"}
      (h/raw (anti-forgery-field))
      [:input {:type "hidden" :name "answer" :value (:answer a)}]
-     #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
-     [:input {:type "submit" :value "download⇣"}]]
-    [:button
-     {:class btn-black
-      :hx-get    "/black"
-      :hx-target (str "#black" (:e a))
-      :hx-swap   "innerHTML"}
-     "black"]
-    [:div {:id (str "black" (:e a))}]]])
+     [:input {:type "submit" :value "downlaod⇣"}]]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -290,3 +313,26 @@
         (c/setex user-key 300 "black")
         (-> (resp/response "black listed!")
             (resp/header "Content-Type" "text/html"))))))
+
+;------------------------------------------
+
+(defn good
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":good")]
+    (t/log! :info (str "answer/good, good to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/lrange key)))))
+
+(defn bad
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":bad")]
+    (t/log! :info (str "answer/bad, bad to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/llen key)))))
+
+(defn q-a
+  [{{:keys [q]} :params :as request}]
+  (t/log! :info (str "answer/q-a, from " (user request) "," q))
+  (resp/response "sent."))
