@@ -215,12 +215,17 @@
       [:button "👎 "]]
      [:div {:id (str "bad-" (:e a))} "count"]]
 
-    [:form {:class "flex gap-2 my-2" :method "post" :action "/q-a"}
-     (h/raw (anti-forgery-field))
-     [:input {:class "outline grow px-2"
-              :placeholder "アドバイス、質問があればここに。"
-              :name "q"}]
-     [:button {:class btn} "q-a"]]
+    [:div
+     [:form {:class "flex gap-2"
+             :hx-post "/q-a"
+             :hx-target (str "#qa-" (:e a))
+             :hx-swap "innterHTML"}
+      (h/raw (anti-forgery-field))
+      [:input {:class "outline grow"
+               :placeholder "質問とアドバイス。"
+               :name "q"}]
+      [:button {:class btn} "Q-A"]]
+     [:div {:id (str "qa-" (:e a))} ""]]
 
     [:form {:method "post" :action "/download"}
      (h/raw (anti-forgery-field))
@@ -327,14 +332,7 @@
     (c/lpush key user)
     (resp/response (str (c/llen key)))))
 
-(comment
-  (let [good "kp:3648:good"
-        bad  "kp:3648:bad"]
-  ;(println (c/lrange good))
-    (println (c/llen bad)))
-  :rcf)
-
 (defn q-a
-  [request]
-  (t/log! :info "answer/q-a")
+  [{{:keys [q]} :params :as request}]
+  (t/log! :info (str "answer/q-a, from " (user request) "," q))
   (resp/response "OK"))
