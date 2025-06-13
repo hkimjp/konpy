@@ -203,6 +203,7 @@
                :hx-swap   "innerHTML"}
       "good"]
      [:div {:id (str "good-" (:e a))} "good accounts"]]
+
     [:div {:class "flex"}
      [:button {:class     btn
                :hx-post   "/answer-bad"
@@ -210,17 +211,15 @@
                :hx-swap   "innerHTML"}
       "bad"]
      [:div {:id (str "bad-" (:e a))} "bad count"]]
-    [:div
-     [:form {:method "post" :action "/q-a"}
-      (h/raw (anti-forgery-field))
-      [:input {:class "outline" :name "q"}]
-      [:button {:class btn}
-       "q-a"]]]
-    [:div
-     [:form {:method "post" :action "/download"}
-      (h/raw (anti-forgery-field))
-      [:input {:type "hidden" :name "answer" :value (:answer a)}]
-      [:input {:type "submit" :value "downlaod⇣"}]]]]
+
+    [:form {:class "flex gap-4" :method "post" :action "/q-a"}
+     (h/raw (anti-forgery-field))
+     [:input {:class "outline grow" :name "q"}]
+     [:button {:class btn} "q-a"]]
+    [:form {:method "post" :action "/download"}
+     (h/raw (anti-forgery-field))
+     [:input {:type "hidden" :name "answer" :value (:answer a)}]
+     [:input {:type "submit" :value "downlaod⇣"}]]]
    #_[:div {:class "flex gap-4 items-center"}
       [:form {:method "post" :action "download⇣"}
        (h/raw (anti-forgery-field))
