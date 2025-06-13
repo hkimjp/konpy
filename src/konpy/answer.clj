@@ -195,19 +195,35 @@
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   [:div {:class "flex gap-4 items-center"}
+   [:div
+
+    [:div {:class "flex gap-2"}
+     [:form {:hx-post   "/answer-good"
+             :hx-target (str "#good-" (:e a))
+             :hx-swap   "innerHTML"}
+      (h/raw (anti-forgery-field))
+      [:button "👍 "]]
+     [:div {:id (str "good-" (:e a))} "accounts"]]
+
+    [:div {:class "flex gap-2"}
+     [:form {:hx-post   "/answer-bad"
+             :hx-target (str "#bad-" (:e a))
+             :hx-swap   "innerHTML"}
+      (h/raw (anti-forgery-field))
+      [:button "👎 "]]
+     [:div {:id (str "bad-" (:e a))} "count"]]
+
+    [:form {:class "flex gap-2 my-2" :method "post" :action "/q-a"}
+     (h/raw (anti-forgery-field))
+     [:input {:class "outline grow px-2"
+              :placeholder "アドバイス、質問があればここに。"
+              :name "q"}]
+     [:button {:class btn} "q-a"]]
+
     [:form {:method "post" :action "/download"}
      (h/raw (anti-forgery-field))
      [:input {:type "hidden" :name "answer" :value (:answer a)}]
-     #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
-     [:input {:type "submit" :value "download⇣"}]]
-    [:button
-     {:class btn-black
-      :hx-get    "/black"
-      :hx-target (str "#black" (:e a))
-      :hx-swap   "innerHTML"}
-     "black"]
-    [:div {:id (str "black" (:e a))}]]])
+     [:input {:type "submit" :value "downlaod⇣"}]]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -290,3 +306,20 @@
         (c/setex user-key 300 "black")
         (-> (resp/response "black listed!")
             (resp/header "Content-Type" "text/html"))))))
+
+;------------------------------------------
+
+(defn good
+  [request]
+  (t/log! :info "answer/good")
+  (resp/response "OK"))
+
+(defn bad
+  [request]
+  (t/log! :info "answer/bad")
+  (resp/response "OK"))
+
+(defn q-a
+  [request]
+  (t/log! :info "answer/q-a")
+  (resp/response "OK"))

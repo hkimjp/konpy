@@ -37,9 +37,15 @@
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]
     ["/gc" {:post {:handler admin/gc}}]]
-   ["/download" {:post {:handler answer/download}}]
+
    ["/last-answer" {:get {:handler answer/this-weeks-last-answer}}]
    ["/black" {:get {:handler answer/black}}]
+
+   ["/answer-good" {:post {:handler answer/good}}]
+   ["/answer-bad"  {:post {:handler answer/bad}}]
+   ["/q-a"         {:post {:handler answer/q-a}}]
+   ["/download"    {:post {:handler answer/download}}]
+
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
