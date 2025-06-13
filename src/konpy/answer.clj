@@ -196,43 +196,42 @@
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
    [:div
-    [:div {:class "flex"}
-     [:button {:class     btn
-               :hx-post   "/answer-good"
-               :hx-targer (str "#good-" (:e a))
-               :hx-swap   "innerHTML"}
-      "good"]
-     [:div {:id (str "good-" (:e a))} "good accounts"]]
 
-    [:div {:class "flex"}
-     [:button {:class     btn
-               :hx-post   "/answer-bad"
-               :hx-target (str "#bad-" (:e a))
-               :hx-swap   "innerHTML"}
-      "bad"]
-     [:div {:id (str "bad-" (:e a))} "bad count"]]
+    [:div {:class "flex gap-2"}
+     [:form {:hx-post   "/answer-good"
+             :hx-target (str "#good-" (:e a))
+             :hx-swap   "innerHTML"}
+      (h/raw (anti-forgery-field))
+      [:button "👍 "]]
+     [:div {:id (str "good-" (:e a))} "accounts"]]
 
-    [:form {:class "flex gap-4" :method "post" :action "/q-a"}
+    [:div {:class "flex gap-2"}
+     [:form {:hx-post   "/answer-good"
+             :hx-target (str "#bad-" (:e a))
+             :hx-swap   "innerHTML"}
+      (h/raw (anti-forgery-field))
+      [:button "👎 "]]
+     [:div {:id (str "bad-" (:e a))} "count"]]
+
+    #_[:div {:class "flex"}
+       [:button {:class     btn
+                 :hx-post   "/answer-bad"
+                 :hx-target (str "#bad-" (:e a))
+                 :hx-swap   "innerHTML"}
+        "bad"]
+       [:div {:id (str "bad-" (:e a))} "bad count"]]
+
+    [:form {:class "flex gap-2 my-2" :method "post" :action "/q-a"}
      (h/raw (anti-forgery-field))
-     [:input {:class "outline grow" :name "q"}]
+     [:input {:class "outline grow px-2"
+              :placeholder "アドバイス、質問があればここに。"
+              :name "q"}]
      [:button {:class btn} "q-a"]]
+
     [:form {:method "post" :action "/download"}
      (h/raw (anti-forgery-field))
      [:input {:type "hidden" :name "answer" :value (:answer a)}]
-     [:input {:type "submit" :value "downlaod⇣"}]]]
-   #_[:div {:class "flex gap-4 items-center"}
-      [:form {:method "post" :action "download⇣"}
-       (h/raw (anti-forgery-field))
-       [:input {:type "hidden" :name "answer" :value (:answer a)}]
-       #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
-       [:input {:type "submit" :value "download⇣"}]]
-      [:button
-       {:class btn-black
-        :hx-get    "/black"
-        :hx-target (str "#black" (:e a))
-        :hx-swap   "innerHTML"}
-       "black"]
-      [:div {:id (str "black" (:e a))}]]])
+     [:input {:type "submit" :value "downlaod⇣"}]]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
