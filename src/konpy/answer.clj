@@ -195,19 +195,45 @@
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   [:div {:class "flex gap-4 items-center"}
-    [:form {:method "post" :action "/download"}
-     (h/raw (anti-forgery-field))
-     [:input {:type "hidden" :name "answer" :value (:answer a)}]
-     #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
-     [:input {:type "submit" :value "download⇣"}]]
-    [:button
-     {:class btn-black
-      :hx-get    "/black"
-      :hx-target (str "#black" (:e a))
-      :hx-swap   "innerHTML"}
-     "black"]
-    [:div {:id (str "black" (:e a))}]]])
+   [:div
+    [:div {:class "flex"}
+     [:button {:class     btn
+               :hx-post   "/answer-good"
+               :hx-targer (str "#good-" (:e a))
+               :hx-swap   "innerHTML"}
+      "good"]
+     [:div {:id (str "good-" (:e a))} "good accounts"]]
+    [:div {:class "flex"}
+     [:button {:class     btn
+               :hx-post   "/answer-bad"
+               :hx-target (str "#bad-" (:e a))
+               :hx-swap   "innerHTML"}
+      "bad"]
+     [:div {:id (str "bad-" (:e a))} "bad count"]]
+    [:div
+     [:form {:method "post" :action "/q-a"}
+      (h/raw (anti-forgery-field))
+      [:input {:class "outline" :name "q"}]
+      [:button {:class btn}
+       "q-a"]]]
+    [:div
+     [:form {:method "post" :action "/download"}
+      (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "answer" :value (:answer a)}]
+      [:input {:type "submit" :value "downlaod⇣"}]]]]
+   #_[:div {:class "flex gap-4 items-center"}
+      [:form {:method "post" :action "download⇣"}
+       (h/raw (anti-forgery-field))
+       [:input {:type "hidden" :name "answer" :value (:answer a)}]
+       #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
+       [:input {:type "submit" :value "download⇣"}]]
+      [:button
+       {:class btn-black
+        :hx-get    "/black"
+        :hx-target (str "#black" (:e a))
+        :hx-swap   "innerHTML"}
+       "black"]
+      [:div {:id (str "black" (:e a))}]]])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
