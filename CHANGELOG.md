@@ -26,6 +26,10 @@
 - check uploaded files.
 - java24 warning
 
+## 0.18.1-SNAPSHOT
+
+- good, bad, qa button.
+
 
 ## 0.17.1 (2025-06-12)
 

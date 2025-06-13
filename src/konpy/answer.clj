@@ -202,6 +202,7 @@
              :hx-target (str "#good-" (:e a))
              :hx-swap   "innerHTML"}
       (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "eid" :value (:e a)}]
       [:button "👍 "]]
      [:div {:id (str "good-" (:e a))} "accounts"]]
 
@@ -210,15 +211,21 @@
              :hx-target (str "#bad-" (:e a))
              :hx-swap   "innerHTML"}
       (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "eid" :value (:e a)}]
       [:button "👎 "]]
      [:div {:id (str "bad-" (:e a))} "count"]]
 
-    [:form {:class "flex gap-2 my-2" :method "post" :action "/q-a"}
-     (h/raw (anti-forgery-field))
-     [:input {:class "outline grow px-2"
-              :placeholder "アドバイス、質問があればここに。"
-              :name "q"}]
-     [:button {:class btn} "q-a"]]
+    [:div
+     [:form {:class "flex gap-2"
+             :hx-post "/q-a"
+             :hx-target (str "#qa-" (:e a))
+             :hx-swap "innterHTML"}
+      (h/raw (anti-forgery-field))
+      [:input {:class "outline grow"
+               :placeholder "質問とアドバイス。"
+               :name "q"}]
+      [:button {:class btn} "Q-A"]]
+     [:div {:id (str "qa-" (:e a))} ""]]
 
     [:form {:method "post" :action "/download"}
      (h/raw (anti-forgery-field))
@@ -310,16 +317,22 @@
 ;------------------------------------------
 
 (defn good
-  [request]
-  (t/log! :info "answer/good")
-  (resp/response "OK"))
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":good")]
+    (t/log! :info (str "answer/good, good to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/lrange key)))))
 
 (defn bad
-  [request]
-  (t/log! :info "answer/bad")
-  (resp/response "OK"))
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":bad")]
+    (t/log! :info (str "answer/bad, bad to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/llen key)))))
 
 (defn q-a
-  [request]
-  (t/log! :info "answer/q-a")
-  (resp/response "OK"))
+  [{{:keys [q]} :params :as request}]
+  (t/log! :info (str "answer/q-a, from " (user request) "," q))
+  (resp/response "sent."))
