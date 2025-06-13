@@ -202,6 +202,7 @@
              :hx-target (str "#good-" (:e a))
              :hx-swap   "innerHTML"}
       (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "eid" :value (:e a)}]
       [:button "👍 "]]
      [:div {:id (str "good-" (:e a))} "accounts"]]
 
@@ -210,6 +211,7 @@
              :hx-target (str "#bad-" (:e a))
              :hx-swap   "innerHTML"}
       (h/raw (anti-forgery-field))
+      [:input {:type "hidden" :name "eid" :value (:e a)}]
       [:button "👎 "]]
      [:div {:id (str "bad-" (:e a))} "count"]]
 
@@ -310,14 +312,27 @@
 ;------------------------------------------
 
 (defn good
-  [request]
-  (t/log! :info "answer/good")
-  (resp/response "OK"))
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":good")]
+    (t/log! :info (str "answer/good, good to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/lrange key)))))
 
 (defn bad
-  [request]
-  (t/log! :info "answer/bad")
-  (resp/response "OK"))
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":bad")]
+    (t/log! :info (str "answer/bad, bad to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/llen key)))))
+
+(comment
+  (let [good "kp:3648:good"
+        bad  "kp:3648:bad"]
+  ;(println (c/lrange good))
+    (println (c/llen bad)))
+  :rcf)
 
 (defn q-a
   [request]
