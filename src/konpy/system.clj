@@ -1,7 +1,5 @@
 (ns konpy.system
   (:require [ring.adapter.jetty :as jetty]
-            ; [clj-reload.core :as reload]
-            [pg.core :as pg]
             [taoensso.telemere :as t]
             [environ.core :refer [env]]
             [konpy.routes :as routes]
@@ -15,14 +13,6 @@
   []
   (db/stop))
 
-(def pg-config
-  {:host "127.0.0.1"
-   :user (env :pg-user)
-   :password (env :pg-pass)
-   :database "typing_ex"})
-
-(def pg-conn pg-config)
-
 (defonce server (atom nil))
 
 (defn start-server
@@ -35,15 +25,13 @@
             (jetty/run-jetty
              handler
              {:port (parse-long port) :join? false}))
-    (t/log! :info (str "server started at port " port))
-    #_(alter-var-root #'pg-conn (pg/connect pg-config))))
+    (t/log! :info (str "server started at port " port))))
 
 (defn stop-server
   []
   (when @server
     (.stop @server)
-    (t/log! :info "server stopped.")
-    (pg/close pg-conn)))
+    (t/log! :info "server stopped.")))
 
 (defn start-system
   []

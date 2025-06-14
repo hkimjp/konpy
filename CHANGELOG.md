@@ -20,11 +20,12 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
-- using pg2 from typing_ex.clj and qa.clj.
 
 ## 0.18.2-SNAPSHOT
 
-- added pg2.clj -- direct access to `questions` DB.
+- added pg.clj -- direct access to `questions` DB.
+  didn't understand correct way to refer db-conn(s) from other
+  namespaces.
 - initial values of good/bad.
 
 ## 0.18.1 (2025-06-14)

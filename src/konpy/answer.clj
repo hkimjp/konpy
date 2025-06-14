@@ -11,7 +11,8 @@
    [konpy.carmine :as c]
    [konpy.db :as db]
    #_[konpy.qa :refer [q-a]]
-   [konpy.typing-ex :as typing-ex]
+   #_[konpy.typing-ex :as typing-ex]
+   [konpy.pg :as pg]
    [konpy.utils :refer [user kp-sha1 now weeks shorten develop?]]
    [konpy.views :refer [page render]]))
 
@@ -130,12 +131,6 @@
     (c/lpush key user)
     (resp/response (str (c/llen key)))))
 
-; (defn q-a
-;   [{{:keys [q]} :params :as request}]
-;   (t/log! :info (str "answer/q-a, from " (user request) "," q))
-;   (q-a (user request) q)
-;   (resp/response "sent."))
-
 ;-----------------------------------------
 
 (defn answer
@@ -187,7 +182,7 @@
         sha1 (kp-sha1 answer)
         identical (identical sha1)
         user (user request)
-        avg (typing-ex/average user)
+        avg (pg/tp-average user)
         num (:num (db/pull tid))]
     (t/log! {:level :debug
              :data {:user user
@@ -254,8 +249,8 @@
      [:input {:class "outline grow"
               :placeholder "質問とアドバイス。プログラム中。"
               :name "q"}]
-     [:button {:class btn} "Q-A"]]
-    [:div {:id (str "qa-" eid)} ""]]
+     [:button {:class btn} "Q-A"]
+     [:div {:id (str "qa-" eid)} ""]]]
    [:form {:method "post" :action "/download"}
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "answer" :value answer}]
