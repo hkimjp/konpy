@@ -24,7 +24,9 @@
              ($1, $2)"
           ret (pg/execute qa-conn sql {:params [(user request) q]})]
       (t/log! :debug (str "qa/q-a, ret: " ret))
-      "sent.")
+      {:status  200
+       :headers {"Content-Type" "text/plain"}
+       :body    "sent."})
     (catch Exception e
       (t/log! :error (.getMessage e))
       (throw (Exception. "q-a error.")))))
