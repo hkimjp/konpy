@@ -21,7 +21,8 @@
 - check uploaded files.
 - java24 warning
 
-## 0.18.2-SNAPSHOT
+
+## 0.18.2 (2025-06-14)
 
 - added pg.clj -- direct access to `questions` DB.
   didn't understand correct way to refer db-conn(s) from other

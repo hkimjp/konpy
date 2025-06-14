@@ -66,10 +66,3 @@
                  #'not-found-handler
                  {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))
-
-; (defn root-handler
-;   (reitit-ring/ring-handler
-;    (reitit-ring/router routes)
-;    not-found-handler
-;    {:middleware [[wrap-defaults site-defaults]]}))
-
