@@ -8,6 +8,7 @@
    [konpy.tasks :as tasks]
    [konpy.admin :as admin]
    [konpy.answer :as answer]
+   [konpy.pg :as pg]
    [konpy.login :refer [login-page login! logout!]]
    [konpy.middleware :as m]
    ;
@@ -43,8 +44,8 @@
 
    ["/answer-good" {:post {:handler answer/good}}]
    ["/answer-bad"  {:post {:handler answer/bad}}]
-   ["/q-a"         {:post {:handler answer/q-a}}]
    ["/download"    {:post {:handler answer/download}}]
+   ["/q-a"         {:post {:handler pg/q-a}}]
 
    ["/example"
     ["" {:get  {:handler example/example-page}
@@ -65,10 +66,3 @@
                  #'not-found-handler
                  {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))
-
-; (defn root-handler
-;   (reitit-ring/ring-handler
-;    (reitit-ring/router routes)
-;    not-found-handler
-;    {:middleware [[wrap-defaults site-defaults]]}))
-

@@ -20,8 +20,14 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
+
+
+## 0.18.2 (2025-06-14)
+
+- added pg.clj -- direct access to `questions` DB.
+  didn't understand correct way to refer db-conn(s) from other
+  namespaces.
 - initial values of good/bad.
-- qa interface.
 
 ## 0.18.1 (2025-06-14)
 

@@ -16,14 +16,6 @@
 
 (system/restart-system)
 
-(comment
-  (c/lpush "test" 1)
-  (c/lpush "test" 2)
-  (c/lpush "test" 3)
-  (c/llen "test")
-  (c/lrange "test")
-  :rcf)
-
 (defn seeds-in [week seeds]
   (let [c (atom 0)]
     (doseq [s seeds]
