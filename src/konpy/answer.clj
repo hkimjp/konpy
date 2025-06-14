@@ -103,6 +103,39 @@
              sha1)
        (mapv first)))
 
+;------------------------------------------
+
+(defn who-sent-good
+  [eid]
+  (str (c/lrange (str "kp:" eid ":good"))))
+
+(defn good
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":good")]
+    (t/log! :info (str "answer/good, good to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/lrange key)))))
+
+(defn number-of-bads
+  [eid]
+  (str (c/llen (str "kp:" eid ":bad"))))
+
+(defn bad
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":bad")]
+    (t/log! :info (str "answer/bad, bad to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (str (c/llen key)))))
+
+(defn q-a
+  [{{:keys [q]} :params :as request}]
+  (t/log! :info (str "answer/q-a, from " (user request) "," q))
+  (resp/response "sent."))
+
+;-----------------------------------------
+
 (defn answer
   [{{:keys [e]} :path-params :as request}]
   (let [tid (parse-long e)
@@ -178,10 +211,9 @@
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
-(defn- show-answer
+(defn- answer-head
   [a]
-  (t/log! :debug (str "show-answer" a))
-  [:div.my-8
+  [:div
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
@@ -191,46 +223,53 @@
          (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
     [:a {:class look
-         :href (str (env :wil) "/last/" (:author a))} "look"]]
+         :href (str (env :wil) "/last/" (:author a))} "look"]]])
+
+(defn- answer-reactions
+  [eid answer]
+  [:div
+   [:div {:class "flex gap-2"}
+    [:form {:hx-post   "/answer-good"
+            :hx-target (str "#good-" eid)
+            :hx-swap   "innerHTML"}
+     (h/raw (anti-forgery-field))
+     [:input {:type "hidden" :name "eid" :value eid}]
+     [:button "👍 "]]
+    [:div {:id (str "good-" eid)} (who-sent-good eid)]]
+   [:div {:class "flex gap-2"}
+    [:form {:hx-post   "/answer-bad"
+            :hx-target (str "#bad-" eid)
+            :hx-swap   "innerHTML"}
+     (h/raw (anti-forgery-field))
+     [:input {:type "hidden" :name "eid" :value eid}]
+     [:button "👎 "]]
+    [:div {:id (str "bad-" eid)} (number-of-bads eid)]]
+   [:div
+    [:form {:class "flex gap-2"
+            :hx-post "/q-a"
+            :hx-target (str "#qa-" eid)
+            :hx-swap "innterHTML"}
+     (h/raw (anti-forgery-field))
+     [:input {:class "outline grow"
+              :placeholder "質問とアドバイス。プログラム中。"
+              :name "q"}]
+     [:button {:class btn} "Q-A"]]
+    [:div {:id (str "qa-" eid)} ""]]
+   [:form {:method "post" :action "/download"}
+    (h/raw (anti-forgery-field))
+    [:input {:type "hidden" :name "answer" :value answer}]
+    [:input {:type "submit" :value "downlaod⇣"}]]])
+
+(defn- show-answer
+  [a]
+
+  (t/log! :debug (str "show-answer" a))
+  [:div.my-8
+   (answer-head a)
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   [:div
-
-    [:div {:class "flex gap-2"}
-     [:form {:hx-post   "/answer-good"
-             :hx-target (str "#good-" (:e a))
-             :hx-swap   "innerHTML"}
-      (h/raw (anti-forgery-field))
-      [:input {:type "hidden" :name "eid" :value (:e a)}]
-      [:button "👍 "]]
-     [:div {:id (str "good-" (:e a))} "accounts"]]
-
-    [:div {:class "flex gap-2"}
-     [:form {:hx-post   "/answer-bad"
-             :hx-target (str "#bad-" (:e a))
-             :hx-swap   "innerHTML"}
-      (h/raw (anti-forgery-field))
-      [:input {:type "hidden" :name "eid" :value (:e a)}]
-      [:button "👎 "]]
-     [:div {:id (str "bad-" (:e a))} "count"]]
-
-    [:div
-     [:form {:class "flex gap-2"
-             :hx-post "/q-a"
-             :hx-target (str "#qa-" (:e a))
-             :hx-swap "innterHTML"}
-      (h/raw (anti-forgery-field))
-      [:input {:class "outline grow"
-               :placeholder "質問とアドバイス。"
-               :name "q"}]
-      [:button {:class btn} "Q-A"]]
-     [:div {:id (str "qa-" (:e a))} ""]]
-
-    [:form {:method "post" :action "/download"}
-     (h/raw (anti-forgery-field))
-     [:input {:type "hidden" :name "answer" :value (:answer a)}]
-     [:input {:type "submit" :value "downlaod⇣"}]]]])
+   (answer-reactions (:e a) (:answer a))])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
@@ -314,25 +353,3 @@
         (-> (resp/response "black listed!")
             (resp/header "Content-Type" "text/html"))))))
 
-;------------------------------------------
-
-(defn good
-  [{{:keys [eid]} :params :as request}]
-  (let [user (user request)
-        key (str "kp:" eid ":good")]
-    (t/log! :info (str "answer/good, good to " eid " from " user))
-    (c/lpush key user)
-    (resp/response (str (c/lrange key)))))
-
-(defn bad
-  [{{:keys [eid]} :params :as request}]
-  (let [user (user request)
-        key (str "kp:" eid ":bad")]
-    (t/log! :info (str "answer/bad, bad to " eid " from " user))
-    (c/lpush key user)
-    (resp/response (str (c/llen key)))))
-
-(defn q-a
-  [{{:keys [q]} :params :as request}]
-  (t/log! :info (str "answer/q-a, from " (user request) "," q))
-  (resp/response "sent."))
