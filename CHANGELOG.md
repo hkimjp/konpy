@@ -20,6 +20,7 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
+- display bads using ⚫️.
 
 
 ## 0.18.2 (2025-06-14)
