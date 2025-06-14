@@ -30,8 +30,6 @@
 
 (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
-; (get sep (mod (weeks) (count sep)))
-
 (def ^:private q-find-answers
   '[:find ?answer ?updated ?identical ?e
     :keys answer updated identical e
@@ -109,7 +107,7 @@
 
 (defn who-sent-good
   [eid]
-  (str (c/lrange (str "kp:" eid ":good"))))
+  (c/lrange (str "kp:" eid ":good")))
 
 (defn good
   [{{:keys [eid]} :params :as request}]
@@ -117,11 +115,11 @@
         key (str "kp:" eid ":good")]
     (t/log! :info (str "answer/good, good to " eid " from " user))
     (c/lpush key user)
-    (resp/response (str (c/lrange key)))))
+    (resp/response (apply str (interpose ", " (c/lrange key))))))
 
 (defn number-of-bads
   [eid]
-  (str (c/llen (str "kp:" eid ":bad"))))
+  (c/llen (str "kp:" eid ":bad")))
 
 (defn bad
   [{{:keys [eid]} :params :as request}]
@@ -129,7 +127,8 @@
         key (str "kp:" eid ":bad")]
     (t/log! :info (str "answer/bad, bad to " eid " from " user))
     (c/lpush key user)
-    (resp/response (str (c/llen key)))))
+    (resp/response (apply str (for [_ (range (c/llen key))]
+                                "⚫️")))))
 
 ;-----------------------------------------
 
@@ -231,7 +230,8 @@
      (h/raw (anti-forgery-field))
      [:input {:type "hidden" :name "eid" :value eid}]
      [:button "👍 "]]
-    [:div {:id (str "good-" eid)} (who-sent-good eid)]]
+    [:div {:id (str "good-" eid)}
+     (apply str (interpose ", " (who-sent-good eid)))]]
    [:div {:class "flex gap-2"}
     [:form {:hx-post   "/answer-bad"
             :hx-target (str "#bad-" eid)
@@ -239,7 +239,9 @@
      (h/raw (anti-forgery-field))
      [:input {:type "hidden" :name "eid" :value eid}]
      [:button "👎 "]]
-    [:div {:id (str "bad-" eid)} (number-of-bads eid)]]
+    [:div {:id (str "bad-" eid)}
+     (apply str (for [_ (range (number-of-bads eid))]
+                  "⚫️"))]]
    [:div
     [:form {:class "flex gap-2"
             :hx-post "/q-a"

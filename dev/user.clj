@@ -7,7 +7,6 @@
    [konpy.admin :refer [upsert-task!]]
    [konpy.carmine :as c]
    [konpy.db :as db]
-   [konpy.typing-ex :as typing-ex]
    [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
