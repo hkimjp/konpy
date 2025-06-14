@@ -243,16 +243,16 @@
      (apply str (for [_ (range (number-of-bads eid))]
                   "⚫️"))]]
    [:div
-    [:form {:class "flex gap-2"
-            :hx-post "/q-a"
+    [:form {:class     "flex gap-2"
+            :hx-post   "/q-a"
             :hx-target (str "#qa-" eid)
-            :hx-swap "innterHTML"}
+            :hx-swap   "innterHTML"}
      (h/raw (anti-forgery-field))
      [:input {:class "outline grow"
               :placeholder "質問とアドバイス、その他。"
               :name "q"}]
-     [:button {:class btn} "Q-A"]
-     [:div {:id (str "qa-" eid)} ""]]]
+     [:button {:class btn} "Q-A"]]
+    [:div {:id (str "qa-" eid)} " "]]
    [:form {:method "post" :action "/download"}
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "answer" :value answer}]
