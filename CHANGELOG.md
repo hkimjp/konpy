@@ -21,7 +21,7 @@
 - check uploaded files.
 - java24 warning
 
-## 0.18.3-SNAPSHOT
+## 0.18.3 (2025-06-14)
 
 - improve display good and bads.
 - display as  user1, user2, user3. not ["user1" "user2" "user3"]
