@@ -115,7 +115,7 @@
         key (str "kp:" eid ":good")]
     (t/log! :info (str "answer/good, good to " eid " from " user))
     (c/lpush key user)
-    (resp/response (apply str (interpose ", " (c/lrange key))))))
+    (resp/response (apply str (interpose "❤️ " (c/lrange key))))))
 
 (defn number-of-bads
   [eid]
@@ -231,7 +231,7 @@
      [:input {:type "hidden" :name "eid" :value eid}]
      [:button "👍 "]]
     [:div {:id (str "good-" eid)}
-     (apply str (interpose ", " (who-sent-good eid)))]]
+     (apply str (interpose "❤️ " (who-sent-good eid)))]]
    [:div {:class "flex gap-2"}
     [:form {:hx-post   "/answer-bad"
             :hx-target (str "#bad-" eid)
@@ -243,16 +243,16 @@
      (apply str (for [_ (range (number-of-bads eid))]
                   "⚫️"))]]
    [:div
-    [:form {:class "flex gap-2"
-            :hx-post "/q-a"
+    [:form {:class     "flex gap-2"
+            :hx-post   "/q-a"
             :hx-target (str "#qa-" eid)
-            :hx-swap "innterHTML"}
+            :hx-swap   "innterHTML"}
      (h/raw (anti-forgery-field))
      [:input {:class "outline grow"
-              :placeholder "質問とアドバイス。プログラム中。"
+              :placeholder "質問とアドバイス、その他。"
               :name "q"}]
-     [:button {:class btn} "Q-A"]
-     [:div {:id (str "qa-" eid)} ""]]]
+     [:button {:class btn} "Q-A"]]
+    [:div {:id (str "qa-" eid)} " "]]
    [:form {:method "post" :action "/download"}
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "answer" :value answer}]

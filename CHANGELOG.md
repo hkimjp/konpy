@@ -20,6 +20,13 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
+- same 回答に一律⚫️.
+
+
+## 0.18.4-SNAPSHOT (2025-06-14)
+
+- FIXED: did not display 'sent'. response map.
+- good❤️.
 
 ## 0.18.3 (2025-06-14)
 
