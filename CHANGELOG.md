@@ -27,6 +27,11 @@
 
 - refactored `answer/show-answer`.
 - eliminated forward references.
+- not a good looking?
+```
+👍 []
+👎 1
+```
 
 ## 0.18.0 (2025-06-14)
 
