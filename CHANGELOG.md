@@ -20,8 +20,12 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
-- display bads using ⚫️.
 
+## 0.18.3-SNAPSHOT
+
+- improve display good and bads.
+- display as  user1, user2, user3. not ["user1" "user2" "user3"]
+- display bads using ⚫️.
 
 ## 0.18.2 (2025-06-14)
 
