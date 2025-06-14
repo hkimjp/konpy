@@ -20,8 +20,12 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
+- using pg2 from typing_ex.clj and qa.clj.
+
+## 0.18.2-SNAPSHOT
+
+- added pg2.clj -- direct access to `questions` DB.
 - initial values of good/bad.
-- qa interface.
 
 ## 0.18.1 (2025-06-14)
 

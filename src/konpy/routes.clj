@@ -8,6 +8,7 @@
    [konpy.tasks :as tasks]
    [konpy.admin :as admin]
    [konpy.answer :as answer]
+   [konpy.qa :as qa]
    [konpy.login :refer [login-page login! logout!]]
    [konpy.middleware :as m]
    ;
@@ -43,7 +44,7 @@
 
    ["/answer-good" {:post {:handler answer/good}}]
    ["/answer-bad"  {:post {:handler answer/bad}}]
-   ["/q-a"         {:post {:handler answer/q-a}}]
+   ["/q-a"         {:post {:handler qa/q-a}}]
    ["/download"    {:post {:handler answer/download}}]
 
    ["/example"

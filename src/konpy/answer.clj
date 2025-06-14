@@ -10,6 +10,7 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
+   #_[konpy.qa :refer [q-a]]
    [konpy.typing-ex :as typing-ex]
    [konpy.utils :refer [user kp-sha1 now weeks shorten develop?]]
    [konpy.views :refer [page render]]))
@@ -129,10 +130,11 @@
     (c/lpush key user)
     (resp/response (str (c/llen key)))))
 
-(defn q-a
-  [{{:keys [q]} :params :as request}]
-  (t/log! :info (str "answer/q-a, from " (user request) "," q))
-  (resp/response "sent."))
+; (defn q-a
+;   [{{:keys [q]} :params :as request}]
+;   (t/log! :info (str "answer/q-a, from " (user request) "," q))
+;   (q-a (user request) q)
+;   (resp/response "sent."))
 
 ;-----------------------------------------
 
@@ -195,18 +197,17 @@
                     :identical identical}}
             "answer!")
     (try
-      (db/put! [{:db/add -1
-                 :task/id tid
-                 :author user
-                 :answer answer
-                 :sha1 sha1
-                 :updated (now)
+      (db/put! [{:db/add    -1
+                 :task/id   tid
+                 :author    user
+                 :answer    answer
+                 :sha1      sha1
+                 :updated   (now)
                  :identical identical
                  :typing-ex avg}])
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
-      ; (resp/redirect (str "/answer/" e "/others"))
       (resp/response "他の人の回答も読もう。")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
@@ -262,7 +263,6 @@
 
 (defn- show-answer
   [a]
-
   (t/log! :debug (str "show-answer" a))
   [:div.my-8
    (answer-head a)
@@ -352,4 +352,3 @@
         (c/setex user-key 300 "black")
         (-> (resp/response "black listed!")
             (resp/header "Content-Type" "text/html"))))))
-
