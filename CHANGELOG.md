@@ -23,7 +23,17 @@
 - initial values of good/bad.
 - qa interface.
 
-## 0.18.0
+## 0.18.1 (2025-06-14)
+
+- refactored `answer/show-answer`.
+- eliminated forward references.
+- not a good looking?
+```
+👍 []
+👎 1
+```
+
+## 0.18.0 (2025-06-14)
 
 - arranged good, bad buttn and qa input field.
 
