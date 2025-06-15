@@ -16,13 +16,14 @@
 (def qa-conn qa-config)
 
 (defn q-a
-  [{{:keys [author q]} :params :as request}]
+  [{{:keys [author week-num q]} :params :as request}]
   (t/log! :debug (str "qa/q-a, q: " q))
   (try
     (let [sql "insert into questions
              (nick, q)
              values
              ($1, $2)"
+          q (str week-num ", " author ": " q)
           ret (pg/execute qa-conn sql {:params [(user request) q]})]
       (t/log! :debug (str "qa/q-a, ret: " ret))
       {:status  200
