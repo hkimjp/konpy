@@ -20,11 +20,12 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warning
-- same 回答に一律⚫️.
+- same 回答に一律 ⚫️.
 
 ## 0.19.1-hotfix
 
-- does not hit any because of the new entry `week-num`.
+- does not hit any answers because of the new entry `week-num` is not
+  found in old answers.
   resume to old version. version is `0.19.1-hotfix`.
 
 ## 0.19.0 (2025-06-15)
