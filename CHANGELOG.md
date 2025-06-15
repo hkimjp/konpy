@@ -23,6 +23,10 @@
 - same 回答に一律⚫️.
 
 
+## 0.19.0 (2025-06-15)
+
+- Q-A: fetch week-num and author from the answer.
+
 ## 0.18.4 (2025-06-14)
 
 - FIXED: did not display 'sent'. response map.

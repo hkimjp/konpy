@@ -14,7 +14,8 @@ I'm using,
 
 * java  24.0.1
 * Clojure 1.12.1
-* Redis redis:7(docker)
+* Redis redis:7(Orbstack, docker)
+* Postgresql@17
 
 ## Usage
 
@@ -27,7 +28,6 @@ In development, run tailwindcss watcher in the background,
 then start Clojure REPL.
 
     $ just repl
-
 
 Persistent storage is at `storage/db.sqlite`.
 
