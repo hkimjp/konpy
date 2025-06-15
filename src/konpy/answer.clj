@@ -27,8 +27,8 @@
 (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
 (def ^:private q-find-answers
-  '[:find ?answer ?updated ?identical ?e ?week-num
-    :keys answer updated identical e week-num
+  '[:find ?answer ?updated ?identical ?e ; ?week-num
+    :keys answer updated identical e ; week-num
     :in $ ?author ?tid
     :where
     [?e :author    ?author]
@@ -36,7 +36,7 @@
     [?e :answer    ?answer]
     [?e :identical ?identical]
     [?e :updated   ?updated]
-    [?e :week-num  ?week-num]])
+    #_[?e :week-num  ?week-num]])
 
 (def ^:private q-find-author
   '[:find ?author
@@ -46,8 +46,8 @@
     [?e :sha1   ?sha1]])
 
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ?week-num
-    :keys answer updated identical author typing-ex e week-num
+  '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ; ?week-num
+    :keys answer updated identical author typing-ex e ; week-num
     :in $ ?tid ?author
     :where
     [?e :task/id   ?tid]
@@ -56,11 +56,11 @@
     [?e :updated   ?updated]
     [?e :identical ?identical]
     [?e :typing-ex ?typing-ex]
-    [?e :week-num  ?week-num]])
+    #_[?e :week-num  ?week-num]])
 
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e ?week-num
-    :keys answer updated author identical typing-ex e week-num
+  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e ; ?week-num
+    :keys answer updated author identical typing-ex e ; week-num
     :in $ ?tid
     :where
     [?e :task/id   ?tid]
@@ -69,7 +69,7 @@
     [?e :updated   ?updated]
     [?e :identical ?identical]
     [?e :typing-ex ?typing-ex]
-    [?e :week-num  ?week-num]])
+    #_[?e :week-num  ?week-num]])
 
 (def q-week-num
   '[:find ?week ?num

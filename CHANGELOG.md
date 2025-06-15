@@ -22,6 +22,10 @@
 - java24 warning
 - same 回答に一律⚫️.
 
+## 0.19.1-hotfix
+
+- does not hit any because of the new entry `week-num`.
+  resume to old version. version is `0.19.1-hotfix`.
 
 ## 0.19.0 (2025-06-15)
 
