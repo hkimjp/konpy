@@ -3,6 +3,7 @@
    [environ.core :refer [env]]
    [pg.core :as pg]
    [taoensso.telemere :as t]
+   [konpy.db :as db]
    [konpy.utils :refer [user]]
    [konpy.system :as-alias system]))
 
@@ -15,18 +16,19 @@
 (def qa-conn qa-config)
 
 (defn q-a
-  [{{:keys [q]} :params :as request}]
+  [{{:keys [author week-num q]} :params :as request}]
   (t/log! :debug (str "qa/q-a, q: " q))
   (try
     (let [sql "insert into questions
              (nick, q)
              values
              ($1, $2)"
+          q (str week-num ", " author ": " q)
           ret (pg/execute qa-conn sql {:params [(user request) q]})]
       (t/log! :debug (str "qa/q-a, ret: " ret))
       {:status  200
        :headers {"Content-Type" "text/plain"}
-       :body    "sent."})
+       :body    "QA に送信しました。"})
     (catch Exception e
       (t/log! :error (.getMessage e))
       (throw (Exception. "q-a error.")))))
