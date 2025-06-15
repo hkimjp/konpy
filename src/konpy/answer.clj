@@ -1,7 +1,5 @@
 (ns konpy.answer
   (:require
-   ; [clojure.java.io :as io]
-   ; [clojure.string :as str]
    [environ.core :refer [env]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
@@ -10,8 +8,6 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
-   #_[konpy.qa :refer [q-a]]
-   #_[konpy.typing-ex :as typing-ex]
    [konpy.pg :as pg]
    [konpy.utils :refer [user kp-sha1 now weeks shorten develop?]]
    [konpy.views :refer [page render]]))
@@ -48,7 +44,6 @@
     [?e :author ?author]
     [?e :sha1 ?sha1]])
 
-; typing-ex
 (def ^:private q-answers-self
   '[:find ?answer ?updated ?identical ?author  ?typing-ex ?e
     :keys answer updated identical author  typing-ex e
@@ -61,7 +56,6 @@
     [?e :identical ?identical]
     [?e :typing-ex ?typing-ex]])
 
-; typing-ex
 (def ^:private q-answers-others
   '[:find ?answer ?updated ?author ?identical ?typing-ex ?e
     :keys answer updated author identical typing-ex e
@@ -74,15 +68,20 @@
     [?e :identical ?identical]
     [?e :typing-ex ?typing-ex]])
 
-;; can not [?e :db/id ?tid]
 (def q-week-num
   '[:find ?week ?num
     :keys week num
-    :in $ ?tid
+    :in $ ?eid
     :where
-    [?e :db/id ?tid]
     [?e :week ?week]
-    [?e :num ?num]])
+    [?e :num ?num]
+    [(= ?e ?eid)]])
+
+(comment
+  (let [eid 3319]
+    (-> (db/q q-week-num eid)
+        first))
+  :rcf)
 
 ;-------------------------
 
@@ -182,13 +181,15 @@
         identical (identical sha1)
         user (user request)
         avg (pg/tp-average user)
-        num (:num (db/pull tid))]
+        num (:num (db/pull tid))
+        week-num (-> (db/q q-week-num tid) first)]
     (t/log! {:level :debug
              :data {:user user
                     :typing-ex avg
                     :tid tid
                     :sha1 sha1
-                    :identical identical}}
+                    :identical identical
+                    :week-num week-num}}
             "answer!")
     (try
       (db/put! [{:db/add    -1
@@ -198,7 +199,8 @@
                  :sha1      sha1
                  :updated   (now)
                  :identical identical
-                 :typing-ex avg}])
+                 :typing-ex avg
+                 :week-num  week-num}])
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
@@ -220,43 +222,98 @@
     [:a {:class look
          :href (str (env :wil) "/last/" (:author a))} "look"]]])
 
-(defn- answer-reactions
-  [eid answer]
-  [:div
-   [:div {:class "flex gap-2"}
-    [:form {:hx-post   "/answer-good"
-            :hx-target (str "#good-" eid)
-            :hx-swap   "innerHTML"}
-     (h/raw (anti-forgery-field))
-     [:input {:type "hidden" :name "eid" :value eid}]
-     [:button "👍 "]]
-    [:div {:id (str "good-" eid)}
-     (apply str (interpose "❤️ " (who-sent-good eid)))]]
-   [:div {:class "flex gap-2"}
-    [:form {:hx-post   "/answer-bad"
-            :hx-target (str "#bad-" eid)
-            :hx-swap   "innerHTML"}
-     (h/raw (anti-forgery-field))
-     [:input {:type "hidden" :name "eid" :value eid}]
-     [:button "👎 "]]
-    [:div {:id (str "bad-" eid)}
-     (apply str (for [_ (range (number-of-bads eid))]
-                  "⚫️"))]]
-   [:div
-    [:form {:class     "flex gap-2"
-            :hx-post   "/q-a"
-            :hx-target (str "#qa-" eid)
-            :hx-swap   "innterHTML"}
-     (h/raw (anti-forgery-field))
-     [:input {:class "outline grow"
-              :placeholder "質問とアドバイス、その他。"
-              :name "q"}]
-     [:button {:class btn} "Q-A"]]
-    [:div {:id (str "qa-" eid)} " "]]
-   [:form {:method "post" :action "/download"}
+(defn- good-button [eid]
+  [:div {:class "flex gap-2"}
+   [:form {:hx-post   "/answer-good"
+           :hx-target (str "#good-" eid)
+           :hx-swap   "innerHTML"}
     (h/raw (anti-forgery-field))
-    [:input {:type "hidden" :name "answer" :value answer}]
-    [:input {:type "submit" :value "downlaod⇣"}]]])
+    [:input {:type "hidden" :name "eid" :value eid}]
+    [:button "👍 "]]
+   [:div {:id (str "good-" eid)}
+    (apply str (interpose "❤️ " (who-sent-good eid)))]])
+
+(defn- bad-button [eid]
+  [:div {:class "flex gap-2"}
+   [:form {:hx-post   "/answer-bad"
+           :hx-target (str "#bad-" eid)
+           :hx-swap   "innerHTML"}
+    (h/raw (anti-forgery-field))
+    [:input {:type "hidden" :name "eid" :value eid}]
+    [:button "👎 "]]
+   [:div {:id (str "bad-" eid)}
+    (apply str (for [_ (range (number-of-bads eid))]
+                 "⚫️"))]])
+
+(defn- qa-button [eid author week-num]
+  [:div
+   [:form {:class     "flex gap-2"
+           :hx-post   "/q-a"
+           :hx-target (str "#qa-" eid)
+           :hx-swap   "innterHTML"}
+    (h/raw (anti-forgery-field))
+    [:input {:type "hidden" :name "author" :value author}]
+    [:input {:type "hidden"
+             :name "week-num"
+             :value (str (:week week-num) "-" (:num week-num))}]
+    [:input {:class "outline grow"
+             :placeholder "質問とアドバイス、その他。"
+             :name "q"}]
+    [:button {:class btn} "Q-A"]]
+   [:div {:id (str "qa-" eid)} " "]])
+
+(defn- download-button [answer]
+  [:form {:method "post" :action "/download"}
+   (h/raw (anti-forgery-field))
+   [:input {:type "hidden" :name "answer" :value answer}]
+   [:input {:type "submit" :value "downlaod⇣"}]])
+
+(defn- answer-reactions
+  [eid author week-num answer]
+  [:div
+   (good-button eid)
+   ; [:div {:class "flex gap-2"}
+   ;  [:form {:hx-post   "/answer-good"
+   ;          :hx-target (str "#good-" eid)
+   ;          :hx-swap   "innerHTML"}
+   ;   (h/raw (anti-forgery-field))
+   ;   [:input {:type "hidden" :name "eid" :value eid}]
+   ;   [:button "👍 "]]
+   ;  [:div {:id (str "good-" eid)}
+   ;   (apply str (interpose "❤️ " (who-sent-good eid)))]]
+   (bad-button eid)
+   ; [:div {:class "flex gap-2"}
+   ;  [:form {:hx-post   "/answer-bad"
+   ;          :hx-target (str "#bad-" eid)
+   ;          :hx-swap   "innerHTML"}
+   ;   (h/raw (anti-forgery-field))
+   ;   [:input {:type "hidden" :name "eid" :value eid}]
+   ;   [:button "👎 "]]
+   ;  [:div {:id (str "bad-" eid)}
+   ;   (apply str (for [_ (range (number-of-bads eid))]
+   ;                "⚫️"))]]
+   (qa-button eid author week-num)
+   ; [:div
+   ;  [:form {:class     "flex gap-2"
+   ;          :hx-post   "/q-a"
+   ;          :hx-target (str "#qa-" eid)
+   ;          :hx-swap   "innterHTML"}
+   ;   (h/raw (anti-forgery-field))
+   ;   [:input {:type "hidden" :name "author" :value author}]
+   ;   [:input {:type "hidden"
+   ;            :name "week-num"
+   ;            :value (str (:week week-num) "-" (:num week-num))}]
+   ;   [:input {:class "outline grow"
+   ;            :placeholder "質問とアドバイス、その他。"
+   ;            :name "q"}]
+   ;   [:button {:class btn} "Q-A"]]
+   ;  [:div {:id (str "qa-" eid)} " "]]
+   (download-button answer)
+   ; [:form {:method "post" :action "/download"}
+   ;  (h/raw (anti-forgery-field))
+   ;  [:input {:type "hidden" :name "answer" :value answer}]
+   ;  [:input {:type "submit" :value "downlaod⇣"}]]
+   ])
 
 (defn- show-answer
   [a]
@@ -266,7 +323,7 @@
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   (answer-reactions (:e a) (:answer a))])
+   (answer-reactions (:e a) (:author a) (:week-num a) (:answer a))])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]

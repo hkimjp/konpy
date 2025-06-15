@@ -3,6 +3,7 @@
    [environ.core :refer [env]]
    [pg.core :as pg]
    [taoensso.telemere :as t]
+   [konpy.db :as db]
    [konpy.utils :refer [user]]
    [konpy.system :as-alias system]))
 
@@ -15,7 +16,7 @@
 (def qa-conn qa-config)
 
 (defn q-a
-  [{{:keys [q]} :params :as request}]
+  [{{:keys [author q]} :params :as request}]
   (t/log! :debug (str "qa/q-a, q: " q))
   (try
     (let [sql "insert into questions
@@ -26,7 +27,7 @@
       (t/log! :debug (str "qa/q-a, ret: " ret))
       {:status  200
        :headers {"Content-Type" "text/plain"}
-       :body    "sent."})
+       :body    "QA に送信しました。"})
     (catch Exception e
       (t/log! :error (.getMessage e))
       (throw (Exception. "q-a error.")))))
