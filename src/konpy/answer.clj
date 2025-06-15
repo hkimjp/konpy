@@ -27,46 +27,49 @@
 (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
 (def ^:private q-find-answers
-  '[:find ?answer ?updated ?identical ?e
-    :keys answer updated identical e
+  '[:find ?answer ?updated ?identical ?e ?week-num
+    :keys answer updated identical e week-num
     :in $ ?author ?tid
     :where
-    [?e :author ?author]
-    [?e :task/id ?tid]
-    [?e :answer ?answer]
+    [?e :author    ?author]
+    [?e :task/id   ?tid]
+    [?e :answer    ?answer]
     [?e :identical ?identical]
-    [?e :updated ?updated]])
+    [?e :updated   ?updated]
+    [?e :week-num  ?week-num]])
 
 (def ^:private q-find-author
   '[:find ?author
     :in $ ?sha1
     :where
     [?e :author ?author]
-    [?e :sha1 ?sha1]])
+    [?e :sha1   ?sha1]])
 
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author  ?typing-ex ?e
-    :keys answer updated identical author  typing-ex e
+  '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ?week-num
+    :keys answer updated identical author typing-ex e week-num
     :in $ ?tid ?author
     :where
-    [?e :task/id ?tid]
-    [?e :author ?author]
-    [?e :answer ?answer]
-    [?e :updated ?updated]
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :updated   ?updated]
     [?e :identical ?identical]
-    [?e :typing-ex ?typing-ex]])
+    [?e :typing-ex ?typing-ex]
+    [?e :week-num  ?week-num]])
 
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e
-    :keys answer updated author identical typing-ex e
+  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e ?week-num
+    :keys answer updated author identical typing-ex e week-num
     :in $ ?tid
     :where
-    [?e :task/id ?tid]
-    [?e :author ?author]
-    [?e :answer ?answer]
-    [?e :updated ?updated]
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :updated   ?updated]
     [?e :identical ?identical]
-    [?e :typing-ex ?typing-ex]])
+    [?e :typing-ex ?typing-ex]
+    [?e :week-num  ?week-num]])
 
 (def q-week-num
   '[:find ?week ?num
@@ -74,13 +77,14 @@
     :in $ ?eid
     :where
     [?e :week ?week]
-    [?e :num ?num]
+    [?e :num  ?num]
     [(= ?e ?eid)]])
 
 (comment
-  (let [eid 3319]
+  (let [eid 3711]
     (-> (db/q q-week-num eid)
         first))
+
   :rcf)
 
 ;-------------------------
@@ -175,6 +179,7 @@
 
 (defn answer!
   [{{:keys [e]} :params :as request}]
+  (t/log! :debug (str "e=" e))
   (let [tid (parse-long e)
         answer (slurp (get-in request [:params :file :tempfile]))
         sha1 (kp-sha1 answer)
@@ -246,6 +251,7 @@
                  "⚫️"))]])
 
 (defn- qa-button [eid author week-num]
+  (t/log! :debug (str "qa-button " eid "," author "," week-num))
   [:div
    [:form {:class     "flex gap-2"
            :hx-post   "/q-a"
@@ -272,48 +278,9 @@
   [eid author week-num answer]
   [:div
    (good-button eid)
-   ; [:div {:class "flex gap-2"}
-   ;  [:form {:hx-post   "/answer-good"
-   ;          :hx-target (str "#good-" eid)
-   ;          :hx-swap   "innerHTML"}
-   ;   (h/raw (anti-forgery-field))
-   ;   [:input {:type "hidden" :name "eid" :value eid}]
-   ;   [:button "👍 "]]
-   ;  [:div {:id (str "good-" eid)}
-   ;   (apply str (interpose "❤️ " (who-sent-good eid)))]]
    (bad-button eid)
-   ; [:div {:class "flex gap-2"}
-   ;  [:form {:hx-post   "/answer-bad"
-   ;          :hx-target (str "#bad-" eid)
-   ;          :hx-swap   "innerHTML"}
-   ;   (h/raw (anti-forgery-field))
-   ;   [:input {:type "hidden" :name "eid" :value eid}]
-   ;   [:button "👎 "]]
-   ;  [:div {:id (str "bad-" eid)}
-   ;   (apply str (for [_ (range (number-of-bads eid))]
-   ;                "⚫️"))]]
    (qa-button eid author week-num)
-   ; [:div
-   ;  [:form {:class     "flex gap-2"
-   ;          :hx-post   "/q-a"
-   ;          :hx-target (str "#qa-" eid)
-   ;          :hx-swap   "innterHTML"}
-   ;   (h/raw (anti-forgery-field))
-   ;   [:input {:type "hidden" :name "author" :value author}]
-   ;   [:input {:type "hidden"
-   ;            :name "week-num"
-   ;            :value (str (:week week-num) "-" (:num week-num))}]
-   ;   [:input {:class "outline grow"
-   ;            :placeholder "質問とアドバイス、その他。"
-   ;            :name "q"}]
-   ;   [:button {:class btn} "Q-A"]]
-   ;  [:div {:id (str "qa-" eid)} " "]]
-   (download-button answer)
-   ; [:form {:method "post" :action "/download"}
-   ;  (h/raw (anti-forgery-field))
-   ;  [:input {:type "hidden" :name "answer" :value answer}]
-   ;  [:input {:type "submit" :value "downlaod⇣"}]]
-   ])
+   (download-button answer)])
 
 (defn- show-answer
   [a]
