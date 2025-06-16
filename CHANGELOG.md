@@ -16,7 +16,10 @@
 - deliver ⚫️ to the same (bad) answers.
 
 
-## 0.20.0-SNAPSHOT
+## 0.20.0-SNAPSHOT (2025-06-16)
+
+- confirm 'to-QA'.
+- updated sqlite-jdbc.
 
 | :file    | :name                  | :current | :latest  |
 |----------|------------------------|----------|----------|

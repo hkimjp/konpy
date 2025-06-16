@@ -253,10 +253,11 @@
 (defn- qa-button [eid author week-num]
   (t/log! :debug (str "qa-button " eid "," author "," week-num))
   [:div
-   [:form {:class     "flex gap-2"
-           :hx-post   "/q-a"
-           :hx-target (str "#qa-" eid)
-           :hx-swap   "innterHTML"}
+   [:form {:class     　 "flex gap-2"
+           :hx-confirm "QAに送信しますか？"
+           :hx-post   　 "/q-a"
+           :hx-target 　 (str "#qa-" eid)
+           :hx-swap   　 "innterHTML"}
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "author" :value author}]
     [:input {:type "hidden"
@@ -265,7 +266,7 @@
     [:input {:class "outline grow"
              :placeholder "質問とアドバイス、その他。"
              :name "q"}]
-    [:button {:class btn} "Q-A"]]
+    [:button {:class btn} "to QA"]]
    [:div {:id (str "qa-" eid)} " "]])
 
 (defn- download-button [answer]
