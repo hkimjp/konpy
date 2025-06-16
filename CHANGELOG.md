@@ -1,12 +1,5 @@
 ## Unreleased
 
-- nothing returns by
-
-```
-(db/q '[:find ?e
-        :where
-        [?e :db/id 31]])
-```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
@@ -19,14 +12,36 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 - check uploaded files.
-- java24 warning
-- same 回答に一律 ⚫️.
+- java24 warnings.
+- deliver ⚫️ to the same (bad) answers.
 
-## 0.19.1-hotfix
+
+## 0.20.0-SNAPSHOT
+
+| :file    | :name                  | :current | :latest  |
+|----------|------------------------|----------|----------|
+| deps.edn | org.xerial/sqlite-jdbc | 3.49.1.0 | 3.50.1.0 |
+
+
+## 0.19.1-hotfix (2025-06-15)
 
 - does not hit any answers because of the new entry `week-num` is not
   found in old answers.
   resume to old version. version is `0.19.1-hotfix`.
+
+```
+(db/q '[:find ?e
+        :where
+        [?e :db/id 31]])
+```
+
+should be
+
+```
+(db/q '[:find ?e
+        :where
+        [(= ?e 31)]])
+```
 
 ## 0.19.0 (2025-06-15)
 
