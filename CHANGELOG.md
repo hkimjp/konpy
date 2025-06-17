@@ -1,31 +1,86 @@
 ## Unreleased
 
-- nothing returns by
-
-```
-(db/q '[:find ?e
-                             :where
-                             [?e :db/id 31]])
-```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
-- gather tailwindcss class definitions.
-    - exec datascript garbage collection.
-    - stat.
-- compile routes in production.
 - transducer.
 - just recipe to backup db.sqlite
 - just recipe to upload db.sqlite
 - `db.sqlite` must be `konpy.sqlite`.
-- display time of most recent login and submit.
 - (I) must learn htmx about hx-post, hx-swap, parameters
 - name of the downloaded file.
 - read version from `pom.xml`.
 - color self in answers and logins list.
 - check uploaded files.
-- java24 warning
+- java24 warnings.
+- deliver ⚫️ to the same (bad) answers.
 
+
+## 0.20.0 (2025-06-17)
+
+- confirmation of 'to-QA'.
+- updated sqlite-jdbc.
+
+| :file    | :name                  | :current | :latest  |
+|----------|------------------------|----------|----------|
+| deps.edn | org.xerial/sqlite-jdbc | 3.49.1.0 | 3.50.1.0 |
+
+
+## 0.19.1-hotfix (2025-06-15)
+
+- does not hit any answers because of the new entry `week-num` is not
+  found in old answers.
+  resume to old version. version is `0.19.1-hotfix`.
+
+```
+(db/q '[:find ?e
+        :where
+        [?e :db/id 31]])
+```
+
+should be
+
+```
+(db/q '[:find ?e
+        :where
+        [(= ?e 31)]])
+```
+
+## 0.19.0 (2025-06-15)
+
+- Q-A: fetch week-num and author from the answer.
+
+## 0.18.4 (2025-06-14)
+
+- FIXED: did not display 'sent'. response map.
+- good❤️.
+
+## 0.18.3 (2025-06-14)
+
+- improve display good and bads.
+- display as  user1, user2, user3. not ["user1" "user2" "user3"]
+- display bads using ⚫️.
+
+## 0.18.2 (2025-06-14)
+
+- added pg.clj -- direct access to `questions` DB.
+  didn't understand correct way to refer db-conn(s) from other
+  namespaces.
+- initial values of good/bad.
+
+## 0.18.1 (2025-06-14)
+
+- refactored `answer/show-answer`.
+- eliminated forward references.
+- not a good looking?
+```
+👍 []
+👎 1
+```
+
+## 0.18.0 (2025-06-14)
+
+- arranged good, bad buttn and qa input field.
 
 ## 0.17.1 (2025-06-12)
 
