@@ -18,7 +18,7 @@
 
 ## 0.20.0-SNAPSHOT (2025-06-16)
 
-- confirm 'to-QA'.
+- confirmation of 'to-QA'.
 - updated sqlite-jdbc.
 
 | :file    | :name                  | :current | :latest  |
