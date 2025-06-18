@@ -1,7 +1,5 @@
 (ns konpy.answer
   (:require
-   ; [clojure.java.io :as io]
-   ; [clojure.string :as str]
    [environ.core :refer [env]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
@@ -10,7 +8,7 @@
    ;
    [konpy.carmine :as c]
    [konpy.db :as db]
-   [konpy.typing-ex :as typing-ex]
+   [konpy.pg :as pg]
    [konpy.utils :refer [user kp-sha1 now weeks shorten develop?]]
    [konpy.views :refer [page render]]))
 
@@ -28,61 +26,66 @@
 
 (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
-; (get sep (mod (weeks) (count sep)))
-
 (def ^:private q-find-answers
-  '[:find ?answer ?updated ?identical ?e
-    :keys answer updated identical e
+  '[:find ?answer ?updated ?identical ?e ; ?week-num
+    :keys answer updated identical e ; week-num
     :in $ ?author ?tid
     :where
-    [?e :author ?author]
-    [?e :task/id ?tid]
-    [?e :answer ?answer]
+    [?e :author    ?author]
+    [?e :task/id   ?tid]
+    [?e :answer    ?answer]
     [?e :identical ?identical]
-    [?e :updated ?updated]])
+    [?e :updated   ?updated]
+    #_[?e :week-num  ?week-num]])
 
 (def ^:private q-find-author
   '[:find ?author
     :in $ ?sha1
     :where
     [?e :author ?author]
-    [?e :sha1 ?sha1]])
+    [?e :sha1   ?sha1]])
 
-; typing-ex
 (def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author  ?typing-ex ?e
-    :keys answer updated identical author  typing-ex e
+  '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ; ?week-num
+    :keys answer updated identical author typing-ex e ; week-num
     :in $ ?tid ?author
     :where
-    [?e :task/id ?tid]
-    [?e :author ?author]
-    [?e :answer ?answer]
-    [?e :updated ?updated]
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :updated   ?updated]
     [?e :identical ?identical]
-    [?e :typing-ex ?typing-ex]])
+    [?e :typing-ex ?typing-ex]
+    #_[?e :week-num  ?week-num]])
 
-; typing-ex
 (def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e
-    :keys answer updated author identical typing-ex e
+  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e ; ?week-num
+    :keys answer updated author identical typing-ex e ; week-num
     :in $ ?tid
     :where
-    [?e :task/id ?tid]
-    [?e :author ?author]
-    [?e :answer ?answer]
-    [?e :updated ?updated]
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :updated   ?updated]
     [?e :identical ?identical]
-    [?e :typing-ex ?typing-ex]])
+    [?e :typing-ex ?typing-ex]
+    #_[?e :week-num  ?week-num]])
 
-;; can not [?e :db/id ?tid]
 (def q-week-num
   '[:find ?week ?num
     :keys week num
-    :in $ ?tid
+    :in $ ?eid
     :where
-    [?e :db/id ?tid]
     [?e :week ?week]
-    [?e :num ?num]])
+    [?e :num  ?num]
+    [(= ?e ?eid)]])
+
+(comment
+  (let [eid 3711]
+    (-> (db/q q-week-num eid)
+        first))
+
+  :rcf)
 
 ;-------------------------
 
@@ -102,6 +105,35 @@
   (->> (db/q q-find-author
              sha1)
        (mapv first)))
+
+;------------------------------------------
+
+(defn who-sent-good
+  [eid]
+  (c/lrange (str "kp:" eid ":good")))
+
+(defn good
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":good")]
+    (t/log! :info (str "answer/good, good to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (apply str (interpose "❤️ " (c/lrange key))))))
+
+(defn number-of-bads
+  [eid]
+  (c/llen (str "kp:" eid ":bad")))
+
+(defn bad
+  [{{:keys [eid]} :params :as request}]
+  (let [user (user request)
+        key (str "kp:" eid ":bad")]
+    (t/log! :info (str "answer/bad, bad to " eid " from " user))
+    (c/lpush key user)
+    (resp/response (apply str (for [_ (range (c/llen key))]
+                                "⚫️")))))
+
+;-----------------------------------------
 
 (defn answer
   [{{:keys [e]} :path-params :as request}]
@@ -147,41 +179,43 @@
 
 (defn answer!
   [{{:keys [e]} :params :as request}]
+  (t/log! :debug (str "e=" e))
   (let [tid (parse-long e)
         answer (slurp (get-in request [:params :file :tempfile]))
         sha1 (kp-sha1 answer)
         identical (identical sha1)
         user (user request)
-        avg (typing-ex/average user)
-        num (:num (db/pull tid))]
+        avg (pg/tp-average user)
+        num (:num (db/pull tid))
+        week-num (-> (db/q q-week-num tid) first)]
     (t/log! {:level :debug
              :data {:user user
                     :typing-ex avg
                     :tid tid
                     :sha1 sha1
-                    :identical identical}}
+                    :identical identical
+                    :week-num week-num}}
             "answer!")
     (try
-      (db/put! [{:db/add -1
-                 :task/id tid
-                 :author user
-                 :answer answer
-                 :sha1 sha1
-                 :updated (now)
+      (db/put! [{:db/add    -1
+                 :task/id   tid
+                 :author    user
+                 :answer    answer
+                 :sha1      sha1
+                 :updated   (now)
                  :identical identical
-                 :typing-ex avg}])
+                 :typing-ex avg
+                 :week-num  week-num}])
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
-      ; (resp/redirect (str "/answer/" e "/others"))
       (resp/response "他の人の回答も読もう。")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
-(defn- show-answer
+(defn- answer-head
   [a]
-  (t/log! :debug (str "show-answer" a))
-  [:div.my-8
+  [:div
    [:div [:span.font-bold "Author: "] (:author a)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
@@ -191,23 +225,73 @@
          (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
     [:a {:class look
-         :href (str (env :wil) "/last/" (:author a))} "look"]]
+         :href (str (env :wil) "/last/" (:author a))} "look"]]])
+
+(defn- good-button [eid]
+  [:div {:class "flex gap-2"}
+   [:form {:hx-post   "/answer-good"
+           :hx-target (str "#good-" eid)
+           :hx-swap   "innerHTML"}
+    (h/raw (anti-forgery-field))
+    [:input {:type "hidden" :name "eid" :value eid}]
+    [:button "👍 "]]
+   [:div {:id (str "good-" eid)}
+    (apply str (interpose "❤️ " (who-sent-good eid)))]])
+
+(defn- bad-button [eid]
+  [:div {:class "flex gap-2"}
+   [:form {:hx-post   "/answer-bad"
+           :hx-target (str "#bad-" eid)
+           :hx-swap   "innerHTML"}
+    (h/raw (anti-forgery-field))
+    [:input {:type "hidden" :name "eid" :value eid}]
+    [:button "👎 "]]
+   [:div {:id (str "bad-" eid)}
+    (apply str (for [_ (range (number-of-bads eid))]
+                 "⚫️"))]])
+
+(defn- qa-button [eid author week-num]
+  (t/log! :debug (str "qa-button " eid "," author "," week-num))
+  [:div
+   [:form {:class     　 "flex gap-2"
+           :hx-confirm "QAに送信しますか？"
+           :hx-post   　 "/q-a"
+           :hx-target 　 (str "#qa-" eid)
+           :hx-swap   　 "innterHTML"}
+    (h/raw (anti-forgery-field))
+    [:input {:type "hidden" :name "author" :value author}]
+    [:input {:type "hidden"
+             :name "week-num"
+             :value (str (:week week-num) "-" (:num week-num))}]
+    [:input {:class "outline grow"
+             :placeholder "質問とアドバイス、その他。"
+             :name "q"}]
+    [:button {:class btn} "to QA"]]
+   [:div {:id (str "qa-" eid)} " "]])
+
+(defn- download-button [answer]
+  [:form {:method "post" :action "/download"}
+   (h/raw (anti-forgery-field))
+   [:input {:type "hidden" :name "answer" :value answer}]
+   [:input {:type "submit" :value "downlaod⇣"}]])
+
+(defn- answer-reactions
+  [eid author week-num answer]
+  [:div
+   (good-button eid)
+   (bad-button eid)
+   (qa-button eid author week-num)
+   (download-button answer)])
+
+(defn- show-answer
+  [a]
+  (t/log! :debug (str "show-answer" a))
+  [:div.my-8
+   (answer-head a)
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
      (:answer a)]]
-   [:div {:class "flex gap-4 items-center"}
-    [:form {:method "post" :action "/download"}
-     (h/raw (anti-forgery-field))
-     [:input {:type "hidden" :name "answer" :value (:answer a)}]
-     #_[:button {:hx-post "/download" :hx-swap "none"} "download⇣"]
-     [:input {:type "submit" :value "download⇣"}]]
-    [:button
-     {:class btn-black
-      :hx-get    "/black"
-      :hx-target (str "#black" (:e a))
-      :hx-swap   "innerHTML"}
-     "black"]
-    [:div {:id (str "black" (:e a))}]]])
+   (answer-reactions (:e a) (:author a) (:week-num a) (:answer a))])
 
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]

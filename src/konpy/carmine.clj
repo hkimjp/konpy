@@ -27,6 +27,17 @@
 (defn ttl [key]
   (wcar* (car/ttl key)))
 
+(defn lpush [key element]
+  (wcar* (car/lpush key element)))
+
+(defn lrange
+  ([key] (lrange key 0 -1))
+  ([key start stop]
+   (wcar* (car/lrange key start stop))))
+
+(defn llen [key]
+  (wcar* (car/llen key)))
+
 ;-----------------------
 (defn- put-key
   [key user ttl]
