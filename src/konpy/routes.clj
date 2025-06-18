@@ -8,6 +8,7 @@
    [konpy.tasks :as tasks]
    [konpy.admin :as admin]
    [konpy.answer :as answer]
+   [konpy.pg :as pg]
    [konpy.login :refer [login-page login! logout!]]
    [konpy.middleware :as m]
    ;
@@ -37,8 +38,15 @@
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]
     ["/gc" {:post {:handler admin/gc}}]]
-   ["/download" {:post {:handler answer/download}}]
+
    ["/last-answer" {:get {:handler answer/this-weeks-last-answer}}]
+   ["/black" {:get {:handler answer/black}}]
+
+   ["/answer-good" {:post {:handler answer/good}}]
+   ["/answer-bad"  {:post {:handler answer/bad}}]
+   ["/download"    {:post {:handler answer/download}}]
+   ["/q-a"         {:post {:handler pg/q-a}}]
+
    ["/example"
     ["" {:get  {:handler example/example-page}
          :post {:handler example/example-post}}]
@@ -58,10 +66,3 @@
                  #'not-found-handler
                  {:middleware [[wrap-defaults site-defaults]]})]
     (handler request)))
-
-; (defn root-handler
-;   (reitit-ring/ring-handler
-;    (reitit-ring/router routes)
-;    not-found-handler
-;    {:middleware [[wrap-defaults site-defaults]]}))
-
