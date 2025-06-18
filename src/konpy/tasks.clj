@@ -26,9 +26,11 @@
                  (sort-by :num))]
     (page
      [:div.mx-4
+      [:p {:class "m-2 text-xl text-red-500"}
+       "関数を回答するときは関数コメント、doctest を忘れずに。"]
       (for [{:keys [e week num task]} ret]
         [:div {:class "flex my-2 gap-x-2"}
-         [:span (str week "-" num " ")]
+         [:span (str week "-" num ", ")]
          [:div {:class "flex items-end"}
           [:pre {:class ""} task]
           [:a {:class box-sky
