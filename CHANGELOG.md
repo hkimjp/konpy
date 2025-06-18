@@ -13,8 +13,12 @@
 - color self in answers and logins list.
 - check uploaded files.
 - java24 warnings.
-- deliver ⚫️ to the same (bad) answers.
+- deliver ⚫️ to the same (bad) answers at once.
 
+
+## 0.20.1-SNAPSHOT
+
+- improved looks of `/tasks`.
 
 ## 0.20.0 (2025-06-17)
 
