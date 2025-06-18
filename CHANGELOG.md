@@ -15,6 +15,9 @@
 - java24 warnings.
 - deliver ⚫️ to the same (bad) answers at once.
 
+## 0.20.2 (2025-06-18)
+
+- no effect `:accept ".py, .md"`
 
 ## 0.20.1 (2025-06-18)
 
