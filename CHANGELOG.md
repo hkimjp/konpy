@@ -16,7 +16,7 @@
 - deliver ⚫️ to the same (bad) answers at once.
 
 
-## 0.20.1-SNAPSHOT
+## 0.20.1 (2025-06-18)
 
 - improved looks of `/tasks`.
 
