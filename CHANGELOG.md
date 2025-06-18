@@ -14,10 +14,16 @@
 - check uploaded files.
 - java24 warnings.
 - deliver ⚫️ to the same (bad) answers at once.
+- padding left inside input.
+
+
+## 0.20.3
+
+- fetch problem number
 
 ## 0.20.2 (2025-06-18)
 
-- no effect `:accept ".py, .md"`
+- no effect `:accept ".py, .md"` =>
 
 ## 0.20.1 (2025-06-18)
 
