@@ -26,6 +26,9 @@
 - check uploaded files.
 - java24 warning
 
+## 0.17.2-SNAPSHOT
+
+- no effect `:accept ".py, .md"`
 
 ## 0.17.1 (2025-06-12)
 
