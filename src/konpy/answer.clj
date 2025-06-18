@@ -209,7 +209,7 @@
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
-      (resp/response "他の人の回答も読もう。")
+      (resp/response "「受講生の回答」ボタンが見えないときは再読み込みで。")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
