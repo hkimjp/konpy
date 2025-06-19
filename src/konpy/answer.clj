@@ -1,5 +1,6 @@
 (ns konpy.answer
   (:require
+   [clojure.string :as str]
    [environ.core :refer [env]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
@@ -26,24 +27,34 @@
 
 (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
-(def ^:private q-find-answers
-  '[:find ?answer ?updated ?identical ?e ?week-num
-    :keys answer updated identical e week-num
-    :in $ ?author ?tid
-    :where
-    [?e :author    ?author]
-    [?e :task/id   ?tid]
-    [?e :answer    ?answer]
-    [?e :identical ?identical]
-    [?e :updated   ?updated]
-    [?e :week-num  ?week-num]])
-
 (def ^:private q-find-author
   '[:find ?author
     :in $ ?sha1
     :where
     [?e :author ?author]
     [?e :sha1   ?sha1]])
+
+(def q-week-num
+  '[:find ?week ?num
+    :keys week num
+    :in $ ?eid
+    :where
+    [?e :week ?week]
+    [?e :num  ?num]
+    [(= ?e ?eid)]])
+
+; task/id についた回答を一網打尽に引っこ抜くのは？
+(def ^:private q-find-answers
+  '[:find ?answer ?updated ?identical ?e ?week-num
+    :keys answer updated identical e week-num
+    :in $ ?author ?tid
+    :where
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :identical ?identical]
+    [?e :updated   ?updated]
+    [?e :week-num  ?week-num]])
 
 (def ^:private q-answers-self
   '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ?week-num
@@ -70,22 +81,6 @@
     [?e :identical ?identical]
     [?e :typing-ex ?typing-ex]
     [?e :week-num  ?week-num]])
-
-(def q-week-num
-  '[:find ?week ?num
-    :keys week num
-    :in $ ?eid
-    :where
-    [?e :week ?week]
-    [?e :num  ?num]
-    [(= ?e ?eid)]])
-
-(comment
-  (let [eid 3711]
-    (-> (db/q q-week-num eid)
-        first))
-
-  :rcf)
 
 ;-------------------------
 
@@ -131,7 +126,7 @@
     (t/log! :info (str "answer/bad, bad to " eid " from " user))
     (c/lpush key user)
     (resp/response (apply str (for [_ (range (c/llen key))]
-                                "⚫️")))))
+                                "⚫️ ")))))
 
 ;-----------------------------------------
 
@@ -143,9 +138,7 @@
         last-answer (last-answer user tid)]
     ; if last-answer is nil, exception occurs.
     (t/log! {:level :debug
-             :data {:tid tid
-                    :user user
-                    :last-answer (shorten last-answer)}}
+             :data {:tid tid :user user :last-answer (shorten last-answer)}}
             "answer")
     (page
      [:div.mx-4
@@ -165,9 +158,6 @@
          :name   "file"}]
        [:button {:class btn} "回答"]]
       [:div#out ""]
-      #_(when (some? last-answer)
-          [:div "自分の最新回答。もっといい答えができたら再送しよう。"]
-          [:pre {:class te :name "answer"} (:answer last-answer)])
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}
         "自分の回答"]
@@ -248,7 +238,7 @@
     [:button "👎 "]]
    [:div {:id (str "bad-" eid)}
     (apply str (for [_ (range (number-of-bads eid))]
-                 "⚫️"))]])
+                 "⚫️ "))]])
 
 (defn- qa-button [eid author week-num]
   (t/log! :debug (str "qa-button " eid "," author "," week-num))
@@ -340,7 +330,7 @@
                (if (Character/isWhitespace c)
                  c
                  (if (zero? (rand-int 3))
-                   "⚫"
+                   "◼️"
                    c)))))
 
 (defn this-weeks-last-answer
@@ -353,13 +343,29 @@
 
 ;------------------------------------------
 
+(defn- content
+  "if str `s` is a Python code, returns `.py`, otherwise `.md`"
+  [s]
+  (let [lines (str/split-lines s)]
+    (if (some #(str/starts-with? % "```") lines)
+      ".md"
+      (cond
+        (some #(str/starts-with? % "def ") lines) ".py"
+        (some #(str/starts-with? % "for ") lines) ".py"
+        (some #(str/starts-with? % "when ") lines) ".py"
+        (some #(str/starts-with? % "if ") lines) ".py"
+        (some #(str/starts-with? % "from ") lines) ".py"
+        (some #(str/starts-with? % "import ") lines) ".py"
+        :else ".md"))))
+
 (defn download
   [{{:keys [answer]} :params :as request}]
-  (t/log! {:level :info
-           :data {:user (user request)}} "download")
-  {:status 200
-   :headers {"Content-disposition" "attachment; filename=download.py"}
-   :body answer})
+  (t/log! :info "download")
+  (let [name (str "download" (content answer))]
+    {:status 200
+     :headers {"Content-disposition" (str "attachment; filename=" name)}
+     :body answer}))
+
 ;------------------------------------------
 
 (defn black
