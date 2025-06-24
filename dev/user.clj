@@ -21,41 +21,41 @@
       (swap! c inc)
       (upsert-task! -1 week @c s))))
 
-(def kon-12
-  ["数x, y の大きい方はどっち？max2(x,y)."
+; (def kon-12
+;   ["数x, y の大きい方はどっち？max2(x,y)."
 
-   "数x, y, z の最大値はどれ？max2(x,y)をインポート、利用し、
-max3(x,y,z)を定義しなさい。"
+;    "数x, y, z の最大値はどれ？max2(x,y)をインポート、利用し、
+; max3(x,y,z)を定義しなさい。"
 
-   "数x, y, z, w の最大値は? max2(x,y)を利用し、
-max4(x,y,z,w)を定義しなさい。"
+;    "数x, y, z, w の最大値は? max3(x,y)を利用し、
+; max4(x,y,z,w)を定義しなさい。"
 
-   "max2()を利用して数のリスト xs 中の最大値を求める max_in_list(xs)."
+;    "max2()を利用して数のリスト xs 中の最大値を求める max_in_list(xs)."
 
-   "スポーツの採点は、10人の審判のつける点数のうち、
-最高点と最低点を除いた8人の平均点数とする。
-このルールに基づく point(xs) を定義しなさい。"
+;    "スポーツの採点は、10人の審判のつける点数のうち、
+; 最高点と最低点を除いた8人の平均点数とする。
+; このルールに基づく point(xs) を定義しなさい。"
 
-   "h 時 m 分 s 秒を同日 0 時 0 分 0 秒からの秒数に直して返す
-abs_seconds(h,m,s)."
+;    "h 時 m 分 s 秒を同日 0 時 0 分 0 秒からの秒数に直して返す
+; abs_seconds(h,m,s)."
 
-   "a 時 b 分 c 秒と x 時 y 分 z 秒の間の秒数を返す
-seconds_between(a,b,c,x,y,z)."
+;    "a 時 b 分 c 秒と x 時 y 分 z 秒の間の秒数を返す
+; seconds_between(a,b,c,x,y,z)."
 
-   "n 月 m 日を同年 1 月 1 日からの通算日数に直す from_jan_first(n,m)."
+;    "n 月 m 日を同年 1 月 1 日からの通算日数に直す from_jan_first(n,m)."
 
-   "from_jan_first をインポートし、a 月 b 日と c 月 d 日の間の日数を返す
-days_between(a,b,c,d)."
+;    "from_jan_first をインポートし、a 月 b 日と c 月 d 日の間の日数を返す
+; days_between(a,b,c,d)."
 
-   "小倉駅から博多駅までの普通列車停車駅の名前をリストとする
-    station_names を作れ。"
+;    "小倉駅から博多駅までの普通列車停車駅の名前をリストとする
+; station_names を作れ。"
 
-   "station_names と乗車駅、降車駅を引数にとり、
-間の駅名を返す関数 stations(names, start, end)."])
+;    "station_names と乗車駅、降車駅を引数にとり、
+; 間の駅名を返す関数 stations(names, start, end)."])
 
-(comment
-  (seeds-in 12 kon-12)
-  :rcf)
+; (comment
+;   (seeds-in 12 kon-12)
+;   :rcf)
 
 ; (def kon-11
 ;   ["整数 x を引数として、
