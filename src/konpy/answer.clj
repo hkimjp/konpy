@@ -253,7 +253,7 @@
     [:input {:type "hidden"
              :name "week-num"
              :value (str (:week week-num) "-" (:num week-num))}]
-    [:input {:class "outline grow"
+    [:input {:class "outline grow px-1"
              :placeholder "質問とアドバイス、その他。"
              :name "q"}]
     [:button {:class btn} "to QA"]]
@@ -263,7 +263,7 @@
   [:form {:method "post" :action "/download"}
    (h/raw (anti-forgery-field))
    [:input {:type "hidden" :name "answer" :value answer}]
-   [:input {:type "submit" :value "downlaod⇣"}]])
+   [:input {:type "submit" :value "download⇣" :class "underline"}]])
 
 (defn- answer-reactions
   [eid author week-num answer]

@@ -12,15 +12,22 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 - check uploaded files.
-- java24 warnings.
 - deliver ⚫️ to the same (bad) answers at once.
-- padding left inside input.
 
 
-## 0.20.4-SNAPSHOT (2025-06-23)
 
+## 0.24.0 (2025-06-29)
+
+- stopped java24 warnings.
 - added answer/content - argument `s` is a python code or a markdown?
+- no underline definition in tailwind.
 
+```
+@import 'tailwindcss';
+@source inlude("underline"); <-
+```
+- fixed typo `downlaod`.
+- padding left inside input.
 
 ## 0.20.3
 
