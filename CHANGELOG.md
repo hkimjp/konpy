@@ -1,12 +1,5 @@
 ## Unreleased
 
-- nothing returns by
-
-```
-(db/q '[:find ?e
-        :where
-        [?e :db/id 31]])
-```
 - (set! *default-data-reader-fn* tagged-literal)
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
@@ -19,13 +12,64 @@
 - read version from `pom.xml`.
 - color self in answers and logins list.
 - check uploaded files.
-- java24 warning
-- same 回答に一律⚫️.
+- deliver ⚫️ to the same (bad) answers at once.
 
-## 0.19.1-hotfix
 
-- does not hit any because of the new entry `week-num`.
+
+## 0.24.0 (2025-06-29)
+
+- stopped java24 warnings.
+- added answer/content - argument `s` is a python code or a markdown?
+- no underline definition in tailwind.
+
+```
+@import 'tailwindcss';
+@source inlude("underline"); <-
+```
+- fixed typo `downlaod`.
+- padding left inside input.
+
+## 0.20.3
+
+- fetch problem number
+
+## 0.20.2 (2025-06-18)
+
+- no effect `:accept ".py, .md"` =>
+
+## 0.20.1 (2025-06-18)
+
+- improved looks of `/tasks`.
+
+## 0.20.0 (2025-06-17)
+
+- confirmation of 'to-QA'.
+- updated sqlite-jdbc.
+
+| :file    | :name                  | :current | :latest  |
+|----------|------------------------|----------|----------|
+| deps.edn | org.xerial/sqlite-jdbc | 3.49.1.0 | 3.50.1.0 |
+
+
+## 0.19.1-hotfix (2025-06-15)
+
+- does not hit any answers because of the new entry `week-num` is not
+  found in old answers.
   resume to old version. version is `0.19.1-hotfix`.
+
+```
+(db/q '[:find ?e
+        :where
+        [?e :db/id 31]])
+```
+
+should be
+
+```
+(db/q '[:find ?e
+        :where
+        [(= ?e 31)]])
+```
 
 ## 0.19.0 (2025-06-15)
 

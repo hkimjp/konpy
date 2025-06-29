@@ -1,13 +1,13 @@
 (ns user
   (:require
-   [clj-reload.core :as reload]
-   [environ.core :refer [env]]
-   [java-time.api :as jt]
+   ; [clj-reload.core :as reload]
+   ; [environ.core :refer [env]]
+   ; [java-time.api :as jt]
    [taoensso.telemere :as t]
    [konpy.admin :refer [upsert-task!]]
-   [konpy.carmine :as c]
-   [konpy.db :as db]
-   [konpy.utils :as u]
+   ; [konpy.carmine :as c]
+   ; [konpy.db :as db]
+   ; [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
 
@@ -21,25 +21,114 @@
       (swap! c inc)
       (upsert-task! -1 week @c s))))
 
-(def seeds-10
-  ["a>0,b>0 の時、(a+b)/2 >= (a*b)*(1/2) であることを
-乱数を使って確かめよ。"
-   "a>0,b>0,c>0 の時、(a+b+c)/3 >= (a*b*c)*(1/3) は成り立つか？
-乱数を使って確かめよ。"
-   "整数nに1を加えた数を戻り値とする関数 add1(n) を例に取り、
-関数を定義し、doctest を実施、動作確認するまでの手順を
-マークダウンで書け。"
-   "関数 add1(n) とその doctest を定義し、doctest を実施せよ。"
-   "関数 times2(x,y). x と y の掛け算を返す。
-doctest 入りで関数を定義せよ。
-doctest は他の人と被らないように。以下、同じ。"
-   "div10(z). 整数 z を10で割る。整数商を返せ。"
-   "div10n(z, n). 整数 z を 10 で n　回割る。整数商を返せ。"
-   "digits(z). 整数 z の桁数はいくつか。"])
+; (def kon-12
+;   ["数x, y の大きい方はどっち？max2(x,y)."
 
-(comment
-  (seeds-in 10 seeds-10)
-  :rcf)
+;    "数x, y, z の最大値はどれ？max2(x,y)をインポート、利用し、
+; max3(x,y,z)を定義しなさい。"
+
+;    "数x, y, z, w の最大値は? max3(x,y)を利用し、
+; max4(x,y,z,w)を定義しなさい。"
+
+;    "max2()を利用して数のリスト xs 中の最大値を求める max_in_list(xs)."
+
+;    "スポーツの採点は、10人の審判のつける点数のうち、
+; 最高点と最低点を除いた8人の平均点数とする。
+; このルールに基づく point(xs) を定義しなさい。"
+
+;    "h 時 m 分 s 秒を同日 0 時 0 分 0 秒からの秒数に直して返す
+; abs_seconds(h,m,s)."
+
+;    "a 時 b 分 c 秒と x 時 y 分 z 秒の間の秒数を返す
+; seconds_between(a,b,c,x,y,z)."
+
+;    "n 月 m 日を同年 1 月 1 日からの通算日数に直す from_jan_first(n,m)."
+
+;    "from_jan_first をインポートし、a 月 b 日と c 月 d 日の間の日数を返す
+; days_between(a,b,c,d)."
+
+;    "小倉駅から博多駅までの普通列車停車駅の名前をリストとする
+; station_names を作れ。"
+
+;    "station_names と乗車駅、降車駅を引数にとり、
+; 間の駅名を返す関数 stations(names, start, end)."])
+
+; (comment
+;   (seeds-in 12 kon-12)
+;   :rcf)
+
+; (def kon-11
+;   ["整数 x を引数として、
+; x が負数であれば -1,
+; 0であれば 0, 整数であれば 1 を返す関数 sign(x) を定義しなさい。"
+
+;    "関数 f(x), g(x) が次のように定義されているとき、
+; print(f(g(4)) がどういう結果になるか、マークダウンで説明しなさい。
+
+; def f(x):
+;     return x+2
+
+; def g(x):
+;     print(x + 2)"
+
+;    "次のコードを実行した時の結果、その結果になったか説明をマークダウンで書け。
+; def is_even(n):
+;     if n % 2 == 0:
+;         return 'True'
+;     else:
+;         return 'False'
+
+; if is_even(10) == True:
+;     print('10 は偶数です。')
+; else:
+;     print('10 は奇数です。')"
+
+;    "0<r<=1 の乱数が 1000 個入ったリスト r1000 を作れ。
+; 作った r1000 が題意にそうか、どう確認したらいいか。
+; 続く3問はこの r1000を使う。"
+
+;    "リスト xs 中の全ての要素の平均を求める関数 av(xs) を定義せよ。
+; どんなテストコードを考えて実行すればいいか？
+; av(r1000) はいくらか？
+; "
+
+;    "リスト xs の先頭 n 個の要素の平均を求める関数 av_head(xs, n) を定義せよ。
+; どんなテストコードを考えて実行すればいいか？
+; av_head(r1000,100) はいくらか？"
+
+;    "リスト xs の step 番目の要素の平均を求める関数 av_step(xs, step) を定義せよ。
+; どんなテストコードを考えて実行すればいいか？
+; av_step(r1000,3)はいくらになるか？"
+
+;    "過去の授業で、コラッツ列を以前扱った。
+; コラッツ列の長さを n から始まって1にたどり着くまでのループの回数とする。
+; 正の整数 n についてコラッツ列を戻り値とする関数 collatz(n) を定義せよ。"
+
+;    "1<=n<100 の n について collatz(n) を最大とする n を求めよ。"])
+
+; (comment
+;   (seeds-in 11 kon-11)
+;   :rcf)
+
+; (def seeds-10
+;   ["a>0,b>0 の時、(a+b)/2 >= (a*b)*(1/2) であることを
+; 乱数を使って確かめよ。"
+;    "a>0,b>0,c>0 の時、(a+b+c)/3 >= (a*b*c)*(1/3) は成り立つか？
+; 乱数を使って確かめよ。"
+;    "整数nに1を加えた数を戻り値とする関数 add1(n) を例に取り、
+; 関数を定義し、doctest を実施、動作確認するまでの手順を
+; マークダウンで書け。"
+;    "関数 add1(n) とその doctest を定義し、doctest を実施せよ。"
+;    "関数 times2(x,y). x と y の掛け算を返す。
+; doctest 入りで関数を定義せよ。
+; doctest は他の人と被らないように。以下、同じ。"
+;    "div10(z). 整数 z を10で割る。整数商を返せ。"
+;    "div10n(z, n). 整数 z を 10 で n　回割る。整数商を返せ。"
+;    "digits(z). 整数 z の桁数はいくつか。"])
+
+; (comment
+;   (seeds-in 10 seeds-10)
+;   :rcf)
 
 ; (def seeds-4
 ;   ["タイピング練習を50回こなす"
