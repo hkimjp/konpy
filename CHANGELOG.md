@@ -16,7 +16,7 @@
 
 
 
-## 0.20.4-SNAPSHOT (2025-06-23)
+## 0.24.0 (2025-06-29)
 
 - stopped java24 warnings.
 - added answer/content - argument `s` is a python code or a markdown?
