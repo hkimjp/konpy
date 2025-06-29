@@ -243,11 +243,11 @@
 (defn- qa-button [eid author week-num]
   (t/log! :debug (str "qa-button " eid "," author "," week-num))
   [:div
-   [:form {:class     　 "flex gap-2"
+   [:form {:class      "flex gap-2"
            :hx-confirm "QAに送信しますか？"
-           :hx-post   　 "/q-a"
-           :hx-target 　 (str "#qa-" eid)
-           :hx-swap   　 "innterHTML"}
+           :hx-post    "/q-a"
+           :hx-target  (str "#qa-" eid)
+           :hx-swap    "innterHTML"}
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "author" :value author}]
     [:input {:type "hidden"
