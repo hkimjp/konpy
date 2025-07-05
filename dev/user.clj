@@ -21,6 +21,21 @@
       (swap! c inc)
       (upsert-task! -1 week @c s))))
 
+(def kon-13
+  ["x, y を引数とし、x+y, x-y, x*y, x//y の4つのリストを戻り値にする関数。"
+
+   "リストxs からxをひとつ削除する remove_one(xs, x)."
+   "xs に現れるxをすべて削除する remove_all(xs, x)."
+   "文字列 s 中のスペースをはぎ取った文字列を返すremove_space(s)"
+
+   "reverse()、[::-1] を使わずにそれと同等の関数rev(s)を定義しなさい。"
+   "trim_force(s)...強制的に文字列 s の先頭、末尾から1文字削る。"
+   "trim(xs)...文字列 s の先頭、末尾の連続するスペースを削る。"
+
+   "sort3(xs)...長さ3のリスト xs の要素を大きさの順に並べ替える。"
+   "sort4(xs)...長さ4のリスト xs の要素を大きさの順に並べ替える。"
+   "my_sort(xs)...任意長さの整数リストxsを並べ替える。sort(), sorted() を使わずに。"])
+
 ; (def kon-12
 ;   ["数x, y の大きい方はどっち？max2(x,y)."
 
