@@ -11,6 +11,7 @@ minify:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --minify
 
 fetch:
+  @echo redis must stop before fetch, or locally over written before long.
   scp ${DEST}:konpy/storage/db.sqlite storage/
   scp ${DEST}:konpy/log/konpy.log log/
   # brew redis is 8.*.
