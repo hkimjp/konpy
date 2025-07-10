@@ -1,19 +1,24 @@
 ## Unreleased
 
-- (set! *default-data-reader-fn* tagged-literal)
+- datascript/restore issue
+```
+(set! *default-data-reader-fn* tagged-literal)
+```
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
+- check uploaded files.
 - transducer.
 - just recipe to backup db.sqlite
 - just recipe to upload db.sqlite
-- `db.sqlite` must be `konpy.sqlite`.
-- (I) must learn htmx about hx-post, hx-swap, parameters
+- the name of `db.sqlite` must be `konpy.sqlite`.
 - name of the downloaded file.
-- read version from `pom.xml`.
+- read version info from `pom.xml`.
 - color self in answers and logins list.
-- check uploaded files.
 - deliver ⚫️ to the same (bad) answers at once.
+- results.
+- record/display to QA.
 
+## 0.25.0-SNAPSHOT
 
 
 ## 0.24.0 (2025-06-29)
