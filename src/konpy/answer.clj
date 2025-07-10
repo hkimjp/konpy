@@ -103,6 +103,13 @@
 
 ;------------------------------------------
 
+(defn- good-display [logins]
+  (apply str (mapv #(str "❤️ " %) logins)))
+
+(defn- bad-display [n]
+  (apply str (for [_ (range n)]
+               "⚫️ ")))
+
 (defn who-sent-good
   [eid]
   (c/lrange (str "kp:" eid ":good")))
@@ -113,7 +120,7 @@
         key (str "kp:" eid ":good")]
     (t/log! :info (str "answer/good, good to " eid " from " user))
     (c/lpush key user)
-    (resp/response (apply str (interpose "❤️ " (c/lrange key))))))
+    (resp/response (good-display (c/lrange key)))))
 
 (defn number-of-bads
   [eid]
@@ -125,8 +132,7 @@
         key (str "kp:" eid ":bad")]
     (t/log! :info (str "answer/bad, bad to " eid " from " user))
     (c/lpush key user)
-    (resp/response (apply str (for [_ (range (c/llen key))]
-                                "⚫️ ")))))
+    (resp/response (bad-display (c/llen key)))))
 
 ;-----------------------------------------
 
@@ -226,7 +232,7 @@
     [:input {:type "hidden" :name "eid" :value eid}]
     [:button "👍 "]]
    [:div {:id (str "good-" eid)}
-    (apply str (interpose "❤️ " (who-sent-good eid)))]])
+    (good-display (who-sent-good eid))]])
 
 (defn- bad-button [eid]
   [:div {:class "flex gap-2"}
@@ -237,8 +243,13 @@
     [:input {:type "hidden" :name "eid" :value eid}]
     [:button "👎 "]]
    [:div {:id (str "bad-" eid)}
-    (apply str (for [_ (range (number-of-bads eid))]
-                 "⚫️ "))]])
+    (bad-display (number-of-bads eid))]])
+
+(defn- qa-num [eid]
+  (let [num (c/llen (str "kp:" eid ":qa"))]
+    (if (zero? num)
+      ""
+      (str num))))
 
 (defn- qa-button [eid author week-num]
   (t/log! :debug (str "qa-button " eid "," author "," week-num))
@@ -253,11 +264,13 @@
     [:input {:type "hidden"
              :name "week-num"
              :value (str (:week week-num) "-" (:num week-num))}]
+    [:input {:type "hidden" :name "eid" :value eid}]
+    [:span {:id (str "qa-" eid)} "🤔 " (qa-num eid)]
     [:input {:class "outline grow px-1"
              :placeholder "質問とアドバイス、その他。"
              :name "q"}]
     [:button {:class btn} "to QA"]]
-   [:div {:id (str "qa-" eid)} " "]])
+   #_[:div {:id (str "qa-" eid)} " "]])
 
 (defn- download-button [answer]
   [:form {:method "post" :action "/download"}

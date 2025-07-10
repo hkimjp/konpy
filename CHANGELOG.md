@@ -18,8 +18,21 @@
 - results.
 - record/display to QA.
 
-## 0.25.0-SNAPSHOT
+## 0.25.1
 
+- display how many to-qa to this answer .
+- refactored. (response/response `map`)  ok?
+
+```
+(defn- good-display [logins]
+  (apply str (mapv #(str "❤️ " %) logins)))
+
+(defn- bad-display [n]
+  (apply str (for [_ (range n)]
+               "⚫️ ")))
+```
+
+- add warning statement to stop redis before `just fetch`.
 
 ## 0.24.0 (2025-06-29)
 
