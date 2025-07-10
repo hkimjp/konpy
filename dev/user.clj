@@ -1,13 +1,13 @@
 (ns user
   (:require
-   [clj-reload.core :as reload]
-   [environ.core :refer [env]]
-   [java-time.api :as jt]
+   ; [clj-reload.core :as reload]
+   ; [environ.core :refer [env]]
+   ; [java-time.api :as jt]
    [taoensso.telemere :as t]
    [konpy.admin :refer [upsert-task!]]
-   [konpy.carmine :as c]
-   [konpy.db :as db]
-   [konpy.utils :as u]
+   ; [konpy.carmine :as c]
+   ; [konpy.db :as db]
+   ; [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
 
@@ -15,11 +15,108 @@
 
 (system/restart-system)
 
+(comment
+  (require '[ring.util.response :as resp])
+  (resp/response "OK")
+  (resp/response [1 2])
+  (resp/response {:a 1, :b 2})
+  (-> (resp/response [1 2])
+      (resp/content-type "text/plain"))
+  :rcf)
+
 (defn seeds-in [week seeds]
   (let [c (atom 0)]
     (doseq [s seeds]
       (swap! c inc)
       (upsert-task! -1 week @c s))))
+
+; (def kon-14
+;   ["remove_last(xs, x) ... リスト xs 中、最後に現れる x を削除したリストを返す。"
+
+;    "remove_blanks(s) ... 文字列 s 中、連続するスペースをただ一つのスペースに代える。
+; ただし、行頭の連続スペースはそのまま。"
+
+;    "is_sorted(xs) ... リスト xs がソートされていたら True、そうでなければ False を返す。"
+
+;    "merge_sort(xs1,xs2) ... ソートされたリスト xs1, xs2 を一つのソート済みリストにして返す。"
+
+;    "コンピュータと対戦 100 言ったら負け（勝ち）ゲームを作ってください。"
+
+;    "トランプ 52 枚のカードのリスト。❤️1（ハートの1）から♠️K（スペードの13）まで。"
+
+;    "sample(rng, n) ... 重複要素のないリスト rng から重複なくn個の要素を選んで返す。
+; random.sample を使わずに。"
+
+;    "52枚のカードからランダムに10枚引き、数字が同じカードを捨てる。
+; 捨てたカード、残ったカードをリストで示してください。"
+
+;    "52枚のカードから無作為に5枚のカードを引いてください。
+; その手はストレートですか？を判定する関数。以下同じ。"
+
+;    "その手はフラッシュですか？"
+
+;    "その手はワンペアですか？"
+
+;    "その手はツーペアですか？"
+
+;    "その手はスリーカードですか？"
+
+;    "その手はフルハウスですか？"
+
+;    "コンピュータに一人ポーカーを繰り返し実行させ、
+; ストレートフラッシュが出るまでの時間を測ってください。
+; それは何回目でしたか？"])
+
+; (def kon-13
+;   ["x, y を引数とし、x+y, x-y, x*y, x//y の4つのリストを戻り値にする関数。"
+
+;    "リストxs からxをひとつ削除する remove_one(xs, x)."
+;    "xs に現れるxをすべて削除する remove_all(xs, x)."
+;    "文字列 s 中のスペースをはぎ取った文字列を返すremove_space(s)"
+
+;    "reverse()、[::-1] を使わずにそれと同等の関数rev(s)を定義しなさい。"
+;    "trim_force(s)...強制的に文字列 s の先頭、末尾から1文字削る。"
+;    "trim(xs)...文字列 s の先頭、末尾の連続するスペースを削る。"
+
+;    "sort3(xs)...長さ3のリスト xs の要素を大きさの順に並べ替える。"
+;    "sort4(xs)...長さ4のリスト xs の要素を大きさの順に並べ替える。"
+;    "my_sort(xs)...任意長さの整数リストxsを並べ替える。sort(), sorted() を使わずに。"])
+
+;  (def kon-12
+;   ["数x, y の大きい方はどっち？max2(x,y)."
+
+;    "数x, y, z の最大値はどれ？max2(x,y)をインポート、利用し、
+; max3(x,y,z)を定義しなさい。"
+
+;    "数x, y, z, w の最大値は? max3(x,y)を利用し、
+; max4(x,y,z,w)を定義しなさい。"
+
+;    "max2()を利用して数のリスト xs 中の最大値を求める max_in_list(xs)."
+
+;    "スポーツの採点は、10人の審判のつける点数のうち、
+; 最高点と最低点を除いた8人の平均点数とする。
+; このルールに基づく point(xs) を定義しなさい。"
+
+;    "h 時 m 分 s 秒を同日 0 時 0 分 0 秒からの秒数に直して返す
+; abs_seconds(h,m,s)."
+
+;    "a 時 b 分 c 秒と x 時 y 分 z 秒の間の秒数を返す
+; seconds_between(a,b,c,x,y,z)."
+
+;    "n 月 m 日を同年 1 月 1 日からの通算日数に直す from_jan_first(n,m)."
+
+;    "from_jan_first をインポートし、a 月 b 日と c 月 d 日の間の日数を返す
+; days_between(a,b,c,d)."
+
+;    "小倉駅から博多駅までの普通列車停車駅の名前をリストとする
+; station_names を作れ。"
+
+;    "station_names と乗車駅、降車駅を引数にとり、
+; 間の駅名を返す関数 stations(names, start, end)."])
+
+; (comment
+;   (seeds-in 12 kon-12)
+;   :rcf)
 
 ; (def kon-11
 ;   ["整数 x を引数として、
