@@ -1,5 +1,6 @@
 (ns konpy.answer
   (:require
+   [clojure.string :as str]
    [environ.core :refer [env]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
@@ -26,50 +27,12 @@
 
 (def sep ["🍄","🍅","🍋","🍏","🍇","🍒"])
 
-(def ^:private q-find-answers
-  '[:find ?answer ?updated ?identical ?e ; ?week-num
-    :keys answer updated identical e ; week-num
-    :in $ ?author ?tid
-    :where
-    [?e :author    ?author]
-    [?e :task/id   ?tid]
-    [?e :answer    ?answer]
-    [?e :identical ?identical]
-    [?e :updated   ?updated]
-    #_[?e :week-num  ?week-num]])
-
 (def ^:private q-find-author
   '[:find ?author
     :in $ ?sha1
     :where
     [?e :author ?author]
     [?e :sha1   ?sha1]])
-
-(def ^:private q-answers-self
-  '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ; ?week-num
-    :keys answer updated identical author typing-ex e ; week-num
-    :in $ ?tid ?author
-    :where
-    [?e :task/id   ?tid]
-    [?e :author    ?author]
-    [?e :answer    ?answer]
-    [?e :updated   ?updated]
-    [?e :identical ?identical]
-    [?e :typing-ex ?typing-ex]
-    #_[?e :week-num  ?week-num]])
-
-(def ^:private q-answers-others
-  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e ; ?week-num
-    :keys answer updated author identical typing-ex e ; week-num
-    :in $ ?tid
-    :where
-    [?e :task/id   ?tid]
-    [?e :author    ?author]
-    [?e :answer    ?answer]
-    [?e :updated   ?updated]
-    [?e :identical ?identical]
-    [?e :typing-ex ?typing-ex]
-    #_[?e :week-num  ?week-num]])
 
 (def q-week-num
   '[:find ?week ?num
@@ -80,12 +43,44 @@
     [?e :num  ?num]
     [(= ?e ?eid)]])
 
-(comment
-  (let [eid 3711]
-    (-> (db/q q-week-num eid)
-        first))
+; task/id についた回答を一網打尽に引っこ抜くのは？
+(def ^:private q-find-answers
+  '[:find ?answer ?updated ?identical ?e ?week-num
+    :keys answer updated identical e week-num
+    :in $ ?author ?tid
+    :where
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :identical ?identical]
+    [?e :updated   ?updated]
+    [?e :week-num  ?week-num]])
 
-  :rcf)
+(def ^:private q-answers-self
+  '[:find ?answer ?updated ?identical ?author ?typing-ex ?e ?week-num
+    :keys answer updated identical author typing-ex e week-num
+    :in $ ?tid ?author
+    :where
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :updated   ?updated]
+    [?e :identical ?identical]
+    [?e :typing-ex ?typing-ex]
+    [?e :week-num  ?week-num]])
+
+(def ^:private q-answers-others
+  '[:find ?answer ?updated ?author ?identical ?typing-ex ?e ?week-num
+    :keys answer updated author identical typing-ex e week-num
+    :in $ ?tid
+    :where
+    [?e :task/id   ?tid]
+    [?e :author    ?author]
+    [?e :answer    ?answer]
+    [?e :updated   ?updated]
+    [?e :identical ?identical]
+    [?e :typing-ex ?typing-ex]
+    [?e :week-num  ?week-num]])
 
 ;-------------------------
 
@@ -108,6 +103,13 @@
 
 ;------------------------------------------
 
+(defn- good-display [logins]
+  (apply str (mapv #(str "❤️ " %) logins)))
+
+(defn- bad-display [n]
+  (apply str (for [_ (range n)]
+               "⚫️ ")))
+
 (defn who-sent-good
   [eid]
   (c/lrange (str "kp:" eid ":good")))
@@ -118,7 +120,7 @@
         key (str "kp:" eid ":good")]
     (t/log! :info (str "answer/good, good to " eid " from " user))
     (c/lpush key user)
-    (resp/response (apply str (interpose "❤️ " (c/lrange key))))))
+    (resp/response (good-display (c/lrange key)))))
 
 (defn number-of-bads
   [eid]
@@ -130,8 +132,7 @@
         key (str "kp:" eid ":bad")]
     (t/log! :info (str "answer/bad, bad to " eid " from " user))
     (c/lpush key user)
-    (resp/response (apply str (for [_ (range (c/llen key))]
-                                "⚫️")))))
+    (resp/response (bad-display (c/llen key)))))
 
 ;-----------------------------------------
 
@@ -143,9 +144,7 @@
         last-answer (last-answer user tid)]
     ; if last-answer is nil, exception occurs.
     (t/log! {:level :debug
-             :data {:tid tid
-                    :user user
-                    :last-answer (shorten last-answer)}}
+             :data {:tid tid :user user :last-answer (shorten last-answer)}}
             "answer")
     (page
      [:div.mx-4
@@ -165,9 +164,6 @@
          :name   "file"}]
        [:button {:class btn} "回答"]]
       [:div#out ""]
-      #_(when (some? last-answer)
-          [:div "自分の最新回答。もっといい答えができたら再送しよう。"]
-          [:pre {:class te :name "answer"} (:answer last-answer)])
       [:div {:class "flex gap-4 my-2"}
        [:a {:class lime :href (str "/answer/" tid "/self")}
         "自分の回答"]
@@ -209,7 +205,7 @@
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
                     (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
-      (resp/response "他の人の回答も読もう。")
+      (resp/response "「受講生の回答」ボタンが見えないときは再読み込みで。")
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
@@ -236,7 +232,7 @@
     [:input {:type "hidden" :name "eid" :value eid}]
     [:button "👍 "]]
    [:div {:id (str "good-" eid)}
-    (apply str (interpose "❤️ " (who-sent-good eid)))]])
+    (good-display (who-sent-good eid))]])
 
 (defn- bad-button [eid]
   [:div {:class "flex gap-2"}
@@ -247,33 +243,40 @@
     [:input {:type "hidden" :name "eid" :value eid}]
     [:button "👎 "]]
    [:div {:id (str "bad-" eid)}
-    (apply str (for [_ (range (number-of-bads eid))]
-                 "⚫️"))]])
+    (bad-display (number-of-bads eid))]])
+
+(defn- qa-num [eid]
+  (let [num (c/llen (str "kp:" eid ":qa"))]
+    (if (zero? num)
+      ""
+      (str num))))
 
 (defn- qa-button [eid author week-num]
   (t/log! :debug (str "qa-button " eid "," author "," week-num))
   [:div
-   [:form {:class     　 "flex gap-2"
+   [:form {:class      "flex gap-2"
            :hx-confirm "QAに送信しますか？"
-           :hx-post   　 "/q-a"
-           :hx-target 　 (str "#qa-" eid)
-           :hx-swap   　 "innterHTML"}
+           :hx-post    "/q-a"
+           :hx-target  (str "#qa-" eid)
+           :hx-swap    "innterHTML"}
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "author" :value author}]
     [:input {:type "hidden"
              :name "week-num"
              :value (str (:week week-num) "-" (:num week-num))}]
-    [:input {:class "outline grow"
+    [:input {:type "hidden" :name "eid" :value eid}]
+    [:span {:id (str "qa-" eid)} "🤔 " (qa-num eid)]
+    [:input {:class "outline grow px-1"
              :placeholder "質問とアドバイス、その他。"
              :name "q"}]
     [:button {:class btn} "to QA"]]
-   [:div {:id (str "qa-" eid)} " "]])
+   #_[:div {:id (str "qa-" eid)} " "]])
 
 (defn- download-button [answer]
   [:form {:method "post" :action "/download"}
    (h/raw (anti-forgery-field))
    [:input {:type "hidden" :name "answer" :value answer}]
-   [:input {:type "submit" :value "downlaod⇣"}]])
+   [:input {:type "submit" :value "download⇣" :class "underline"}]])
 
 (defn- answer-reactions
   [eid author week-num answer]
@@ -340,7 +343,7 @@
                (if (Character/isWhitespace c)
                  c
                  (if (zero? (rand-int 3))
-                   "⚫"
+                   "◼️"
                    c)))))
 
 (defn this-weeks-last-answer
@@ -353,13 +356,29 @@
 
 ;------------------------------------------
 
+(defn- content
+  "if str `s` is a Python code, returns `.py`, otherwise `.md`"
+  [s]
+  (let [lines (str/split-lines s)]
+    (if (some #(str/starts-with? % "```") lines)
+      ".md"
+      (cond
+        (some #(str/starts-with? % "def ") lines) ".py"
+        (some #(str/starts-with? % "for ") lines) ".py"
+        (some #(str/starts-with? % "when ") lines) ".py"
+        (some #(str/starts-with? % "if ") lines) ".py"
+        (some #(str/starts-with? % "from ") lines) ".py"
+        (some #(str/starts-with? % "import ") lines) ".py"
+        :else ".md"))))
+
 (defn download
   [{{:keys [answer]} :params :as request}]
-  (t/log! {:level :info
-           :data {:user (user request)}} "download")
-  {:status 200
-   :headers {"Content-disposition" "attachment; filename=download.py"}
-   :body answer})
+  (t/log! :info "download")
+  (let [name (str "download" (content answer))]
+    {:status 200
+     :headers {"Content-disposition" (str "attachment; filename=" name)}
+     :body answer}))
+
 ;------------------------------------------
 
 (defn black

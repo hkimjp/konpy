@@ -1,20 +1,68 @@
 ## Unreleased
 
-- (set! *default-data-reader-fn* tagged-literal)
+- datascript/restore issue
+```
+(set! *default-data-reader-fn* tagged-literal)
+```
 - let admin can check who logined, submitted.
 - validate. how about checking :type attribute given or not.
+- check uploaded files.
 - transducer.
 - just recipe to backup db.sqlite
 - just recipe to upload db.sqlite
-- `db.sqlite` must be `konpy.sqlite`.
-- (I) must learn htmx about hx-post, hx-swap, parameters
+- the name of `db.sqlite` must be `konpy.sqlite`.
 - name of the downloaded file.
-- read version from `pom.xml`.
+- read version info from `pom.xml`.
 - color self in answers and logins list.
-- check uploaded files.
-- java24 warnings.
-- deliver ⚫️ to the same (bad) answers.
+- deliver ⚫️ to the same (bad) answers at once.
+- results.
+- record/display to QA.
 
+
+## 0.26.0 (2025-07-12)
+
+- added `goods_bads.clj`.
+
+## 0.25.1
+
+- display how many to-qa to this answer .
+- refactored. (response/response `map`)  ok?
+
+```
+(defn- good-display [logins]
+  (apply str (mapv #(str "❤️ " %) logins)))
+
+(defn- bad-display [n]
+  (apply str (for [_ (range n)]
+               "⚫️ ")))
+```
+
+- add warning statement to stop redis before `just fetch`.
+
+## 0.24.0 (2025-06-29)
+
+- stopped java24 warnings.
+- added answer/content - argument `s` is a python code or a markdown?
+- no underline definition in tailwind.
+
+```
+@import 'tailwindcss';
+@source inlude("underline"); <-
+```
+- fixed typo `downlaod`.
+- padding left inside input.
+
+## 0.20.3
+
+- fetch problem number
+
+## 0.20.2 (2025-06-18)
+
+- no effect `:accept ".py, .md"` =>
+
+## 0.20.1 (2025-06-18)
+
+- improved looks of `/tasks`.
 
 ## 0.20.0 (2025-06-17)
 
