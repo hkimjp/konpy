@@ -18,7 +18,7 @@
 
 (defn q-a
   [{{:keys [author week-num q eid]} :params :as request}]
-  (t/log! :debug (str "qa/q-a, q: " q))
+  (t/log! :info (str "qa/q-a, q: " q " by " (user request)))
   (try
     (let [sql "insert into questions
              (nick, q)
@@ -53,5 +53,5 @@
         ret (pg/execute tp-conn q {:params [user]})]
     (t/log! :debug (str "average user: " user " ret " ret))
     (-> ret
-        first)))
+      first)))
 

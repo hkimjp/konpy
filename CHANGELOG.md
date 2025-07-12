@@ -18,6 +18,17 @@
 - results.
 - record/display to QA.
 
+## 0.26.2-SNAPSHOT
+
+- forgot to log qa/q-a.
+
+```
+before:
+(t/log! :debug (str "qa/q-a, q: " q")
+
+updated:
+(t/log! :info (str "qa/q-a, q: " q " by " (user request)))
+```
 ## 0.26.1 (2025-07-12)
 
 - order of problems list
