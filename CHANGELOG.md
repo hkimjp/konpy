@@ -18,7 +18,7 @@
 - results.
 - record/display to QA.
 
-## 0.26.2-SNAPSHOT
+## 0.26.2 (2025-07-12)
 
 - forgot to log qa/q-a.
 
