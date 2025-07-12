@@ -18,6 +18,11 @@
 - results.
 - record/display to QA.
 
+
+## 0.26.0-SNAPSHOT
+
+- added `goods_bads.clj`.
+
 ## 0.25.1
 
 - display how many to-qa to this answer .
