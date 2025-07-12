@@ -18,6 +18,13 @@
 - results.
 - record/display to QA.
 
+## 0.26.1 (2025-07-12)
+
+- order of problems list
+
+```
+(sort-by (juxt (fn [x] (* -1 (:week x))) :num))
+```
 
 ## 0.26.0 (2025-07-12)
 
