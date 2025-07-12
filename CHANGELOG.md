@@ -19,7 +19,7 @@
 - record/display to QA.
 
 
-## 0.26.0-SNAPSHOT
+## 0.26.0 (2025-07-12)
 
 - added `goods_bads.clj`.
 
