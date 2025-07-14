@@ -15,7 +15,11 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
-- results.
+
+
+## 0.27. (2025-07-14)
+
+- show answered users.
 - record/display to QA.
 - list of answers
 
