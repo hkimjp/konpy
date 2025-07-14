@@ -30,6 +30,8 @@
       (swap! c inc)
       (upsert-task! -1 week @c s))))
 
+(def kon-15
+  [])
 ; (def kon-14
 ;   ["remove_last(xs, x) ... リスト xs 中、最後に現れる x を削除したリストを返す。"
 

@@ -289,7 +289,7 @@
 (defn- show-answer
   [a]
   (t/log! :debug (str "show-answer" a))
-  [:div.my-8
+  [:div.py-4
    (answer-head a)
    [:div
     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
@@ -315,6 +315,7 @@
      [:div {:class "mx-4 my-2"}
       [:div {:class "text-2xl"} "現在までの回答数(人数): "
        (count answers) " (" (-> (map :author answers) set count) ")"]
+      [:div.py-2 (interpose \space (mapv :author answers))]
       (for [a answers]
         (show-answer a))])))
 

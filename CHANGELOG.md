@@ -15,8 +15,35 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
-- results.
+
+
+## 0.27. (2025-07-14)
+
+- show answered users.
 - record/display to QA.
+
+## 0.26.2 (2025-07-12)
+
+- forgot to log qa/q-a.
+
+```
+before:
+(t/log! :debug (str "qa/q-a, q: " q")
+
+updated:
+(t/log! :info (str "qa/q-a, q: " q " by " (user request)))
+```
+## 0.26.1 (2025-07-12)
+
+- order of problems list
+
+```
+(sort-by (juxt (fn [x] (* -1 (:week x))) :num))
+```
+
+## 0.26.0 (2025-07-12)
+
+- added `goods_bads.clj`.
 
 ## 0.25.1
 
