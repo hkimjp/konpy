@@ -15,7 +15,10 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
-- results.
+
+
+## 0.27.0-SNAPSHOT
+
 - record/display to QA.
 
 ## 0.26.2 (2025-07-12)
