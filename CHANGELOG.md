@@ -17,6 +17,8 @@
 - deliver ⚫️ to the same (bad) answers at once.
 - results.
 - record/display to QA.
+- list of answers
+
 
 ## 0.26.2 (2025-07-12)
 
