@@ -17,8 +17,9 @@
 - deliver ⚫️ to the same (bad) answers at once.
 
 
-## 0.27.0-SNAPSHOT
+## 0.27. (2025-07-14)
 
+- show answered users.
 - record/display to QA.
 
 ## 0.26.2 (2025-07-12)
