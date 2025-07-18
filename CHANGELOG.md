@@ -15,12 +15,19 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
+- hx-target "#body"
+- <! DOCTYPE html>
 
+## 0.28.0 (2025-07-18)
 
-## 0.27. (2025-07-14)
+- inner links.
+
+## 0.27.0 (2025-07-14)
 
 - show answered users.
 - record/display to QA.
+- list of answers
+
 
 ## 0.26.2 (2025-07-12)
 
