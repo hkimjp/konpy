@@ -15,8 +15,17 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
-- hx-target "#body"
 - <! DOCTYPE html>
+
+## 0.28.2-SNAPSHOT (2025-07-18)
+
+- views.clj:
+```
+  [:body {:hx-boost "true"}
+```
+
+- when rendering pages, prepend "<!DOCTYPE html>" at the contents top.
+  if it is a htmx response, no "<!DOCTYPE html>" in it.
 
 ## 0.28.1 (2025-07-18)
 
