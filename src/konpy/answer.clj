@@ -209,10 +209,13 @@
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
+(defn- a-name [s]
+  [:a {:name s} s])
+
 (defn- answer-head
   [a]
   [:div
-   [:div [:span.font-bold "Author: "] (:author a)]
+   [:div [:span.font-bold "Author: "] (-> (:author a) a-name)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
    [:div [:span.font-bold "Typing: "]
@@ -306,6 +309,9 @@
       (for [a answers]
         (show-answer a))])))
 
+(defn- inner-link [s]
+  [:a.underline {:href (str "#" s)} s])
+
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-answers-others (parse-long e))
@@ -315,7 +321,7 @@
      [:div {:class "mx-4 my-2"}
       [:div {:class "text-2xl"} "現在までの回答数(人数): "
        (count answers) " (" (-> (map :author answers) set count) ")"]
-      [:div.py-2 (interpose \space (mapv :author answers))]
+      [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
       (for [a answers]
         (show-answer a))])))
 
