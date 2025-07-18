@@ -18,7 +18,7 @@
 - hx-target "#body"
 - <! DOCTYPE html>
 
-## 0.28.1-SNAPSHOT
+## 0.28.1 (2025-07-18)
 
 - missed merge? do it again `inner links`.
 
