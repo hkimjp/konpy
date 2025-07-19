@@ -37,7 +37,7 @@
 
 (defn page
   [content]
-  (-> (str (h/html (h/raw "<!DOCTYPE html" >) (base content)))
+  (-> (str (h/html (h/raw "<!DOCTYPE html>") (base content)))
       response/response
       (response/header "Content-Type" "text/html")))
 
