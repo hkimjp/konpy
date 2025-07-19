@@ -21,7 +21,7 @@
 
 - `just plus` for clojure+ socket-repl.
 - renamed `just repl` as `just nrepl`.
-- FIXME: can not download.
+- FIXME: can not download if hx-boost="true".
 
 ## 0.28.3 (2025-07-19)
 
