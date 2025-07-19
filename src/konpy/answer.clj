@@ -87,7 +87,7 @@
 (defn find-answers
   [author tid]
   (db/q q-find-answers
-    author tid))
+        author tid))
 
 (defn last-answer
   "if no answer, returns nil."
@@ -98,8 +98,8 @@
   "returns a list of author's login whose answer's sha1 is equal to `sha1`."
   [sha1]
   (->> (db/q q-find-author
-         sha1)
-    (mapv first)))
+             sha1)
+       (mapv first)))
 
 ;------------------------------------------
 
@@ -145,33 +145,33 @@
     ; if last-answer is nil, exception occurs.
     (t/log! {:level :debug
              :data {:tid tid :user user :last-answer (shorten last-answer)}}
-      "answer")
+            "answer")
     (page
-      [:div.mx-4
-       [:div [:span {:class "font-bold"} "課題: "] (:task task)]
-       [:form
-        {:hx-confirm   "自分でやれたか？"
-         :hx-encoding  "multipart/form-data"
-         :hx-post      (str "/answer/" e)
-         :hx-target    "#out"
-         :hx-swap      "outerHTML"}
-        (h/raw (anti-forgery-field))
-        [:input {:type "hidden" :name "e" :value tid}]
-        [:input
-         {:class  "outline"
-          :type   "file"
-          :accept ".py, .md"
-          :name   "file"}]
-        [:button {:class btn} "回答"]]
-       [:div#out ""]
-       [:div {:class "flex gap-4 my-2"}
-        [:a {:class lime :href (str "/answer/" tid "/self")}
-         "自分の回答"]
-        (when (some? last-answer)
-          [:a {:class lime :href (str "/answer/" tid "/others")}
-           "受講生の回答"])]
-       [:div {:class "flex gap-4 my-2"}
-        [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
+     [:div.mx-4
+      [:div [:span {:class "font-bold"} "課題: "] (:task task)]
+      [:form
+       {:hx-confirm   "自分でやれたか？"
+        :hx-encoding  "multipart/form-data"
+        :hx-post      (str "/answer/" e)
+        :hx-target    "#out"
+        :hx-swap      "outerHTML"}
+       (h/raw (anti-forgery-field))
+       [:input {:type "hidden" :name "e" :value tid}]
+       [:input
+        {:class  "outline"
+         :type   "file"
+         :accept ".py, .md"
+         :name   "file"}]
+       [:button {:class btn} "回答"]]
+      [:div#out ""]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class lime :href (str "/answer/" tid "/self")}
+        "自分の回答"]
+       (when (some? last-answer)
+         [:a {:class lime :href (str "/answer/" tid "/others")}
+          "受講生の回答"])]
+      [:div {:class "flex gap-4 my-2"}
+       [:a {:class btn :href "/tasks"} "問題に戻る"]]])))
 
 (defn answer!
   [{{:keys [e]} :params :as request}]
@@ -191,7 +191,7 @@
                     :sha1 sha1
                     :identical identical
                     :week-num week-num}}
-      "answer!")
+            "answer!")
     (try
       (db/put! [{:db/add    -1
                  :task/id   tid
@@ -203,7 +203,7 @@
                  :typing-ex avg
                  :week-num  week-num}])
       (c/put-answer (str num (get sep (mod (weeks) (count sep))) user)
-        (if (develop?) 60 (* 12 60 60)))
+                    (if (develop?) 60 (* 12 60 60)))
       (c/put-last-answer answer)
       (resp/response "「受講生の回答」ボタンが見えないときは再読み込みで。")
       (catch Exception e
@@ -220,8 +220,8 @@
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
    [:div [:span.font-bold "Typing: "]
     (str (get-in a [:typing-ex :avg] (:typing-ex a))
-      "/"
-      (get-in a [:typing-ex :count]))]
+         "/"
+         (get-in a [:typing-ex :count]))]
    [:div [:span.font-bold "WIL: "]
     [:a {:class look
          :href (str (env :wil) "/last/" (:author a))} "look"]]])
@@ -276,7 +276,7 @@
    #_[:div {:id (str "qa-" eid)} " "]])
 
 (defn- download-button [answer]
-  [:form {:method "post" :action "/download"}
+  [:form {:method "post" :action "/download" :hx-boost "false"}
    (h/raw (anti-forgery-field))
    [:input {:type "hidden" :name "answer" :value answer}]
    [:input {:type "submit" :value "download⇣" :class "underline"}]])
@@ -302,12 +302,12 @@
 (defn answers-self
   [{{:keys [e]} :path-params :as request}]
   (let [answers (->> (db/q q-answers-self (parse-long e) (user request))
-                  (sort-by :updated)
-                  reverse)]
+                     (sort-by :updated)
+                     reverse)]
     (page
-      [:div {:class "mx-4"}
-       (for [a answers]
-         (show-answer a))])))
+     [:div {:class "mx-4"}
+      (for [a answers]
+        (show-answer a))])))
 
 (defn- inner-link [s]
   [:a.underline {:href (str "#" s)} s])
@@ -315,15 +315,15 @@
 (defn answers-others
   [{{:keys [e]} :path-params}]
   (let [answers (->> (db/q q-answers-others (parse-long e))
-                  (sort-by :updated)
-                  reverse)]
+                     (sort-by :updated)
+                     reverse)]
     (page
-      [:div {:class "mx-4 my-2"}
-       [:div {:class "text-2xl"} "現在までの回答数(人数): "
-        (count answers) " (" (-> (map :author answers) set count) ")"]
-       [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
-       (for [a answers]
-         (show-answer a))])))
+     [:div {:class "mx-4 my-2"}
+      [:div {:class "text-2xl"} "現在までの回答数(人数): "
+       (count answers) " (" (-> (map :author answers) set count) ")"]
+      [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
+      (for [a answers]
+        (show-answer a))])))
 
 ;------------------------------------------
 
@@ -332,18 +332,18 @@
   (let [[fst & rst] (c/get-logins)]
     ; (t/log! :debug logins)
     (render
-      [:div#logins fst "(" (c/logined-time fst) "), "
-       (apply str (interpose ", " rst))])))
+     [:div#logins fst "(" (c/logined-time fst) "), "
+      (apply str (interpose ", " rst))])))
 
 (defn recent-answers
   [_]
   (let [[fst & rst] (c/get-answers)]
     ; (t/log! :debug answers)
     (render
-      [:div#answers
-       [:a {:class la :href "/last-answer"}
-        (str fst "(" (c/answered-time fst) "), ")]
-       (apply str (interpose ", " rst))])))
+     [:div#answers
+      [:a {:class la :href "/last-answer"}
+       (str fst "(" (c/answered-time fst) "), ")]
+      (apply str (interpose ", " rst))])))
 
 (defn- hide-chars [s]
   (apply str (for [c s]
@@ -356,10 +356,10 @@
 (defn this-weeks-last-answer
   [_]
   (page
-    [:div {:class "mx-4"}
-     [:div {:class "text-2xl"} "Last Answer:"]
-     [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
-      (-> (c/get-last-answer) hide-chars)]]))
+   [:div {:class "mx-4"}
+    [:div {:class "text-2xl"} "Last Answer:"]
+    [:pre {:class "my-2 p-2 text-md font-mono grow outline outline-black"}
+     (-> (c/get-last-answer) hide-chars)]]))
 
 ;------------------------------------------
 
@@ -396,8 +396,8 @@
         user-key (str "kp:black:" user)]
     (if (c/get user-key)
       (-> (resp/response (str user " (you) is black listed."))
-        (resp/header "Content-Type" "text/html"))
+          (resp/header "Content-Type" "text/html"))
       (do
         (c/setex user-key 300 "black")
         (-> (resp/response "black listed!")
-          (resp/header "Content-Type" "text/html"))))))
+            (resp/header "Content-Type" "text/html"))))))
