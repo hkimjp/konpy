@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.hkimjp</groupId>
   <artifactId>konpy</artifactId>
-  <version>0.28.3</version>
+<version>0.28.4</version>
   <name>hkimjp/konpy</name>
   <description>This week's python assignments.</description>
   <url>https://github.com/hkimjp/konpy</url>
@@ -22,13 +22,13 @@
     <url>https://github.com/hkimjp/konpy</url>
     <connection>scm:git:git://github.com/hkimjp/konpy.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hkimjp/konpy.git</developerConnection>
-    <tag>0.28.3</tag>
+<tag>v0.28.4</tag>
   </scm>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>1.12.1</version>
+<version>0.28.4</version>
     </dependency>
   </dependencies>
   <build>

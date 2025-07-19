@@ -17,6 +17,15 @@
 - deliver ⚫️ to the same (bad) answers at once.
 
 
+## 0.28.4 (2025-07-19)
+
+- `just plus` for clojure+ socket-repl.
+- renamed `just repl` as `just nrepl`.
+- FIXED: can not download if hx-boost="true".
+```
+  [:form {:method "post" :action "/download" :hx-boost "false"}
+```
+
 ## 0.28.3 (2025-07-19)
 
 - fixed typo "<!DOCTYPE html>"
