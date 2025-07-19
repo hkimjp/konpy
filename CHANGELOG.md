@@ -17,7 +17,7 @@
 - deliver ⚫️ to the same (bad) answers at once.
 
 
-## 0.28.4-SNAPSHOT
+## 0.28.4-SNAPSHOT (2025-07-19)
 
 - `just plus` for clojure+ socket-repl.
 - renamed `just repl` as `just nrepl`.
