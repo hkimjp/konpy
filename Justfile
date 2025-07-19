@@ -19,7 +19,6 @@ fetch:
   # if use orbstack redis@7, choose here.
   scp ${DEST}:/var/lib/redis/dump.rdb ~/docker/redis@7/data/
 
-
 # socket-repl
 plus:
   clj -A:jvm-base -X:dev clojure+.core.server/start-server
