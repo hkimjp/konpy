@@ -17,6 +17,12 @@
 - deliver ⚫️ to the same (bad) answers at once.
 
 
+## 0.28.4-SNAPSHOT
+
+- `just plus` for clojure+ socket-repl.
+- renamed `just repl` as `just nrepl`.
+- FIXME: can not download.
+
 ## 0.28.3 (2025-07-19)
 
 - fixed typo "<!DOCTYPE html>"
