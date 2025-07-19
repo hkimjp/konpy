@@ -276,7 +276,7 @@
    #_[:div {:id (str "qa-" eid)} " "]])
 
 (defn- download-button [answer]
-  [:form {:method "post" :action "/download"}
+  [:form {:method "post" :action "/download" :hx-boost "false"}
    (h/raw (anti-forgery-field))
    [:input {:type "hidden" :name "answer" :value answer}]
    [:input {:type "submit" :value "download⇣" :class "underline"}]])
@@ -378,10 +378,11 @@
         (some #(str/starts-with? % "import ") lines) ".py"
         :else ".md"))))
 
+;; [:body {:hx-boost "true"}]
 (defn download
   [{{:keys [answer]} :params :as request}]
-  (t/log! :info "download")
   (let [name (str "download" (content answer))]
+    (t/log! :info (str "download as " name))
     {:status 200
      :headers {"Content-disposition" (str "attachment; filename=" name)}
      :body answer}))
