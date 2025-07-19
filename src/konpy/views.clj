@@ -2,7 +2,7 @@
   (:require [hiccup2.core :as h]
             [ring.util.response :as response]))
 
-(def ^:private version "0.28.0")
+(def ^:private version "0.28.3")
 
 (defn base
   [content]
@@ -15,7 +15,7 @@
             :rel  "stylesheet"
             :href "/assets/css/output.css"}]
     [:title "kp"]]
-   [:body#body
+   [:body {:hx-boost "true"}
     [:div {:class "mx-auto"}
      [:div {:class "font-meduim text-4xl text-white bg-sky-700"}
       [:a {:href "/tasks"} "今週の Python"]]
@@ -37,9 +37,9 @@
 
 (defn page
   [content]
-  (-> content
-      base
-      render))
+  (-> (str (h/html (h/raw "<!DOCTYPE html>") (base content)))
+      response/response
+      (response/header "Content-Type" "text/html")))
 
 (defn under-construction-page [_]
   (page
