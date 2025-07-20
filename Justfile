@@ -21,7 +21,7 @@ fetch:
 
 # socket-repl
 plus:
-  clj -X clojure+.core.server/start-server
+  clj -X:dev clojure+.core.server/start-server
 
 nrepl:
   clojure -M:dev -m nrepl.cmdline
