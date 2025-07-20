@@ -16,6 +16,10 @@
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
 
+## 0.29-SNAPSHOT
+
+- without redis, konpy stacks?
+- comtainer. want to use clljure+ socket repl.
 
 ## 0.28.4 (2025-07-19)
 
