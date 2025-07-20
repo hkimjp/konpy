@@ -26,6 +26,7 @@ plus:
 nrepl:
   clojure -A:jvm-base -M:dev -m nrepl.cmdline
 
+# under construction
 container-repl:
   # clojure -X:dev clojure+.core.server/start-server
   docker compose up
