@@ -26,8 +26,9 @@ plus:
 nrepl:
   clojure -A:jvm-base -M:dev -m nrepl.cmdline
 
-container-nrepl:
-  clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
+container-repl:
+  # clojure -X:dev clojure+.core.server/start-server
+  docker compose up
 
 run:
   clojure -M:run-m
