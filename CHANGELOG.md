@@ -15,6 +15,8 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
+- /tasks/:n
+
 
 ## 0.29-SNAPSHOT
 
