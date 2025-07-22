@@ -16,12 +16,13 @@
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
 - /tasks/:n
-
-
-## 0.29-SNAPSHOT
-
 - without redis, konpy stacks?
-- comtainer. want to use clljure+ socket repl.
+
+
+## 0.29.0-SNAPSHOT (2025-07-22)
+
+- disable sending good bad by submit event by replacing `buttun`s with `divs`.
+- `just plus` - invoke clojure+ socket repl.
 
 ## 0.28.4 (2025-07-19)
 

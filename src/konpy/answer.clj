@@ -228,23 +228,24 @@
 
 (defn- good-button [eid]
   [:div {:class "flex gap-2"}
-   [:form {:hx-post   "/answer-good"
-           :hx-target (str "#good-" eid)
-           :hx-swap   "innerHTML"}
+   [:form
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "eid" :value eid}]
-    [:button "👍 "]]
+    [:div {:hx-post   "/answer-good"
+           :hx-target (str "#good-" eid)
+           :hx-swap   "innerHTML"} "❤️ "]]
    [:div {:id (str "good-" eid)}
     (good-display (who-sent-good eid))]])
 
 (defn- bad-button [eid]
   [:div {:class "flex gap-2"}
-   [:form {:hx-post   "/answer-bad"
-           :hx-target (str "#bad-" eid)
-           :hx-swap   "innerHTML"}
+   [:form
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "eid" :value eid}]
-    [:button "👎 "]]
+    [:div {:hx-post   "/answer-bad"
+           :hx-trigger "click"
+           :hx-target (str "#bad-" eid)
+           :hx-swap   "innerHTML"} "⚫️ "]]
    [:div {:id (str "bad-" eid)}
     (bad-display (number-of-bads eid))]])
 
