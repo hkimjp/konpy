@@ -19,8 +19,15 @@
 - without redis, konpy stacks?
 
 
-## 0.29.0-SNAPSHOT (2025-07-22)
+## 0.30.0 (2025-08-03)
 
+- log "who downloaded week-num author".
+- pass week-num and author to download-button.
+
+## 0.29.0 (2025-08-03)
+
+- display week-num in /answer/<eid>/others
+- answer/week-num
 - disable sending good bad by submit event by replacing `buttun`s with `divs`.
 - `just plus` - invoke clojure+ socket repl.
 

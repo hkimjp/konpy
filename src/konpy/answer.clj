@@ -276,9 +276,12 @@
     [:button {:class btn} "to QA"]]
    #_[:div {:id (str "qa-" eid)} " "]])
 
-(defn- download-button [answer]
+;; [:body {:hx-boost "true"}]
+(defn- download-button [author week-num answer]
   [:form {:method "post" :action "/download" :hx-boost "false"}
    (h/raw (anti-forgery-field))
+   [:input {:type "hidden" :name "author" :value author}]
+   [:input {:type "hidden" :name "week-num" :value week-num}]
    [:input {:type "hidden" :name "answer" :value answer}]
    [:input {:type "submit" :value "download⇣" :class "underline"}]])
 
@@ -288,7 +291,7 @@
    (good-button eid)
    (bad-button eid)
    (qa-button eid author week-num)
-   (download-button answer)])
+   (download-button author week-num answer)])
 
 (defn- show-answer
   [a]
@@ -313,14 +316,28 @@
 (defn- inner-link [s]
   [:a.underline {:href (str "#" s)} s])
 
+(defn- week-num [eid]
+  (-> (db/q '[:find ?week ?num
+              :keys week num
+              :in $ ?eid
+              :where
+              [?e :week ?week]
+              [?e :num ?num]
+              [(= ?e ?eid)]] eid)
+      first))
+
+; (week-num 7745)
+
 (defn answers-others
   [{{:keys [e]} :path-params}]
-  (let [answers (->> (db/q q-answers-others (parse-long e))
+  (let [eid (parse-long e)
+        answers (->> (db/q q-answers-others eid)
                      (sort-by :updated)
-                     reverse)]
+                     reverse)
+        {:keys [week num]} (week-num eid)]
     (page
      [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl"} "現在までの回答数(人数): "
+      [:div {:class "text-2xl"} (str week "-" num " 現在までの回答数(人数): ")
        (count answers) " (" (-> (map :author answers) set count) ")"]
       [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
       (for [a answers]
@@ -381,9 +398,11 @@
 
 ;; [:body {:hx-boost "true"}]
 (defn download
-  [{{:keys [answer]} :params :as request}]
-  (let [name (str "download" (content answer))]
-    (t/log! :info (str "download as " name))
+  [{{:keys [author week-num answer]} :params :as request}]
+  (let [name (str "download" (content answer))
+        week (last (re-find #"week:(\d+)" week-num))
+        num  (last (re-find #"num:(\d+)" week-num))]
+    (t/log! :info (str (user request) " downloaded "  week "-" num " " author))
     {:status 200
      :headers {"Content-disposition" (str "attachment; filename=" name)}
      :body answer}))
