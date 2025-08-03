@@ -21,13 +21,15 @@ fetch:
 
 # socket-repl
 plus:
-  clj -X clojure+.core.server/start-server
+  clj -A:jvm-base -X:dev clojure+.core.server/start-server
 
 nrepl:
-  clojure -M:dev -m nrepl.cmdline
+  clojure -A:jvm-base -M:dev -m nrepl.cmdline
 
+# under construction
 container-repl:
-  clojure -M:dev -m nrepl.cmdline -b 0.0.0.0 -p 7777
+  # clojure -X:dev clojure+.core.server/start-server
+  docker compose up
 
 run:
   clojure -M:run-m

@@ -16,6 +16,17 @@
 (system/restart-system)
 
 (comment
+  (db/pull 7745)
+  (db/q '[:find ?week ?num
+          :in ?eid
+          :where
+          [?e :week ?week]
+          [?e :num  ?num]
+          [(= ?e ?eid)]]
+        7745)
+  :rcf)
+
+(comment
   (require '[ring.util.response :as resp])
   (resp/response "OK")
   (resp/response [1 2])

@@ -228,23 +228,24 @@
 
 (defn- good-button [eid]
   [:div {:class "flex gap-2"}
-   [:form {:hx-post   "/answer-good"
-           :hx-target (str "#good-" eid)
-           :hx-swap   "innerHTML"}
+   [:form
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "eid" :value eid}]
-    [:button "👍 "]]
+    [:div {:hx-post   "/answer-good"
+           :hx-target (str "#good-" eid)
+           :hx-swap   "innerHTML"} "❤️ "]]
    [:div {:id (str "good-" eid)}
     (good-display (who-sent-good eid))]])
 
 (defn- bad-button [eid]
   [:div {:class "flex gap-2"}
-   [:form {:hx-post   "/answer-bad"
-           :hx-target (str "#bad-" eid)
-           :hx-swap   "innerHTML"}
+   [:form
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "eid" :value eid}]
-    [:button "👎 "]]
+    [:div {:hx-post   "/answer-bad"
+           :hx-trigger "click"
+           :hx-target (str "#bad-" eid)
+           :hx-swap   "innerHTML"} "⚫️ "]]
    [:div {:id (str "bad-" eid)}
     (bad-display (number-of-bads eid))]])
 
@@ -312,14 +313,28 @@
 (defn- inner-link [s]
   [:a.underline {:href (str "#" s)} s])
 
+(defn- week-num [eid]
+  (-> (db/q '[:find ?week ?num
+              :keys week num
+              :in $ ?eid
+              :where
+              [?e :week ?week]
+              [?e :num ?num]
+              [(= ?e ?eid)]] eid)
+      first))
+
+; (week-num 7745)
+
 (defn answers-others
   [{{:keys [e]} :path-params}]
-  (let [answers (->> (db/q q-answers-others (parse-long e))
+  (let [eid (parse-long e)
+        answers (->> (db/q q-answers-others eid)
                      (sort-by :updated)
-                     reverse)]
+                     reverse)
+        {:keys [week num]} (week-num eid)]
     (page
      [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl"} "現在までの回答数(人数): "
+      [:div {:class "text-2xl"} (str week "-" num " 現在までの回答数(人数): ")
        (count answers) " (" (-> (map :author answers) set count) ")"]
       [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
       (for [a answers]

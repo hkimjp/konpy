@@ -15,7 +15,17 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
+- /tasks/:n
+- without redis, konpy stacks?
+- who downloaded what?
 
+
+## 0.29.0 (2025-08-03)
+
+- display week-num in /answer/<eid>/others
+- answer/week-num
+- disable sending good bad by submit event by replacing `buttun`s with `divs`.
+- `just plus` - invoke clojure+ socket repl.
 
 ## 0.28.4 (2025-07-19)
 
