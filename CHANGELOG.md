@@ -20,7 +20,7 @@
 - who downloaded what?
 
 
-## 0.29.0-SNAPSHOT (2025-07-22)
+## 0.29.0 (2025-08-03)
 
 - display week-num in /answer/<eid>/others
 - answer/week-num
