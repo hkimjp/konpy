@@ -276,9 +276,12 @@
     [:button {:class btn} "to QA"]]
    #_[:div {:id (str "qa-" eid)} " "]])
 
-(defn- download-button [answer]
+;; [:body {:hx-boost "true"}]
+(defn- download-button [author week-num answer]
   [:form {:method "post" :action "/download" :hx-boost "false"}
    (h/raw (anti-forgery-field))
+   [:input {:type "hidden" :name "author" :value author}]
+   [:input {:type "hidden" :name "week-num" :value week-num}]
    [:input {:type "hidden" :name "answer" :value answer}]
    [:input {:type "submit" :value "download⇣" :class "underline"}]])
 
@@ -288,7 +291,7 @@
    (good-button eid)
    (bad-button eid)
    (qa-button eid author week-num)
-   (download-button answer)])
+   (download-button author week-num answer)])
 
 (defn- show-answer
   [a]
@@ -395,9 +398,11 @@
 
 ;; [:body {:hx-boost "true"}]
 (defn download
-  [{{:keys [answer]} :params :as request}]
-  (let [name (str "download" (content answer))]
-    (t/log! :info (str "download as " name))
+  [{{:keys [author week-num answer]} :params :as request}]
+  (let [name (str "download" (content answer))
+        week (last (re-find #"week:(\d+)" week-num))
+        num  (last (re-find #"num:(\d+)" week-num))]
+    (t/log! :info (str (user request) " downloaded "  week "-" num " " author))
     {:status 200
      :headers {"Content-disposition" (str "attachment; filename=" name)}
      :body answer}))
