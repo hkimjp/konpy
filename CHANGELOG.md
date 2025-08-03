@@ -17,8 +17,12 @@
 - deliver ⚫️ to the same (bad) answers at once.
 - /tasks/:n
 - without redis, konpy stacks?
-- who downloaded what?
 
+
+## 0.30.0 (2025-08-03)
+
+- log "who downloaded week-num author".
+- pass week-num and author to download-button.
 
 ## 0.29.0 (2025-08-03)
 
