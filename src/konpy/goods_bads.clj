@@ -20,3 +20,6 @@
   (pprint
    (reverse (sort-by (fn [x] (second x)) (who-sent-how-many "bad"))))
   :rcf)
+
+; (reverse (sort-by (fn [x] (second x)) (who-sent-how-many "good")))
+; (reverse (sort-by (fn [x] (second x)) (who-sent-how-many "bad")))
