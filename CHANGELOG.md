@@ -19,7 +19,7 @@
 - without redis, konpy stacks?
 
 
-## 0.30.0-SNAPSHOT
+## 0.30.0 (2025-08-03)
 
 - log "who downloaded week-num author".
 - pass week-num and author to download-button.
