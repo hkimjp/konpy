@@ -17,10 +17,13 @@
 - deliver ⚫️ to the same (bad) answers at once.
 - /tasks/:n
 - without redis, konpy stacks?
+- who downloaded what?
 
 
 ## 0.29.0-SNAPSHOT (2025-07-22)
 
+- display week-num in /answer/<eid>/others
+- answer/week-num
 - disable sending good bad by submit event by replacing `buttun`s with `divs`.
 - `just plus` - invoke clojure+ socket repl.
 
