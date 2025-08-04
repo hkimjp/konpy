@@ -17,7 +17,12 @@
 - deliver ⚫️ to the same (bad) answers at once.
 - /tasks/:n
 - without redis, konpy stacks?
+- warn if not connect to redis.
 
+## 0.30.1-SNAPSHOT
+
+- post params.
+- dowload as `17-1-jo_07-18.py`
 
 ## 0.30.0 (2025-08-03)
 

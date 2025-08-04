@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as str]
    [environ.core :refer [env]]
+   ; [fast-edn.core :refer [read-string]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
@@ -277,16 +278,21 @@
    #_[:div {:id (str "qa-" eid)} " "]])
 
 ;; [:body {:hx-boost "true"}]
+;; needs `:hx-boost "false"` here
 (defn- download-button [author week-num answer]
   [:form {:method "post" :action "/download" :hx-boost "false"}
    (h/raw (anti-forgery-field))
-   [:input {:type "hidden" :name "author" :value author}]
-   [:input {:type "hidden" :name "week-num" :value week-num}]
-   [:input {:type "hidden" :name "answer" :value answer}]
+   [:input {:type "hidden" :name "author"   :value author}]
+   [:input {:type "hidden" :name "week-num"
+            :value (str (:week week-num) "-" (:num week-num))}]
+   [:input {:type "hidden" :name "answer"   :value answer}]
    [:input {:type "submit" :value "download⇣" :class "underline"}]])
+
+;;(pr-str {:week 1, :num 2})
 
 (defn- answer-reactions
   [eid author week-num answer]
+  ; (t/log! :debug (str "week-num" week-num))
   [:div
    (good-button eid)
    (bad-button eid)
@@ -399,14 +405,19 @@
 ;; [:body {:hx-boost "true"}]
 (defn download
   [{{:keys [author week-num answer]} :params :as request}]
-  (let [name (str "download" (content answer))
-        week (last (re-find #"week:(\d+)" week-num))
-        num  (last (re-find #"num:(\d+)" week-num))]
-    (t/log! :info (str (user request) " downloaded "  week "-" num " " author))
+  (let [filename (str week-num "_" author (content answer))]
+    (t/log! :info (str (user request) " downloaded " filename))
     {:status 200
-     :headers {"Content-disposition" (str "attachment; filename=" name)}
+     :headers {"Content-disposition" (str "attachment; filename=" filename)}
      :body answer}))
 
+(comment
+  (let [week-num "{:week 1, :num 2}"
+        map (read-string week-num)
+        {:keys [week num]} map]
+    (println week-num map  week num))
+
+  :rcf)
 ;------------------------------------------
 
 (defn black
