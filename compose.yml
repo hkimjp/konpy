@@ -1,0 +1,18 @@
+services:
+  clojure:
+    image: clojure:latest
+    volumes:
+      - .:/usr/src/app
+      - m2:/root/.m2
+      - gitlibs:/root/.gitlibs
+    working_dir: /usr/src/app
+    ports:
+      - 7777:7777
+      - 3000:3000
+    entrypoint: ["clojure", "-X:socket-repl"]
+
+volumes:
+  m2:
+    external: true
+  gitlibs:
+    external: true

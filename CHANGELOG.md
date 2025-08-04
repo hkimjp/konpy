@@ -15,12 +15,64 @@
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
+- /tasks/:n
+- without redis, konpy stacks?
+- warn if not connect to redis.
 
+## 0.31.0 (2025-08-04)
 
-## 0.27. (2025-07-14)
+- post params.
+- dowload as `17-1-jo_07-18.py`
+
+## 0.30.0 (2025-08-03)
+
+- log "who downloaded week-num author".
+- pass week-num and author to download-button.
+
+## 0.29.0 (2025-08-03)
+
+- display week-num in /answer/<eid>/others
+- answer/week-num
+- disable sending good bad by submit event by replacing `buttun`s with `divs`.
+- `just plus` - invoke clojure+ socket repl.
+
+## 0.28.4 (2025-07-19)
+
+- `just plus` for clojure+ socket-repl.
+- renamed `just repl` as `just nrepl`.
+- FIXED: can not download if hx-boost="true".
+```
+  [:form {:method "post" :action "/download" :hx-boost "false"}
+```
+
+## 0.28.3 (2025-07-19)
+
+- fixed typo "<!DOCTYPE html>"
+
+## 0.28.2 (2025-07-18)
+
+- views.clj:
+```
+  [:body {:hx-boost "true"}
+```
+
+- when rendering pages, prepend "<!DOCTYPE html>" at the contents top.
+  if it is a htmx response, no "<!DOCTYPE html>" in it.
+
+## 0.28.1 (2025-07-18)
+
+- missed merge? do it again `inner links`.
+
+## 0.28.0 (2025-07-18)
+
+- inner links.
+
+## 0.27.0 (2025-07-14)
 
 - show answered users.
 - record/display to QA.
+- list of answers
+
 
 ## 0.26.2 (2025-07-12)
 

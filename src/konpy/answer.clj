@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as str]
    [environ.core :refer [env]]
+   ; [fast-edn.core :refer [read-string]]
    [hiccup2.core :as h]
    [ring.util.anti-forgery :refer [anti-forgery-field]]
    [ring.util.response :as resp]
@@ -209,10 +210,13 @@
       (catch Exception e
         (t/log! :error (.getMessage e))))))
 
+(defn- a-name [s]
+  [:a {:name s} s])
+
 (defn- answer-head
   [a]
   [:div
-   [:div [:span.font-bold "Author: "] (:author a)]
+   [:div [:span.font-bold "Author: "] (-> (:author a) a-name)]
    [:div [:span.font-bold "Date: "] (str (:updated a))]
    [:div [:span.font-bold "Same: "] (print-str (:identical a))]
    [:div [:span.font-bold "Typing: "]
@@ -225,23 +229,24 @@
 
 (defn- good-button [eid]
   [:div {:class "flex gap-2"}
-   [:form {:hx-post   "/answer-good"
-           :hx-target (str "#good-" eid)
-           :hx-swap   "innerHTML"}
+   [:form
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "eid" :value eid}]
-    [:button "👍 "]]
+    [:div {:hx-post   "/answer-good"
+           :hx-target (str "#good-" eid)
+           :hx-swap   "innerHTML"} "❤️ "]]
    [:div {:id (str "good-" eid)}
     (good-display (who-sent-good eid))]])
 
 (defn- bad-button [eid]
   [:div {:class "flex gap-2"}
-   [:form {:hx-post   "/answer-bad"
-           :hx-target (str "#bad-" eid)
-           :hx-swap   "innerHTML"}
+   [:form
     (h/raw (anti-forgery-field))
     [:input {:type "hidden" :name "eid" :value eid}]
-    [:button "👎 "]]
+    [:div {:hx-post   "/answer-bad"
+           :hx-trigger "click"
+           :hx-target (str "#bad-" eid)
+           :hx-swap   "innerHTML"} "⚫️ "]]
    [:div {:id (str "bad-" eid)}
     (bad-display (number-of-bads eid))]])
 
@@ -272,19 +277,27 @@
     [:button {:class btn} "to QA"]]
    #_[:div {:id (str "qa-" eid)} " "]])
 
-(defn- download-button [answer]
-  [:form {:method "post" :action "/download"}
+;; [:body {:hx-boost "true"}]
+;; needs `:hx-boost "false"` here
+(defn- download-button [author week-num answer]
+  [:form {:method "post" :action "/download" :hx-boost "false"}
    (h/raw (anti-forgery-field))
-   [:input {:type "hidden" :name "answer" :value answer}]
+   [:input {:type "hidden" :name "author"   :value author}]
+   [:input {:type "hidden" :name "week-num"
+            :value (str (:week week-num) "-" (:num week-num))}]
+   [:input {:type "hidden" :name "answer"   :value answer}]
    [:input {:type "submit" :value "download⇣" :class "underline"}]])
+
+;;(pr-str {:week 1, :num 2})
 
 (defn- answer-reactions
   [eid author week-num answer]
+  ; (t/log! :debug (str "week-num" week-num))
   [:div
    (good-button eid)
    (bad-button eid)
    (qa-button eid author week-num)
-   (download-button answer)])
+   (download-button author week-num answer)])
 
 (defn- show-answer
   [a]
@@ -306,16 +319,33 @@
       (for [a answers]
         (show-answer a))])))
 
+(defn- inner-link [s]
+  [:a.underline {:href (str "#" s)} s])
+
+(defn- week-num [eid]
+  (-> (db/q '[:find ?week ?num
+              :keys week num
+              :in $ ?eid
+              :where
+              [?e :week ?week]
+              [?e :num ?num]
+              [(= ?e ?eid)]] eid)
+      first))
+
+; (week-num 7745)
+
 (defn answers-others
   [{{:keys [e]} :path-params}]
-  (let [answers (->> (db/q q-answers-others (parse-long e))
+  (let [eid (parse-long e)
+        answers (->> (db/q q-answers-others eid)
                      (sort-by :updated)
-                     reverse)]
+                     reverse)
+        {:keys [week num]} (week-num eid)]
     (page
      [:div {:class "mx-4 my-2"}
-      [:div {:class "text-2xl"} "現在までの回答数(人数): "
+      [:div {:class "text-2xl"} (str week "-" num " 現在までの回答数(人数): ")
        (count answers) " (" (-> (map :author answers) set count) ")"]
-      [:div.py-2 (interpose \space (mapv :author answers))]
+      [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
       (for [a answers]
         (show-answer a))])))
 
@@ -372,14 +402,22 @@
         (some #(str/starts-with? % "import ") lines) ".py"
         :else ".md"))))
 
+;; [:body {:hx-boost "true"}]
 (defn download
-  [{{:keys [answer]} :params :as request}]
-  (t/log! :info "download")
-  (let [name (str "download" (content answer))]
+  [{{:keys [author week-num answer]} :params :as request}]
+  (let [filename (str week-num "_" author (content answer))]
+    (t/log! :info (str (user request) " downloaded " filename))
     {:status 200
-     :headers {"Content-disposition" (str "attachment; filename=" name)}
+     :headers {"Content-disposition" (str "attachment; filename=" filename)}
      :body answer}))
 
+(comment
+  (let [week-num "{:week 1, :num 2}"
+        map (read-string week-num)
+        {:keys [week num]} map]
+    (println week-num map  week num))
+
+  :rcf)
 ;------------------------------------------
 
 (defn black
