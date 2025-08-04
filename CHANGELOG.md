@@ -19,7 +19,7 @@
 - renamed `system/start-db` to `system/start-datascript`,
   `system/start-server` to `system/start-jetty`.
 - added `carmine/ping` and `carmine/ping?`
-- system does not start when connection to redis fails.
+- check connection to redis before starting datascript and jetty.
 - should be with redis even if development?
 
 ## 0.31.0 (2025-08-04)
