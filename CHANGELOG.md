@@ -8,27 +8,24 @@
 - validate. how about checking :type attribute given or not.
 - check uploaded files.
 - transducer.
-- just recipe to backup db.sqlite
-- just recipe to upload db.sqlite
 - the name of `db.sqlite` must be `konpy.sqlite`.
-- name of the downloaded file.
 - read version info from `pom.xml`.
 - color self in answers and logins list.
 - deliver ⚫️ to the same (bad) answers at once.
-- /tasks/:n
-- without redis, konpy stacks?
-- warn if not connect to redis.
 
-## 0.32.0-SNAPSHOT
+
+## 0.32.0-SNAPSHOT (2025-08-04)
 
 - renamed `system/start-db` to `system/start-datascript`,
   `system/start-server` to `system/start-jetty`.
 - added `carmine/ping` and `carmine/ping?`
+- system does not start when connection to redis fails.
+- should be with redis even if development?
 
 ## 0.31.0 (2025-08-04)
 
 - post params.
-- dowload as `17-1-jo_07-18.py`
+- name of the downloaded file. dowload as `17-1-jo_07-18.py`.
 
 ## 0.30.0 (2025-08-03)
 
