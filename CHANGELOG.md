@@ -19,6 +19,12 @@
 - without redis, konpy stacks?
 - warn if not connect to redis.
 
+## 0.32.0-SNAPSHOT
+
+- renamed `system/start-db` to `system/start-datascript`,
+  `system/start-server` to `system/start-jetty`.
+- added `carmine/ping` and `carmine/ping?`
+
 ## 0.31.0 (2025-08-04)
 
 - post params.

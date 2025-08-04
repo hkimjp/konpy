@@ -14,9 +14,9 @@
   hato/hato                      {:mvn/version "1.0.0"}
   ;;Database
   datascript/datascript          {:mvn/version "1.7.5"}
-  tonsky/datascript-storage-sql
-  {:git/url "https://github.com/tonsky/datascript-storage-sql"
-   :git/sha "63763085e05c7214d48106058ba58987535ab296"}
+  io.github.tonsky/datascript-storage-sql {:mvn/version "2.1.0"}
+  ; {:git/url "https://github.com/tonsky/datascript-storage-sql"
+  ;  :git/sha "63763085e05c7214d48106058ba58987535ab296"}
   org.xerial/sqlite-jdbc         {:mvn/version "3.50.2.0"}
   com.taoensso/carmine           {:mvn/version "3.4.1"}
   com.github.igrishaev/pg2-core  {:mvn/version "0.1.40"}}
