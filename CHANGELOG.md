@@ -19,7 +19,7 @@
 - without redis, konpy stacks?
 - warn if not connect to redis.
 
-## 0.30.1-SNAPSHOT
+## 0.31.0 (2025-08-04)
 
 - post params.
 - dowload as `17-1-jo_07-18.py`
