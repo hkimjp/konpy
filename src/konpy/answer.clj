@@ -411,13 +411,6 @@
      :headers {"Content-disposition" (str "attachment; filename=" filename)}
      :body answer}))
 
-(comment
-  (let [week-num "{:week 1, :num 2}"
-        map (read-string week-num)
-        {:keys [week num]} map]
-    (println week-num map  week num))
-
-  :rcf)
 ;------------------------------------------
 
 (defn black

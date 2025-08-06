@@ -34,8 +34,8 @@
   [{{:keys [login password]} :params}]
   (if (develop?)
     (do
-      (t/log! :info (str "login success: " login))
       (c/put-login login 10)
+      (t/log! :info (str "login success: " login))
       (-> (resp/redirect "/tasks")
           (assoc-in [:session :identity] login)))
     (try
@@ -44,8 +44,8 @@
         (if (and (some? resp)
                  (hashers/check password (get-in resp [:body :password])))
           (do
-            (t/log! :info (str "login success: " login))
             (c/put-login login (* 24 60 60))
+            (t/log! :info (str "login success: " login))
             (-> (resp/redirect "/tasks")
                 (assoc-in [:session :identity] login)))
           (do

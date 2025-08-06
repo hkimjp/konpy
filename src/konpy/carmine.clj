@@ -14,6 +14,9 @@
 
 (defmacro wcar* [& body] `(car/wcar my-wcar-opts ~@body))
 
+(defn ping []
+  (wcar* (car/ping)))
+
 (defn set [key value]
   (wcar* (car/set key value)))
 
@@ -41,6 +44,15 @@
   (wcar* (car/llen key)))
 
 ;-----------------------
+
+(defn ping? []
+  (try
+    (ping)
+    (catch Exception e
+      nil)))
+
+(ping?)
+
 (defn- put-key
   [key user ttl]
   (let [now (jt/format "yyyy-MM-dd HH:mm:ss" (jt/local-date-time))]
