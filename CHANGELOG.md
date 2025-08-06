@@ -16,7 +16,7 @@
 	  let them click on the user name who has sent the answer?
 	
 
-## 0.32.0-SNAPSHOT (2025-08-04)
+## 0.32.0 (2025-08-06)
 
 * renamed `system/start-db` to `system/start-datascript`,
   `system/start-server` to `system/start-jetty`.
