@@ -2,20 +2,21 @@
   (:require [ring.adapter.jetty :as jetty]
             [taoensso.telemere :as t]
             [environ.core :refer [env]]
+            [konpy.carmine :refer [ping?]]
             [konpy.routes :as routes]
             [konpy.db :as db]))
 
-(defn start-db
+(defn start-datascript
   []
   (db/start "storage/db.sqlite"))
 
-(defn stop-db
+(defn stop-datascript
   []
   (db/stop))
 
 (defonce server (atom nil))
 
-(defn start-server
+(defn start-jetty
   []
   (let [port (or (env :port) "3000")
         handler (if (= (env :develop) "true")
@@ -35,12 +36,15 @@
 
 (defn start-system
   []
-  (start-db)
-  (start-server))
+  (if (ping?)
+    (do
+      (start-datascript)
+      (start-jetty))
+    (println "can not talk to redis.")))
 
 (defn stop-system
   []
-  (stop-db)
+  (stop-datascript)
   (stop-server))
 
 (defn restart-system
