@@ -16,6 +16,17 @@
 
 ## 0.32.0-SNAPSHOT (2025-08-04)
 
+- updated libraries
+
+  | :file    | :name                         | :current   | :latest    |
+  |----------|-------------------------------|------------|------------|
+  | deps.edn | clj-kondo/clj-kondo           | 2025.06.05 | 2025.07.28 |
+  |          | io.github.clojure/tools.build | v0.10.9    | v0.10.10   |
+  |          | io.github.tonsky/clojure-plus | 1.6.1      | 1.6.3      |
+  |          | io.github.tonsky/clojure-plus | 1.6.1      | 1.6.3      |
+  |          | org.xerial/sqlite-jdbc        | 3.50.2.0   | 3.50.3.0   |
+  | pom.xml  | org.clojure/clojure           | 0.30.0     | 1.12.1     |
+
 - renamed `system/start-db` to `system/start-datascript`,
   `system/start-server` to `system/start-jetty`.
 - added `carmine/ping` and `carmine/ping?`
