@@ -6,10 +6,55 @@
    [taoensso.telemere :as t]
    [konpy.admin :refer [upsert-task!]]
    ; [konpy.carmine :as c]
-   ; [konpy.db :as db]
+   [konpy.db :as db]
    ; [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
+
+(-> (db/q '[:find ?week-num ?author
+            :where
+            [?e :week-num ?week-num]
+            [?e :author ?author]])
+    count) ;=> 3098
+
+(-> (db/q '[:find ?author ?updated
+            :where
+            [?e :author ?author]
+            [?e :updated ?updated]])
+    count) ;=> 7754
+
+(-> (db/q '[:find ?author ?tid
+            :where
+            [?e :author ?author]
+            [?e :task/id ?tid]])
+    count) ;=> 6062
+
+(def tids (->> (db/q '[:find ?tid
+                       :where
+                       [?e :task/id ?tid]])
+               (map first)))
+
+(count tids)
+;=> 136
+
+(-> (db/q '[:find ?e ?tid
+            :where
+            [?e :task/id ?tid]
+            [?e :author "hkimura"]])
+    count)
+
+(-> (db/q '[:find ?e ?tid
+            :in $ ?user
+            :where
+            [?e :task/id ?tid]
+            [?e :author ?user]]
+          "pantsman")
+    count)
+
+;--------------------------
+(comment
+  (system/restart-system)
+  :rcf)
 
 ;---------------------------
 (reload/init
@@ -19,7 +64,6 @@
 (defn reload []
   (reload/reload))
 (t/set-min-level! :debug)
-;---------------------------
 
 (system/restart-system)
 
@@ -43,14 +87,8 @@
       (resp/content-type "text/plain"))
   :rcf)
 
-(defn seeds-in [week seeds]
-  (let [c (atom 0)]
-    (doseq [s seeds]
-      (swap! c inc)
-      (upsert-task! -1 week @c s))))
-
-(def kon-15
-  [])
+; (def kon-15
+;   [])
 ; (def kon-14
 ;   ["remove_last(xs, x) ... リスト xs 中、最後に現れる x を削除したリストを返す。"
 

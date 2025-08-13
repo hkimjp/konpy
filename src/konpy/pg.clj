@@ -1,10 +1,11 @@
 (ns konpy.pg
+  "send questions from kp.melt to qa.melt"
   (:require
    [environ.core :refer [env]]
    [pg.core :as pg]
    [taoensso.telemere :as t]
    [konpy.carmine :as c]
-   [konpy.db :as db]
+   ; [konpy.db :as db]
    [konpy.utils :refer [user]]
    [konpy.system :as-alias system]))
 
@@ -53,5 +54,5 @@
         ret (pg/execute tp-conn q {:params [user]})]
     (t/log! :debug (str "average user: " user " ret " ret))
     (-> ret
-      first)))
+        first)))
 
