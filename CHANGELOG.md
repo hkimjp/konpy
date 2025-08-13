@@ -1,22 +1,20 @@
 ## Unreleased
 
-* datascript/restore issue
-```
-(set! *default-data-reader-fn* tagged-literal)
-```
 * let admin can check who logined, submitted.
 * validate. how about checking :type attribute given or not.
-* check uploaded files.
+* validate uploaded files.
 * transducer.
 * the name of `db.sqlite` must be `konpy.sqlite`.
 * read version info from `pom.xml`.
 * color self in answers and logins list.
 * deliver ⚫️ to the same (bad) answers at once.
-	* rather than listing all answers at once,
-	  let them click on the user name who has sent the answer?
-* should raise if not connect to redis?
+* rather than listing all answers at once,
+  let them click on the user name who has sent the answer?
 
 ## 0.34-SNAPSHOT (2025-08-13)
+
+* throw exception if not connect to redis.
+* /dev/user/.clj resumed to git.
 
 
 ## 0.32.0 (2025-08-06)
