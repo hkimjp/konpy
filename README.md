@@ -25,9 +25,9 @@ In development, run tailwindcss watcher in the background,
 
     $ just watch
 
-then start Clojure REPL.
+then start Clojure nREPL.
 
-    $ just repl
+    $ just nrepl
 
 Persistent storage is at `storage/db.sqlite`.
 

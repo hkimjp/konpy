@@ -1,7 +1,7 @@
 (ns konpy.core-test
-  (:require [clojure.test :refer [deftest testing is]]
-            [konpy.core :refer :all]))
+  (:require [clojure.test :as t]
+            [konpy.core :as kc]))
 
-(deftest core-test
-  (testing "I success."
-    (is (= 0 0))))
+(t/deftest core-test
+  (t/testing "I success."
+    (t/is (= 0 0))))

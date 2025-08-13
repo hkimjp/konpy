@@ -19,12 +19,11 @@ fetch:
   # if use orbstack redis@7, choose here.
   scp ${DEST}:/var/lib/redis/dump.rdb ~/docker/redis@7/data/
 
-# socket-repl
 plus:
-  clj -A:jvm-base -X:dev clojure+.core.server/start-server
+  clj -X:dev:plus
 
 nrepl:
-  clojure -A:jvm-base -M:dev -m nrepl.cmdline
+  clojure -M:dev:nrepl
 
 # under construction
 container-repl:
@@ -33,15 +32,6 @@ container-repl:
 
 run:
   clojure -M:run-m
-
-format_check:
-  clojure -M:format -m cljfmt.main check src dev test
-
-format:
-  clojure -M:format -m cljfmt.main fix src dev test
-
-lint:
-  clojure -M:lint -m clj-kondo.main --lint .
 
 test:
     clojure -M:dev -m kaocha.runner
