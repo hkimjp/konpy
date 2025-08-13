@@ -11,7 +11,7 @@
 * rather than listing all answers at once,
   let them click on the user name who has sent the answer?
 
-## 0.34-SNAPSHOT (2025-08-13)
+## 0.34.0 (2025-08-14)
 
 * throw exception if not connect to redis.
 * /dev/user/.clj resumed to git.
