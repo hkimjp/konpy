@@ -11,9 +11,17 @@
    [konpy.system :as system]
    konpy.core-test))
 
+(comment
+  (system/restart-system)
+  :rcf)
+
 (t/set-min-level! :debug)
 
-(system/restart-system)
+(defn seeds-in [week seeds]
+  (let [c (atom 0)]
+    (doseq [s seeds]
+      (swap! c inc)
+      (upsert-task! -1 week @c s))))
 
 (comment
   (db/pull 7745)
@@ -35,14 +43,8 @@
       (resp/content-type "text/plain"))
   :rcf)
 
-(defn seeds-in [week seeds]
-  (let [c (atom 0)]
-    (doseq [s seeds]
-      (swap! c inc)
-      (upsert-task! -1 week @c s))))
-
-(def kon-15
-  [])
+; (def kon-15
+;   [])
 ; (def kon-14
 ;   ["remove_last(xs, x) ... リスト xs 中、最後に現れる x を削除したリストを返す。"
 
