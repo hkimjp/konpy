@@ -1,8 +1,8 @@
 (ns user
   (:require
-   ; [clj-reload.core :as reload]
    ; [environ.core :refer [env]]
    ; [java-time.api :as jt]
+   [clj-reload.core :as reload]
    [taoensso.telemere :as t]
    [konpy.admin :refer [upsert-task!]]
    ; [konpy.carmine :as c]
@@ -11,7 +11,15 @@
    [konpy.system :as system]
    konpy.core-test))
 
+;---------------------------
+(reload/init
+ {:dirs ["src" "dev" "test"]
+  :no-reload '#{user}})
+
+(defn reload []
+  (reload/reload))
 (t/set-min-level! :debug)
+;---------------------------
 
 (system/restart-system)
 
