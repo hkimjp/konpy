@@ -6,17 +6,58 @@
    [taoensso.telemere :as t]
    [konpy.admin :refer [upsert-task!]]
    ; [konpy.carmine :as c]
-   ; [konpy.db :as db]
+   [konpy.db :as db]
    ; [konpy.utils :as u]
    [konpy.system :as system]
    konpy.core-test))
 
+(-> (db/q '[:find ?week-num ?author
+            :where
+            [?e :week-num ?week-num]
+            [?e :author ?author]])
+    count) ;=> 3098
+
+(-> (db/q '[:find ?author ?updated
+            :where
+            [?e :author ?author]
+            [?e :updated ?updated]])
+    count) ;=> 7754
+
+(-> (db/q '[:find ?author ?tid
+            :where
+            [?e :author ?author]
+            [?e :task/id ?tid]])
+    count) ;=> 6062
+
+(def tids (->> (db/q '[:find ?tid
+                       :where
+                       [?e :task/id ?tid]])
+               (map first)))
+
+(count tids)
+;=> 136
+
+(-> (db/q '[:find ?e ?tid
+            :where
+            [?e :task/id ?tid]
+            [?e :author "hkimura"]])
+    count)
+
+(-> (db/q '[:find ?e ?tid
+            :in $ ?user
+            :where
+            [?e :task/id ?tid]
+            [?e :author ?user]]
+          "pantsman")
+    count)
+
+;--------------------------
 (comment
   (system/restart-system)
   :rcf)
 
 (t/set-min-level! :debug)
-
+;--------------------------
 (defn seeds-in [week seeds]
   (let [c (atom 0)]
     (doseq [s seeds]
