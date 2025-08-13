@@ -14,6 +14,9 @@
 * deliver ⚫️ to the same (bad) answers at once.
 	* rather than listing all answers at once,
 	  let them click on the user name who has sent the answer?
+* should raise if not connect to redis?
+
+## 0.34-SNAPSHOT
 
 
 ## 0.32.0 (2025-08-06)
