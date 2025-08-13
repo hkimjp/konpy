@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.hkimjp</groupId>
   <artifactId>konpy</artifactId>
-  <version>0.33.0</version>
+  <version>0.34-SNAPSHOT</version>
   <name>hkimjp/konpy</name>
   <description>This week's python assignments.</description>
   <url>https://github.com/hkimjp/konpy</url>
@@ -22,7 +22,7 @@
     <url>https://github.com/hkimjp/konpy</url>
     <connection>scm:git:git://github.com/hkimjp/konpy.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/hkimjp/konpy.git</developerConnection>
-    <tag>v0.33.0</tag>
+    <tag>v0.34-SNAPSHOT</tag>
   </scm>
   <dependencies>
     <dependency>
