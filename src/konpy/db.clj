@@ -70,29 +70,6 @@
   (reset! storage nil)
   (alter-var-root #'conn (constantly nil)))
 
-(comment
-  (start "data/db.sqlite")
-
-  (d/pull @conn '[*] 7745)
-  (d/q '[:find ?week ?num
-         :in $ ?eid
-         :where
-         [?e :week ?week]
-         [?e :num ?num]
-         [(= ?e ?eid)]]
-       @conn 7745)
-
-  (q '[:find ?week ?num
-       :keys week num
-       :in $ ?eid
-       :where
-       [?e :week ?week]
-       [?e :num ?num]
-       [(= ?e ?eid)]]
-     7745)
-
-  (d/entity @conn 7745)
-  :rcf)
 ;------------------------------------------
 
 (defn- shorten

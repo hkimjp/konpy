@@ -33,3 +33,4 @@
 !/log/.keep
 /log/*
 .repl-port
+!/dev/user.clj

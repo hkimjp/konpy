@@ -40,7 +40,9 @@
     (do
       (start-datascript)
       (start-jetty))
-    (println "can not talk to redis.")))
+    (do
+      (t/log! :error "can not talk to redis.")
+      (throw (ex-info "Redis connection failed" {})))))
 
 (defn stop-system
   []

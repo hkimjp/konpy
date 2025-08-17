@@ -1,24 +1,36 @@
 ## Unreleased
 
-* datascript/restore issue
-```
-(set! *default-data-reader-fn* tagged-literal)
-```
 * let admin can check who logined, submitted.
 * validate. how about checking :type attribute given or not.
-* check uploaded files.
+* validate uploaded files.
 * transducer.
 * the name of `db.sqlite` must be `konpy.sqlite`.
 * read version info from `pom.xml`.
 * color self in answers and logins list.
 * deliver ⚫️ to the same (bad) answers at once.
-	* rather than listing all answers at once,
-	  let them click on the user name who has sent the answer?
-	
+* rather than listing all answers at once,
+  let them click on the user name who has sent the answer?
+
+## 0.34.0 (2025-08-14)
+
+* throw exception if not connect to redis.
+* /dev/user/.clj resumed to git.
+
 
 ## 0.32.0 (2025-08-06)
 
-* renamed `system/start-db` to `system/start-datascript`,
+- updated libraries
+
+  | :file    | :name                         | :current   | :latest    |
+  |----------|-------------------------------|------------|------------|
+  | deps.edn | clj-kondo/clj-kondo           | 2025.06.05 | 2025.07.28 |
+  |          | io.github.clojure/tools.build | v0.10.9    | v0.10.10   |
+  |          | io.github.tonsky/clojure-plus | 1.6.1      | 1.6.3      |
+  |          | io.github.tonsky/clojure-plus | 1.6.1      | 1.6.3      |
+  |          | org.xerial/sqlite-jdbc        | 3.50.2.0   | 3.50.3.0   |
+  | pom.xml  | org.clojure/clojure           | 0.30.0     | 1.12.1     |
+
+- renamed `system/start-db` to `system/start-datascript`,
   `system/start-server` to `system/start-jetty`.
 * added `carmine/ping` and `carmine/ping?`
 * check connection to redis before starting datascript and jetty.
