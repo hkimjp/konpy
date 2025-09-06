@@ -11,6 +11,26 @@
 * rather than listing all answers at once,
   let them click on the user name who has sent the answer?
 
+## 0.35.0-SNAPSHOT
+
+* list all submissions
+* container
+* update for konpy2
+* tailwind --watch=always
+* 学期終了のため、全問題、回答を晒す。
+
+```clojure
+   [tasks-q '[:find ?e ?week ?num ?task
+                  :keys e week num task
+                  :in $ week
+                  :where
+                  [?e :week ?week]
+                  [?e :num ?num]
+                  [?e :task ?task]]
+        ret (->> (q tasks-q (week))
+                 (sort-by (juxt :week :num)))]
+```
+
 ## 0.34.0 (2025-08-14)
 
 * throw exception if not connect to redis.
