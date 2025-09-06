@@ -11,6 +11,10 @@
 * rather than listing all answers at once,
   let them click on the user name who has sent the answer?
 
+## 0.36-SNAPSHOT
+
+* container
+
 ## 0.35.2 (2025-09-07)
 
 * added `bump-version-local.sh`
