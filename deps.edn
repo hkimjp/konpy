@@ -21,5 +21,5 @@
   com.github.igrishaev/pg2-core  {:mvn/version "0.1.40"}}
 
  :aliases
- {:run-m {:main-ops ["-m" "konpy.core"]}
+ {:run-m {:main-opts ["-m" "konpy.core"]}
   :neil  {:project {:name hkimjp/konpy}}}}
