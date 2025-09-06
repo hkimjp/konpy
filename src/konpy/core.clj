@@ -4,4 +4,8 @@
 
 (defn -main
   [& _args]
-  (system/start-system))
+  (system/start-system)
+  (println "konpy started"))
+
+; (-main)
+; (system/stop-system)

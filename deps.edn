@@ -1,7 +1,7 @@
 {:paths ["src" "resources"]
 
  :deps
- {org.clojure/clojure            {:mvn/version "1.12.1"}
+ {org.clojure/clojure            {:mvn/version "1.12.2"}
   clojure.java-time/clojure.java-time {:mvn/version "1.4.3"}
   environ/environ                {:mvn/version "1.2.0"}
   buddy/buddy-hashers            {:mvn/version "2.0.167"}
@@ -21,4 +21,5 @@
   com.github.igrishaev/pg2-core  {:mvn/version "0.1.40"}}
 
  :aliases
- {:neil   {:project {:name hkimjp/konpy}}}}
+ {:run-m {:main-ops ["-m" "konpy.core"]}
+  :neil  {:project {:name hkimjp/konpy}}}}
