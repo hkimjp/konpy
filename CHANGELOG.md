@@ -14,6 +14,7 @@
 ## 0.36-SNAPSHOT
 
 * container
+* required alias :test to build uberjar. really?
 
 ## 0.35.2 (2025-09-07)
 
