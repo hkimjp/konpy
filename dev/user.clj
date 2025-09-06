@@ -19,6 +19,7 @@
 
 (comment
   (reload)
+  (system/stop-system)
   :rcf)
 
 (t/set-min-level! :debug)

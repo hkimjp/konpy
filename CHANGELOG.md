@@ -11,7 +11,11 @@
 * rather than listing all answers at once,
   let them click on the user name who has sent the answer?
 
-## 0.35.0-SNAPSHOT
+## 0.35.1 (2025-09-07)
+
+* alias run-m
+
+## 0.35.0 (2025-09-07)
 
 * list all submissions
 * container
