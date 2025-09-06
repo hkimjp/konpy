@@ -14,6 +14,9 @@
     [:link {:type "text/css"
             :rel  "stylesheet"
             :href "/assets/css/output.css"}]
+    [:script {:type  "text/javascript"
+              :src   "/assets/js/htmx.min.js"
+              :defer "true"}]
     [:title "kp"]]
    [:body {:hx-boost "true"}
     [:div {:class "mx-auto"}
@@ -22,10 +25,7 @@
      content
      [:hr]
      "hkimura "
-     version
-     [:script {:type "text/javascript"
-               :src  "/assets/js/htmx.min.js"
-               :defer true}]]]])
+     version]]])
 
 (defn render
   [content]

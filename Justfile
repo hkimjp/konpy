@@ -4,8 +4,9 @@ help:
   just --list
 
 CSS := "resources/public/assets/css"
+
 watch:
-  tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --watch
+  tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --watch=always
 
 minify:
   tailwindcss -i {{CSS}}/input.css -o {{CSS}}/output.css --minify
@@ -24,6 +25,10 @@ plus:
 
 nrepl:
   clojure -M:dev:nrepl
+
+dev:
+  just watch &
+  just nrepl
 
 # under construction
 container-repl:
