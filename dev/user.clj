@@ -8,8 +8,7 @@
    [konpy.admin :refer [upsert-task!]]
    [konpy.db :as db]
    [konpy.system :as system]
-   [taoensso.telemere :as t]
-   konpy.core-test))
+   [taoensso.telemere :as t]))
 
 (reload/init
  {:dirs ["src" "dev" "test"]
