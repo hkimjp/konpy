@@ -257,7 +257,7 @@
       (str num))))
 
 (defn- qa-button [eid author week-num]
-  (t/log! :debug (str "qa-button: " eid ", " author ", " week-num))
+  ; (t/log! :debug (str "qa-button: " eid ", " author ", " week-num))
   [:div
    [:form {:class      "flex gap-2"
            :hx-confirm "QAに送信しますか？"
@@ -301,7 +301,7 @@
 
 (defn- show-answer
   [a]
-  (t/log! :debug "show-answer")
+  ; (t/log! :debug "show-answer")
   [:div.py-4
    (answer-head a)
    [:div
@@ -319,9 +319,9 @@
       (for [a answers]
         (show-answer a))])))
 
-(defn answers-one [{{:keys [e]} :path-params}]
+(defn answers-one [{{:keys [e]} :path-params :as request}]
   (let [answer (db/pull (parse-long e))]
-    (t/log! :info "answer-one")
+    (t/log! :info (str "answer-one: reader " (user request) ", read " (:author answer)))
     (render (show-answer answer))))
 
 ; (defn- inner-link [s]

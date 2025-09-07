@@ -11,10 +11,11 @@
 * rather than listing all answers at once,
   let them click on the user name who has sent the answer?
 
-## 0.36.0-SNAPSHOT (2025-09-07)
+## 0.36.1-SNAPSHOT (2025-09-07)
 
 * container
 * required alias :test to build uberjar. really?
+* htmx - need click on the answerers name to see their answers.
 
 ## 0.35.2 (2025-09-07)
 
