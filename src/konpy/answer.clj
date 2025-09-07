@@ -319,8 +319,19 @@
       (for [a answers]
         (show-answer a))])))
 
-(defn- inner-link [s]
-  [:a.underline {:href (str "#" s)} s])
+(defn answers-one [{{:keys [e]} :path-params}]
+  (let [answer (db/pull (parse-long e))]
+    (t/log! :info "answer-one")
+    (render (show-answer answer))))
+
+; (defn- inner-link [s]
+;   [:a.underline {:href (str "#" s)} s])
+; link を htmx 呼び出しに代える。
+(defn- inner-link [answer]
+  [:button
+   {:hx-get (str "/answers/one/" (:e answer))
+    :hx-target "#selected"}
+   (:author answer)])
 
 (defn- week-num [eid]
   (-> (db/q '[:find ?week ?num
@@ -345,9 +356,10 @@
      [:div {:class "mx-4 my-2"}
       [:div {:class "text-2xl"} (str week "-" num " 現在までの回答数(人数): ")
        (count answers) " (" (-> (map :author answers) set count) ")"]
-      [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
-      (for [a answers]
-        (show-answer a))])))
+      [:div.py-2 (interpose \space (mapv inner-link answers))]
+      #_(for [a answers]
+          (show-answer a))
+      [:div#selected "[select]"]])))
 
 ;------------------------------------------
 
