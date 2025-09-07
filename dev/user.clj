@@ -7,7 +7,7 @@
    [clj-reload.core :as reload]
    [environ.core :refer [env]]
    [konpy.admin :refer [upsert-task!]]
-   [konpy.db :as db]
+   [konpy.db :as ds]
    [konpy.system :as system]
    [taoensso.telemere :as t]))
 
@@ -49,3 +49,5 @@
              "九九の表をマークダウンでプリントする."])
   :rcf)
 ;--------------------------
+
+(ds/pull 4852)
