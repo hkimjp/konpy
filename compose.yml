@@ -7,9 +7,18 @@ services:
       - gitlibs:/root/.gitlibs
     working_dir: /usr/src/app
     ports:
-      - 7777:7777
+      - 5555:5555
       - 3000:3000
-    entrypoint: ["clojure", "-X:socket-repl"]
+    entrypoint: ["clojure", "-M:nrepl"]
+
+  redis:
+    image: redis:7
+    environment:
+      TZ: Asia/Toky
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis:/data
 
 volumes:
   m2:

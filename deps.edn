@@ -1,7 +1,7 @@
 {:paths ["src" "resources"]
 
  :deps
- {org.clojure/clojure            {:mvn/version "1.12.1"}
+ {org.clojure/clojure            {:mvn/version "1.12.2"}
   clojure.java-time/clojure.java-time {:mvn/version "1.4.3"}
   environ/environ                {:mvn/version "1.2.0"}
   buddy/buddy-hashers            {:mvn/version "2.0.167"}
@@ -21,4 +21,16 @@
   com.github.igrishaev/pg2-core  {:mvn/version "0.1.40"}}
 
  :aliases
- {:neil   {:project {:name hkimjp/konpy}}}}
+ {:run-m {:main-opts ["-m" "konpy.core"]}
+  :test
+  {:extra-paths ["test"]
+   :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
+                io.github.cognitect-labs/test-runner
+                {:git/tag "v0.5.1" :git/sha "dfb30dd"}}}
+
+  :build
+  {:deps {io.github.clojure/tools.build
+          {:git/tag "v0.10.10" :git/sha "deedd62"}}
+   :ns-default build}
+
+  :neil  {:project {:name hkimjp/konpy}}}}

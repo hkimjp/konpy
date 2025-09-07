@@ -15,15 +15,26 @@
   "show this weeks assignments.
    this page must provide link to answer and views."
   [request]
-  (let [tasks-q '[:find ?e ?week ?num ?task
-                  :keys e week num task
-                  :in $ ?week
-                  :where
-                  [?e :week ?week]
-                  [?e :num ?num]
-                  [?e :task ?task]]
-        ret (->> (q tasks-q (weeks))
-                 (sort-by :num))]
+  (let
+   ; 学期終了のため、全問題、回答を晒す。
+   ; [tasks-q '[:find ?e ?week ?num ?task
+   ;                :keys e week num task
+   ;                :in $ week
+   ;                :where
+   ;                [?e :week ?week]
+   ;                [?e :num ?num]
+   ;                [?e :task ?task]]
+   ;      ret (->> (q tasks-q (week))
+   ;               (sort-by (juxt :week :num)))]
+   [tasks-q '[:find ?e ?week ?num ?task
+              :keys e week num task
+              :in $
+              :where
+              [?e :week ?week]
+              [?e :num ?num]
+              [?e :task ?task]]
+    ret (->> (q tasks-q)
+             (sort-by (juxt :week :num)))]
     (page
      [:div.mx-4
       [:p {:class "m-2 text-xl text-red-500"}
