@@ -5,6 +5,7 @@
    ; [konpy.carmine :as c]
    ; [konpy.utils :as u]
    [clj-reload.core :as reload]
+   [environ.core :refer [env]]
    [konpy.admin :refer [upsert-task!]]
    [konpy.db :as db]
    [konpy.system :as system]
@@ -16,6 +17,9 @@
 
 (defn reload []
   (reload/reload))
+
+; (System/getenv "L22")
+; (env :l22)
 
 (comment
   (reload)
