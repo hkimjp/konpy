@@ -257,7 +257,7 @@
       (str num))))
 
 (defn- qa-button [eid author week-num]
-  (t/log! :debug (str "qa-button " eid "," author "," week-num))
+  (t/log! :debug (str "qa-button: " eid ", " author ", " week-num))
   [:div
    [:form {:class      "flex gap-2"
            :hx-confirm "QAに送信しますか？"
@@ -301,7 +301,7 @@
 
 (defn- show-answer
   [a]
-  (t/log! :debug (str "show-answer" a))
+  (t/log! :debug "show-answer")
   [:div.py-4
    (answer-head a)
    [:div
@@ -328,7 +328,7 @@
 ;   [:a.underline {:href (str "#" s)} s])
 ; link を htmx 呼び出しに代える。
 (defn- inner-link [answer]
-  [:button
+  [:a.hover:underline
    {:hx-get (str "/answers/one/" (:e answer))
     :hx-target "#selected"}
    (:author answer)])
