@@ -257,7 +257,7 @@
       (str num))))
 
 (defn- qa-button [eid author week-num]
-  (t/log! :debug (str "qa-button " eid "," author "," week-num))
+  ; (t/log! :debug (str "qa-button: " eid ", " author ", " week-num))
   [:div
    [:form {:class      "flex gap-2"
            :hx-confirm "QAに送信しますか？"
@@ -301,7 +301,7 @@
 
 (defn- show-answer
   [a]
-  (t/log! :debug (str "show-answer" a))
+  ; (t/log! :debug "show-answer")
   [:div.py-4
    (answer-head a)
    [:div
@@ -319,8 +319,19 @@
       (for [a answers]
         (show-answer a))])))
 
-(defn- inner-link [s]
-  [:a.underline {:href (str "#" s)} s])
+(defn answers-one [{{:keys [e]} :path-params :as request}]
+  (let [answer (db/pull (parse-long e))]
+    (t/log! :info (str "answer-one: reader " (user request) ", read " (:author answer)))
+    (render (show-answer answer))))
+
+; (defn- inner-link [s]
+;   [:a.underline {:href (str "#" s)} s])
+; link を htmx 呼び出しに代える。
+(defn- inner-link [answer]
+  [:a.hover:underline
+   {:hx-get (str "/answers/one/" (:e answer))
+    :hx-target "#selected"}
+   (:author answer)])
 
 (defn- week-num [eid]
   (-> (db/q '[:find ?week ?num
@@ -345,9 +356,10 @@
      [:div {:class "mx-4 my-2"}
       [:div {:class "text-2xl"} (str week "-" num " 現在までの回答数(人数): ")
        (count answers) " (" (-> (map :author answers) set count) ")"]
-      [:div.py-2 (interpose \space (mapv #(inner-link (:author %)) answers))]
-      (for [a answers]
-        (show-answer a))])))
+      [:div.py-2 (interpose \space (mapv inner-link answers))]
+      #_(for [a answers]
+          (show-answer a))
+      [:div#selected "[select]"]])))
 
 ;------------------------------------------
 

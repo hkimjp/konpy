@@ -5,8 +5,9 @@
    ; [konpy.carmine :as c]
    ; [konpy.utils :as u]
    [clj-reload.core :as reload]
+   [environ.core :refer [env]]
    [konpy.admin :refer [upsert-task!]]
-   [konpy.db :as db]
+   [konpy.db :as ds]
    [konpy.system :as system]
    [taoensso.telemere :as t]))
 
@@ -16,6 +17,9 @@
 
 (defn reload []
   (reload/reload))
+
+; (System/getenv "L22")
+; (env :l22)
 
 (comment
   (reload)
@@ -45,3 +49,5 @@
              "九九の表をマークダウンでプリントする."])
   :rcf)
 ;--------------------------
+
+(ds/pull 4852)

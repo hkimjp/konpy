@@ -33,7 +33,8 @@
     ["/others"  answer/answers-others]]
    ["/answers" {:middleware [[m/wrap-users]]}
     ["/answers" answer/recent-answers]
-    ["/logins"  answer/recent-logins]]
+    ["/logins"  answer/recent-logins]
+    ["/one/:e" {:get answer/answers-one}]]
    ["/admin" {:middleware [[m/wrap-admin]]}
     ["" {:get  {:handler admin/tasks}
          :post {:handler admin/upsert!}}]

@@ -38,7 +38,7 @@ container-repl:
 run:
   clojure -M:run-m
 
-test:
+kaocha:
     clojure -M:dev -m kaocha.runner
 
 build:
