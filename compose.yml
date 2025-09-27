@@ -7,9 +7,10 @@ services:
       - gitlibs:/root/.gitlibs
     working_dir: /usr/src/app
     ports:
-      - 7777:7777
-      - 3000:3000
-    entrypoint: ["clojure", "-X:socket-repl"]
+      - 5555:5555
+      - 8080:8080
+    entrypoint: >
+      sh -c "clojure -M:nrepl"]
 
 volumes:
   m2:
