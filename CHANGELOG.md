@@ -15,6 +15,23 @@
 
 ## 0.37.0-SNAPSHOT
 
+- updated libraries.
+
+| :file    | :name                         | :current | :latest  |
+|----------|-------------------------------|----------|----------|
+| deps.edn | com.github.igrishaev/pg2-core | 0.1.40   | 0.1.44   |
+|          | com.taoensso/carmine          | 3.4.1    | 3.5.0    |
+|          | com.taoensso/telemere         | 1.0.1    | 1.2.1    |
+|          | datascript/datascript         | 1.7.5    | 1.7.8    |
+|          | io.github.clojure/tools.build | v0.10.10 | v0.10.12 |
+|          | metosin/reitit-ring           | 0.9.1    | 0.10.0   |
+|          | org.clojure/clojure           | 1.12.2   | 1.12.4   |
+|          | org.clojure/test.check        | 1.1.1    | 1.1.3    |
+|          | org.xerial/sqlite-jdbc        | 3.50.3.0 | 3.51.2.0 |
+|          | ring/ring-defaults            | 0.6.0    | 0.7.0    |
+|          | ring/ring-jetty-adapter       | 1.14.2   | 1.15.3   |
+| pom.xml  | org.clojure/clojure           | 1.12.1   | 1.12.4   |
+
 * `today's login` instead of `today's stock`.
 
 ## 0.36.1 (2025-09-07)
