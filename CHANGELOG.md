@@ -13,7 +13,7 @@
 * container - how to include python system with requirements?
 
 
-## 0.37.0-SNAPSHOT
+## 0.37.0 (2026-02-14)
 
 - updated libraries.
 

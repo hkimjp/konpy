@@ -9,7 +9,8 @@ services:
     ports:
       - 5555:5555
       - 3000:3000
-    entrypoint: ["clojure", "-M:nrepl"]
+    entrypoint: >
+      sh -c "clojure -M:run-m"
 
   redis:
     image: redis:7
